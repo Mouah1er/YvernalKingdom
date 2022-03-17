@@ -1,0 +1,45 @@
+book_name: "livre"
+book_lore:
+  - "lore"
+  - "du"
+  - "livre"
+
+compass_name: "boussole"
+compass_lore:
+  - "lore"
+  - "de la"
+  - "boussole"
+
+paper_name: "papier"
+paper_lore:
+  - "lore"
+  - "du"
+  - "papier"
+
+emptymap1_name: "Melromarc"
+emptymap1_lore:
+  - "§aRejoindre Melromarc"
+
+emptymap2_name: "Elkia"
+emptymap2_lore:
+  - "§aRejoindre Elkia"
+
+emptymap3_name: "Orario"
+emptymap3_lore:
+  - "§aRejoindre Orario"
+
+emptymap4_name: "Lugnica"
+emptymap4_lore:
+  - "§aRejoindre Lugnica"
+
+waiting_line_true_name: "§cFile d'attente activée"
+waiting_line_true_lore:
+  - "§7Si vous voulez entrer dans ce Royaume, "
+  - "vous devez d'abord attendre que ce soit votre,"
+  - "tour dans la file d'attente. "
+  - ""
+  - "§7Votre position: %position%" # ne pas changer le %position%
+
+waiting_line_false_name: "§aFile d'attente désactivée"
+waiting_line_false_lore:
+  - "§7Vous pouvez entrer dans ce Royaume maintenant !"

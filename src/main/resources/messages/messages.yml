@@ -1,0 +1,42 @@
+join-kingdom-message: "§aVous avez rejoint le royaume %kingdom% !"
+join-kingdom-waiting-list-message: "§aVous avez rejoint la file d'attente du royaume %kingdom% !"
+
+guild-command-help: [ "§7§m----------§9 Help Guildes §7§m----------",
+                      "§7-§6/guilde create <name>§3: Créer une nouvelle guilde",
+                      "§7-§6/guilde desc <description>§3: Changer la description de votre guilde",
+                      "§7-§6/guilde claim§3: Claim le chunk dans lequel vous êtes",
+                      "§7-§6/guilde map§3: Voir les différents claims autour de vous",
+                      "§7-§6/guilde list <royaume>§3: Voir les différentes guildes d'un royaume",
+                      "§7-§6/guilde unclaim§3: Unclaim le chunk dans lequel vous êtes",
+                      "§7-§6/guilde unclaim all§3: Unclaim tous vos claims",
+                      "§7-§6/guilde disband§3: Supprimer votre guilde",
+                      "§7-§6/guilde show§3: Voir les infos relatives à votre guilde",
+                      "§7-§6/guilde show <guilde>§3: Voir les infos de ladite guilde",
+                      "§7-§6/guilde manage <pseudo>§3: Permet de gérer les joueurs de votre guilde",
+                      "§7-§6/guilde invite <pseudo>§3: Inviter un joueur dans votre guilde",
+                      "§7-§6/guilde kick <pseudo>§3: Kick ledit joueur de votre guilde",
+                      "§7-§6/guilde power§3: Afficher votre power",
+                      "§7-§6/guilde power <pseudo>§3: Afficher le power dudit joueur",
+                      "§7-§6/guilde rename <nom>§3: Renommer votre guilde",
+                      "§7-§6/guilde sethome§3: Définir le home de votre guilde. Disponible seulement dans un de vos claim",
+                      "§7-§6/guilde delhome§3: Supprimer le home de votre guide",
+                      "§7-§6/guilde home§3: Se téléporter au home de votre guilde",
+                      "§7-§6/guilde leader <pseudo>§3: Promouvoir un joueur au rang de Maitre de Guilde",
+                      "§7-§6/guilde promote <pseudo>§3: Promouvoir un joueur au rang suivant",
+                      "§7§m----------§9 Help Guildes §7§m----------" ]
+
+already-in-guild: "§cVous êtes déjà dans une guilde !"
+player-not-in-guild: "§cVous ne pouvez pas exécuter cette commande car vous n'êtes pas dans une guilde !"
+player-guild-permission-error: "§cVous n'avez pas le grade nécessaire dans cette guilde pour exécuter cette commande !"
+
+already-claim-by-guild-error: "§cLa guilde %guilde% a déjà claim ce chunk !"
+successfully-claimed-chunk: "§aLe joueur §b%player% §aa claim le chunk aux coordonnées suivantes: §9%x% §a; §9%z%"
+
+not-claimed-by-player-guild-error: "§cCe n'est pas votre guilde qui possède le claim mais la guilde §b%guild% §c!"
+not-claimed: "§cCe chunk n'est pas claim !"
+successfully-unclaimed: "§aLe joueur §b%player% §aa unclaim le chunk aux coordonnées suivantes: §9%x% §a; §9%z%"
+
+guild-name-too-big: "§cLe nom que vous avez donné à votre guilde est trop gros ! §7(16 caractères max)"
+successfully-created-guild: "§aVous avez bien créé la guilde §b%guild% §a!"
+
+successfully-deleted-guild: "§aLa guilde a bien été supprimée !"

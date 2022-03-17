@@ -1,0 +1,11 @@
+name: YvernalKingdom
+main: fr.yvernal.yvernalkingdom.Main
+version: 0.0.1
+authors: [ Twah2em, Nishibaka ]
+commands:
+  guild:
+    aliases:
+      - guilde
+      - f
+      - g
+    description: Commande relative aux guildes.
