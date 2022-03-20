@@ -1,6 +1,9 @@
 package fr.yvernal.yvernalkingdom.kingdoms.guilds;
 
 import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.GuildData;
+import org.bukkit.Bukkit;
+
+import java.util.Objects;
 
 public class Guild {
     private final GuildData guildData;
@@ -17,6 +20,14 @@ public class Guild {
         this.guildData = guildData;
         this.isDeleted = isDeleted;
         this.isNew = isNew;
+    }
+
+    public void sendMessageToMembers(String message) {
+        getGuildData().getMembersUniqueId()
+                .stream()
+                .map(Bukkit::getPlayer)
+                .filter(Objects::nonNull)
+                .forEach(player1 -> player1.sendMessage(message));
     }
 
     public GuildData getGuildData() {

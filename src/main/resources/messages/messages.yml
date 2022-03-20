@@ -39,4 +39,7 @@ successfully-unclaimed: "§aLe joueur §b%player% §aa unclaim le chunk aux coor
 guild-name-too-big: "§cLe nom que vous avez donné à votre guilde est trop gros ! §7(16 caractères max)"
 successfully-created-guild: "§aVous avez bien créé la guilde §b%guild% §a!"
 
-successfully-deleted-guild: "§aLa guilde a bien été supprimée !"
+successfully-deleted-guild: "§aLa guilde a été supprimée !"
+
+guild-desc-too-big: "§cLa description que vous avez donné à votre guilde est trop grosse ! §7(100 caractères max)"
+successfully-changed-guild-desc: "§aLa description de la guilde a changé pour devenir: §7%description%"
