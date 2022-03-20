@@ -26,8 +26,11 @@ public class CreateArg implements YvernalArg {
         } else {
             final StringBuilder stringBuilder = new StringBuilder();
 
+            String prefix = "";
             for (int i = 1; i < args.length; i++) {
-                stringBuilder.append(args[i]).append(" ");
+                stringBuilder.append(prefix);
+                prefix = " ";
+                stringBuilder.append(args[i]);
             }
 
             if (stringBuilder.length() > 16) {

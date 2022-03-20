@@ -18,4 +18,4 @@ dependencies {
     implementation 'org.reflections:reflections:0.10.2'
 }
 
-libsDirName = "C:\\Users\\ocsar\\Desktop\\servers\\1.8.8\\plugins"
+libsDirName = properties.get("libs-dir-name")

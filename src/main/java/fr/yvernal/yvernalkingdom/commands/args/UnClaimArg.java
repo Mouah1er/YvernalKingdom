@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class UnClaimArg implements YvernalArg {
 
@@ -33,35 +34,36 @@ public class UnClaimArg implements YvernalArg {
                 final List<Claim> claims = dataManager.getClaimManager().getClaims();
                 final Chunk playerChunk = player.getLocation().getChunk();
 
-                for (int i = 0; i < claims.size(); i++) {
-                    final Claim claim = claims.get(i);
+                final Optional<Claim> optionalClaim = claims.stream().filter(claim -> claim.getClaimData().getX() == playerChunk.getX() &&
+                                claim.getClaimData().getZ() == playerChunk.getZ())
+                        .findFirst();
 
-                    if (claim.getClaimData().getX() == playerChunk.getX() &&
-                            claim.getClaimData().getZ() == playerChunk.getZ()) {
-                        if (claim.isUnClaim()) {
-                            player.sendMessage(messagesManager.getString("not-claimed"));
+                if (optionalClaim.isPresent()) {
+                    final Claim claim = optionalClaim.get();
+
+                    if (claim.isUnClaim()) {
+                        player.sendMessage(messagesManager.getString("not-claimed"));
+                    } else {
+                        if (!claim.getClaimData().getGuildUniqueId().equals(playerGuild.getGuildData().getGuildUniqueId())) {
+                            player.sendMessage(messagesManager.getString("not-claimed-by-player-guild-error")
+                                    .replace("%guild%", claim.getClaimData().getGuildName()));
                         } else {
-                            if (!claim.getClaimData().getGuildUniqueId().equals(playerGuild.getGuildData().getGuildUniqueId())) {
-                                player.sendMessage(messagesManager.getString("not-claimed-by-player-guild-error")
-                                        .replace("%guild%", claim.getClaimData().getGuildName()));
-                            } else {
-                                claim.setNew(false);
-                                claim.setUnClaim(true);
-                                dataManager.getClaimManager().getClaims().set(i, claim);
-                                System.out.println(claims.get(i) + " unclaim");
-                                playerGuild.getGuildData().getMembersUniqueId()
-                                        .stream()
-                                        .map(Bukkit::getPlayer)
-                                        .filter(Objects::nonNull)
-                                        .forEach(player1 -> player1.sendMessage(messagesManager.getString("successfully-unclaimed")
-                                                .replace("%player%", player.getName())
-                                                .replace("%x%", String.valueOf(playerChunk.getX()))
-                                                .replace("%z%", String.valueOf(playerChunk.getZ()))));
-                            }
+                            playerGuild.getGuildData().getMembersUniqueId()
+                                    .stream()
+                                    .map(Bukkit::getPlayer)
+                                    .filter(Objects::nonNull)
+                                    .forEach(player1 -> player1.sendMessage(messagesManager.getString("successfully-unclaimed")
+                                            .replace("%player%", player.getName())
+                                            .replace("%x%", String.valueOf(playerChunk.getX()))
+                                            .replace("%z%", String.valueOf(playerChunk.getZ()))));
+                            dataManager.getClaimManager().getClaims().remove(claim);
+                            claim.setNew(false);
+                            claim.setUnClaim(true);
+                            dataManager.getClaimManager().getClaims().add(claim);
                         }
-
-                        return;
                     }
+                } else {
+                    player.sendMessage(messagesManager.getString("not-claimed"));
                 }
             }
         }

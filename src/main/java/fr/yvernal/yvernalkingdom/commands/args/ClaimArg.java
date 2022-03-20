@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ClaimArg implements YvernalArg {
 
@@ -28,27 +29,45 @@ public class ClaimArg implements YvernalArg {
                 playerGuild.isDeleted() && playerAccount.getGuildRank() == GuildRank.NO_GUILD) {
             player.sendMessage(messagesManager.getString("player-not-in-guild"));
         } else {
+            System.out.println("test 1");
             if (playerAccount.getGuildRank() == GuildRank.MEMBER) {
+                System.out.println("test 2");
                 player.sendMessage(messagesManager.getString("player-guild-permission-error"));
             } else {
+                System.out.println("test 3");
                 final List<Claim> claims = dataManager.getClaimManager().getClaims();
                 final Chunk playerChunk = player.getLocation().getChunk();
 
-                boolean isAlreadyClaimed = false;
-                for (Claim claim : claims) {
-                    if (claim.getClaimData().getX() == playerChunk.getX() &&
-                            claim.getClaimData().getZ() == playerChunk.getZ()) {
-                        System.out.println(claim + " claim");
-                        if (!claim.isUnClaim()) {
-                            player.sendMessage(messagesManager.getString("already-claim-by-guild-error")
-                                    .replace("%guilde%", claim.getClaimData().getGuildName()));
-                            isAlreadyClaimed = true;
-                            break;
-                        }
-                    }
-                }
+                final Optional<Claim> optionalClaim = claims.stream().filter(claim -> claim.getClaimData().getX() == playerChunk.getX() &&
+                                claim.getClaimData().getZ() == playerChunk.getZ())
+                        .findFirst();
 
-                if (!isAlreadyClaimed) {
+                if (optionalClaim.isPresent()) {
+                    System.out.println("test 4");
+                    final Claim claim = optionalClaim.get();
+                    System.out.println(claim);
+
+                    if (!claim.isUnClaim()) {
+                        System.out.println("test 5");
+                        player.sendMessage(messagesManager.getString("already-claim-by-guild-error")
+                                .replace("%guilde%", claim.getClaimData().getGuildName()));
+                    } else {
+                        System.out.println("test 6");
+                        dataManager.getClaimManager().getClaims().remove(claim);
+                        claim.setUnClaim(false);
+                        dataManager.getClaimManager().getClaims().add(claim);
+
+                        playerGuild.getGuildData().getMembersUniqueId()
+                                .stream()
+                                .map(Bukkit::getPlayer)
+                                .filter(Objects::nonNull)
+                                .forEach(player1 -> player1.sendMessage(messagesManager.getString("successfully-claimed-chunk")
+                                        .replace("%player%", player.getName())
+                                        .replace("%x%", String.valueOf(playerChunk.getX()))
+                                        .replace("%z%", String.valueOf(playerChunk.getZ()))));
+                    }
+                } else {
+                    System.out.println("test 7");
                     dataManager.getClaimManager().getClaims().add(new Claim(new ClaimData(playerGuild.getGuildData().getGuildUniqueId(),
                             playerGuild.getGuildData().getName(), playerChunk.getX(), playerChunk.getZ()), false, true));
                     playerGuild.getGuildData().getMembersUniqueId()
