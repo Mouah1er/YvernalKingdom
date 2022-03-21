@@ -17,6 +17,8 @@ public class PlayerAccount {
     private String waitingKingdomName;
     private String kingdomName;
 
+    private int powerTaskId;
+
     public PlayerAccount(UUID uniqueId, int power, double valis, String guildName, String guildUniqueId, GuildRank guildRank,
                          String waitingKingdomName, String kingdomName) {
         this.uniqueId = uniqueId;
@@ -87,5 +89,13 @@ public class PlayerAccount {
 
     public void setKingdomName(String kingdomName) {
         this.kingdomName = kingdomName;
+    }
+
+    public int getPowerTaskId() {
+        return powerTaskId;
+    }
+
+    public void setPowerTaskId(int powerTaskId) {
+        this.powerTaskId = powerTaskId;
     }
 }

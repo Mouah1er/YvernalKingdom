@@ -29,6 +29,7 @@ public class PlayerJoinListener implements YvernalListener<PlayerJoinEvent> {
             Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> new ChooseKingdomInventory().open(player), 1);
         }
 
-        new PowerAdditionsBukkitRunnable(player, playerAccount).runTaskTimerAsynchronously(Main.getInstance(), 0, 20);
+        playerAccount.setPowerTaskId(new PowerAdditionsBukkitRunnable(player, playerAccount)
+                .runTaskTimerAsynchronously(Main.getInstance(), 10, 20).getTaskId());
     }
 }
