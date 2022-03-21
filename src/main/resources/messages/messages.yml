@@ -53,3 +53,7 @@ kingdom-guilds-list: "§6Liste des guildes dans le Royaume %kingdom%: "
 
 added-power-to-player: "§aTon power a augmenté de 2 !"
 send-power-to-player: "§aTon power est de %power% !"
+
+send-player-power-to-player: "§aLe power de %player% est de %power% !"
+
+player-not-found: "§cLe joueur %player% n'a pas été trouvé !"

@@ -6,6 +6,7 @@ import fr.yvernal.yvernalkingdom.commands.guild.args.one.*;
 import fr.yvernal.yvernalkingdom.commands.guild.args.all.CreateArg;
 import fr.yvernal.yvernalkingdom.commands.guild.args.all.DescArg;
 import fr.yvernal.yvernalkingdom.commands.guild.args.two.ListArg;
+import fr.yvernal.yvernalkingdom.commands.guild.args.two.PlayerPowerArg;
 import fr.yvernal.yvernalkingdom.commands.guild.args.two.UnClaimAllArg;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -65,7 +66,7 @@ public class GuildCommand implements YvernalCommand {
                             } else if (args[0].equalsIgnoreCase("kick")) {
 
                             } else if (args[0].equalsIgnoreCase("power")) {
-
+                                new PlayerPowerArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("rename")) {
 
                             } else if (args[0].equalsIgnoreCase("leader")) {
