@@ -4,6 +4,7 @@ import fr.yvernal.yvernalkingdom.commands.YvernalCommand;
 import fr.yvernal.yvernalkingdom.config.ConfigManager;
 import fr.yvernal.yvernalkingdom.data.DataManager;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccountManager;
+import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.listeners.YvernalListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,6 +26,10 @@ public class Main extends JavaPlugin {
 
         YvernalListener.registerListeners();
         YvernalCommand.registerCommands();
+
+        for (Kingdoms value : Kingdoms.values()) {
+            Main.getInstance().getDataManager().getKingdomDataManager().getKingdoms().add(value.getKingdom());
+        }
     }
 
     @Override

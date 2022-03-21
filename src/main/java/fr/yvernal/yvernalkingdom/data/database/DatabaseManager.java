@@ -48,6 +48,7 @@ public class DatabaseManager {
         update("CREATE TABLE IF NOT EXISTS accounts(" +
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "uniqueId VARCHAR(37), " +
+                "power INT, " +
                 "valis DOUBLE, " +
                 "guildName VARCHAR(255), " +
                 "guildUniqueId VARCHAR(37), " +

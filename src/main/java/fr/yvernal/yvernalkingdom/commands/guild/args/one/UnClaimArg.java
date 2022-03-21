@@ -14,11 +14,11 @@ public class UnClaimArg extends YvernalArg {
 
     @Override
     public void execute(Player player, String[] args) {
-        final Guild playerGuild = dataManager.getGuildDataManager().getGuild(player.getUniqueId());
+        final Guild playerGuild = dataManager.getGuildDataManager().getGuildByPlayer(player.getUniqueId());
         final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
 
         if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
-            if (!guildRankIsMember(player, playerAccount)) {
+            if (!guildRankIsMemberWithMessage(player, playerAccount)) {
                 final List<Claim> claims = dataManager.getClaimManager().getClaims();
                 final Chunk playerChunk = player.getLocation().getChunk();
 

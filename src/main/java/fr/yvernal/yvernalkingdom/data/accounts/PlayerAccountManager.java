@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -24,6 +25,7 @@ public class PlayerAccountManager {
     }
 
     public PlayerAccount getPlayerAccountFromDatabase(UUID uuid) {
+        final int power = getPower(uuid);
         final double valis = getValis(uuid);
         final String guild = getGuildName(uuid);
         final String guildUniqueId = getGuildUniqueId(uuid);
@@ -35,16 +37,18 @@ public class PlayerAccountManager {
             return null;
         }
 
-        return new PlayerAccount(uuid, valis, guild, guildUniqueId, guildRank, waitingKingdomName, kingdomName);
+        return new PlayerAccount(uuid, power, valis, guild, guildUniqueId, guildRank, waitingKingdomName, kingdomName);
     }
 
     public void updatePlayerAccountToDatabase(PlayerAccount playerAccount) {
         dataManager.getDatabaseManager().update("UPDATE accounts SET " +
+                "power='" + playerAccount.getPower() + "', " +
                 "valis='" + playerAccount.getValis() + "', " +
                 "guildName='" + playerAccount.getGuildName() + "', " +
                 "guildUniqueId='" + playerAccount.getGuildUniqueId() + "', " +
                 "guildRank='" + playerAccount.getGuildRank().getName() + "', " +
-                "waitingKingdomName='" + playerAccount.getWaitingKingdomName() + "', kingdomName='" + playerAccount.getKingdomName() + "' " +
+                "waitingKingdomName='" + playerAccount.getWaitingKingdomName() + "', " +
+                "kingdomName='" + playerAccount.getKingdomName() + "' " +
                 "WHERE uniqueId='" + playerAccount.getUniqueId() + "'");
     }
 
@@ -59,13 +63,13 @@ public class PlayerAccountManager {
             }
         }
 
-        final PlayerAccount playerAccount = new PlayerAccount(uuid, 0, "no-guild", "no-guild", GuildRank.NO_GUILD,
-                "no-waiting-kingdom",
-                "no-kingdom");
+        final PlayerAccount playerAccount = new PlayerAccount(uuid, 0, 0, "no-guild", "no-guild",
+                GuildRank.NO_GUILD, "no-waiting-kingdom", "no-kingdom");
         dataManager.getDatabaseManager().update(
-                "INSERT INTO accounts (uniqueId, valis, guildName, guildUniqueId, guildRank, waitingKingdomName, kingdomName)" +
+                "INSERT INTO accounts (uniqueId, power, valis, guildName, guildUniqueId, guildRank, waitingKingdomName, kingdomName)" +
                         " VALUES (" +
                         "'" + uuid + "', " +
+                        "'" + playerAccount.getPower() + "', " +
                         "'" + playerAccount.getValis() + "', " +
                         "'" + playerAccount.getGuildName() + "', " +
                         "'" + playerAccount.getGuildUniqueId() + "', " +
@@ -77,6 +81,19 @@ public class PlayerAccountManager {
 
         return playerAccount;
     }
+
+    private int getPower(UUID uuid) {
+        final AtomicInteger power = new AtomicInteger();
+
+        dataManager.getDatabaseManager().query("SELECT * FROM accounts WHERE uniqueId='" + uuid + "'", resultSet -> {
+            try {
+                if (resultSet.next()) power.set(resultSet.getInt("power"));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+        return power.get();    }
 
     private double getValis(UUID uuid) {
         final AtomicDouble valis = new AtomicDouble();

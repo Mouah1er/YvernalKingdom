@@ -7,6 +7,7 @@ import fr.yvernal.yvernalkingdom.inventories.template.InventoryCreator;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.utils.ItemBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -39,22 +40,22 @@ public class ChooseKingdomInventory extends InventoryCreator {
                 .build());
 
         setItem(28, new ItemBuilder(Material.EMPTY_MAP)
-                .name(chooseKingdomItems.getEmptyMap1Name())
+                .name(chooseKingdomItems.getEmptyMap1Name() + " §o§7#1")
                 .lore(chooseKingdomItems.getEmptyMap1Lore())
                 .build());
 
         setItem(30, new ItemBuilder(Material.EMPTY_MAP)
-                .name(chooseKingdomItems.getEmptyMap2Name())
+                .name(chooseKingdomItems.getEmptyMap2Name() + " §o§7#2")
                 .lore(chooseKingdomItems.getEmptyMap2Lore())
                 .build());
 
         setItem(32, new ItemBuilder(Material.EMPTY_MAP)
-                .name(chooseKingdomItems.getEmptyMap3Name())
+                .name(chooseKingdomItems.getEmptyMap3Name() + " §o§7#3")
                 .lore(chooseKingdomItems.getEmptyMap3Lore())
                 .build());
 
         setItem(34, new ItemBuilder(Material.EMPTY_MAP)
-                .name(chooseKingdomItems.getEmptyMap4Name())
+                .name(chooseKingdomItems.getEmptyMap4Name() + " §o§7#4")
                 .lore(chooseKingdomItems.getEmptyMap4Lore())
                 .build());
 
@@ -120,16 +121,20 @@ public class ChooseKingdomInventory extends InventoryCreator {
         final ItemStack currentItem = event.getCurrentItem();
 
         if (currentItem.getType() == Material.EMPTY_MAP) {
+            final String displayName = currentItem.getItemMeta().getDisplayName();
+            final String kingdomName = "kingdom_" + displayName.substring(displayName.length() - 1);
+
             if (inventory.getItem(event.getSlot() + 9).getDurability() == 14) {
                 Main.getInstance().getDataManager().getKingdomDataManager().makePlayerJoinWaitingList(player.getUniqueId(),
-                        currentItem.getItemMeta().getDisplayName());
+                        kingdomName);
                 player.sendMessage(Main.getInstance().getConfigManager().getMessagesManager().getString("join-kingdom-waiting-list-message")
-                        .replace("%kingdom%", currentItem.getItemMeta().getDisplayName()));
+                        .replace("%kingdom%", displayName));
             } else if (inventory.getItem(event.getSlot() + 9).getDurability() == 5) {
+
                 Main.getInstance().getDataManager().getKingdomDataManager().makePlayerJoin(player.getUniqueId(),
-                        currentItem.getItemMeta().getDisplayName());
+                        kingdomName);
                 player.sendMessage(Main.getInstance().getConfigManager().getMessagesManager().getString("join-kingdom-message")
-                        .replace("%kingdom%", currentItem.getItemMeta().getDisplayName()));
+                        .replace("%kingdom%", displayName));
             }
 
             player.closeInventory();

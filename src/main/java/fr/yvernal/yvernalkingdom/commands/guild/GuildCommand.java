@@ -2,11 +2,11 @@ package fr.yvernal.yvernalkingdom.commands.guild;
 
 import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.commands.YvernalCommand;
-import fr.yvernal.yvernalkingdom.commands.guild.args.one.ClaimArg;
-import fr.yvernal.yvernalkingdom.commands.guild.args.one.CreateArg;
-import fr.yvernal.yvernalkingdom.commands.guild.args.one.DisbandArg;
-import fr.yvernal.yvernalkingdom.commands.guild.args.one.UnClaimArg;
-import fr.yvernal.yvernalkingdom.commands.guild.args.two.DescArg;
+import fr.yvernal.yvernalkingdom.commands.guild.args.one.*;
+import fr.yvernal.yvernalkingdom.commands.guild.args.all.CreateArg;
+import fr.yvernal.yvernalkingdom.commands.guild.args.all.DescArg;
+import fr.yvernal.yvernalkingdom.commands.guild.args.two.ListArg;
+import fr.yvernal.yvernalkingdom.commands.guild.args.two.UnClaimAllArg;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -39,9 +39,9 @@ public class GuildCommand implements YvernalCommand {
                             } else if (args[0].equalsIgnoreCase("disband")) {
                                 new DisbandArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("show")) {
-
+                                new ShowArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("power")) {
-
+                                new PowerArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("sethome")) {
 
                             } else if (args[0].equalsIgnoreCase("delhome")) {
@@ -53,9 +53,9 @@ public class GuildCommand implements YvernalCommand {
                             }
                         } else if (args.length == 2) {
                             if (args[0].equalsIgnoreCase("list")) {
-
-                            } else if (args[0].equalsIgnoreCase("unclaim") && args[1].equalsIgnoreCase("amm")) {
-
+                                new ListArg().execute(player, args);
+                            } else if (args[0].equalsIgnoreCase("unclaim") && args[1].equalsIgnoreCase("all")) {
+                                new UnClaimAllArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("show")) {
 
                             } else if (args[0].equalsIgnoreCase("manage")) {

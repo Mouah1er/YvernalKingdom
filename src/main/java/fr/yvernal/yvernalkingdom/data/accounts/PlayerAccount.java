@@ -9,6 +9,7 @@ import java.util.UUID;
  */
 public class PlayerAccount {
     private final UUID uniqueId;
+    private int power;
     private double valis;
     private String guildName;
     private String guildUniqueId;
@@ -16,8 +17,10 @@ public class PlayerAccount {
     private String waitingKingdomName;
     private String kingdomName;
 
-    public PlayerAccount(UUID uniqueId, double valis, String guildName, String guildUniqueId, GuildRank guildRank, String waitingKingdomName, String kingdomName) {
+    public PlayerAccount(UUID uniqueId, int power, double valis, String guildName, String guildUniqueId, GuildRank guildRank,
+                         String waitingKingdomName, String kingdomName) {
         this.uniqueId = uniqueId;
+        this.power = power;
         this.valis = valis;
         this.guildName = guildName;
         this.guildUniqueId = guildUniqueId;
@@ -28,6 +31,14 @@ public class PlayerAccount {
 
     public UUID getUniqueId() {
         return uniqueId;
+    }
+
+    public int getPower() {
+        return power;
+    }
+
+    public void setPower(int power) {
+        this.power = power;
     }
 
     public double getValis() {

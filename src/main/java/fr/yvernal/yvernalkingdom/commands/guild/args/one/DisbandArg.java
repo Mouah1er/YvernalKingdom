@@ -10,14 +10,14 @@ public class DisbandArg extends YvernalArg {
 
     @Override
     public void execute(Player player, String[] args) {
-        final Guild playerGuild = dataManager.getGuildDataManager().getGuild(player.getUniqueId());
+        final Guild playerGuild = dataManager.getGuildDataManager().getGuildByPlayer(player.getUniqueId());
         final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
 
         if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
             if (guildRankIsMaster(player, playerAccount)) {
                 playerGuild.setDeleted(true);
                 playerGuild.setNew(false);
-                dataManager.getKingdomDataManager().getKingdom(playerAccount.getKingdomName()).getKingdomData().getGuildsIn()
+                dataManager.getKingdomDataManager().getKingdomByNumber(playerAccount.getKingdomName()).getKingdomData().getGuildsIn()
                         .stream()
                         .filter(guild -> guild.getGuildData().getGuildUniqueId().equals(playerGuild.getGuildData().getGuildUniqueId()))
                         .forEach(guild -> {

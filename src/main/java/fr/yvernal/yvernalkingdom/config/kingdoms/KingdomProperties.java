@@ -8,6 +8,7 @@ import org.bukkit.Location;
  * Représente toutes les propriétés d'un royaume, comme que son spawn
  */
 public class KingdomProperties {
+    private final String number;
     private final String name;
     private final ChatColor color;
     private final Location cristalLocation;
@@ -15,13 +16,19 @@ public class KingdomProperties {
     private final Cuboid safeZoneCuboid;
     private final Cuboid totalTerritoryCuboid;
 
-    public KingdomProperties(String name, ChatColor color, Location cristalLocation, Cuboid cristalCuboid, Cuboid safeZoneCuboid, Cuboid totalTerritoryCuboid) {
+    public KingdomProperties(String number, String name, ChatColor color, Location cristalLocation, Cuboid cristalCuboid, Cuboid safeZoneCuboid,
+                             Cuboid totalTerritoryCuboid) {
+        this.number = number;
         this.name = name;
         this.color = color;
         this.cristalLocation = cristalLocation;
         this.cristalCuboid = cristalCuboid;
         this.safeZoneCuboid = safeZoneCuboid;
         this.totalTerritoryCuboid = totalTerritoryCuboid;
+    }
+
+    public String getNumber() {
+        return number;
     }
 
     public String getName() {

@@ -18,8 +18,6 @@ public enum Kingdoms {
 
     Kingdoms(Kingdom kingdom) {
         this.kingdom = kingdom;
-
-        Main.getInstance().getDataManager().getKingdomDataManager().getKingdoms().add(kingdom);
     }
 
     public Kingdom getKingdom() {

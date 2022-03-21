@@ -19,7 +19,7 @@ public class KingdomPropertiesManager {
     public KingdomProperties getProperties(String kingdomName) {
         final String kingdomPropertiesPath = "kingdoms." + kingdomName.toLowerCase(Locale.ROOT) + ".";
 
-        return new KingdomProperties(config.getString(kingdomPropertiesPath + "name"),
+        return new KingdomProperties(kingdomName, config.getString(kingdomPropertiesPath + "name"),
                 getColor(kingdomPropertiesPath + "color"),
                 getLocation(kingdomPropertiesPath + "cristal-location"),
                 getCuboid(kingdomPropertiesPath + "cristal-cuboid"),

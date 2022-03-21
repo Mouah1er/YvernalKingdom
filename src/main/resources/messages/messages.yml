@@ -36,6 +36,9 @@ not-claimed-by-player-guild-error: "§cCe n'est pas votre guilde qui possède le
 not-claimed: "§cCe chunk n'est pas claim !"
 successfully-unclaimed: "§aLe joueur §b%player% §aa unclaim le chunk aux coordonnées suivantes: §9%x% §a; §9%z%"
 
+guild-does-not-have-any-claim: "§cVotre guilde n'a aucun claim !"
+successfully-unclaimed-all-chunk: "§aLe joueur §b%player% §aa unclaim tous les chunks de la guilde !"
+
 guild-name-too-big: "§cLe nom que vous avez donné à votre guilde est trop gros ! §7(16 caractères max)"
 successfully-created-guild: "§aVous avez bien créé la guilde §b%guild% §a!"
 
@@ -43,3 +46,10 @@ successfully-deleted-guild: "§aLa guilde a été supprimée !"
 
 guild-desc-too-big: "§cLa description que vous avez donné à votre guilde est trop grosse ! §7(100 caractères max)"
 successfully-changed-guild-desc: "§aLa description de la guilde a changé pour devenir: §7%description%"
+
+kingdom-not-found: "§cLe Royaume %kingdom% n'a pas été trouvé !"
+no-guild-in-kingdom: "§cIl n'y a aucune Guilde dans le Royaume %kingdom% !"
+kingdom-guilds-list: "§6Liste des guildes dans le Royaume %kingdom%: "
+
+added-power-to-player: "§aTon power a augmenté de 2 !"
+send-power-to-player: "§aTon power est de %power% !"

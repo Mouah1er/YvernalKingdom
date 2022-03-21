@@ -1,4 +1,4 @@
-package fr.yvernal.yvernalkingdom.commands.guild.args.one;
+package fr.yvernal.yvernalkingdom.commands.guild.args.all;
 
 import fr.yvernal.yvernalkingdom.commands.YvernalArg;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
@@ -18,7 +18,7 @@ public class CreateArg extends YvernalArg {
             player.sendMessage(messagesManager.getStringList("guild-command-help")
                     .toArray(new String[0]));
         } else {
-            final Guild playerGuild = dataManager.getGuildDataManager().getGuild(player.getUniqueId());
+            final Guild playerGuild = dataManager.getGuildDataManager().getGuildByPlayer(player.getUniqueId());
             final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
 
             if (!playerIsInGuild(playerGuild, playerAccount)) {
@@ -33,7 +33,8 @@ public class CreateArg extends YvernalArg {
                             false, true);
 
                     dataManager.getGuildDataManager().getGuilds().add(guild);
-                    dataManager.getKingdomDataManager().getKingdom(playerAccount.getKingdomName()).getKingdomData().getGuildsIn().add(guild);
+                    dataManager.getKingdomDataManager().getKingdomByNumber(playerAccount.getKingdomName())
+                            .getKingdomData().getGuildsIn().add(guild);
                     playerAccount.setGuildName(joinedArgs);
                     playerAccount.setGuildRank(GuildRank.MASTER);
                     playerAccount.setGuildUniqueId(guildUniqueId);

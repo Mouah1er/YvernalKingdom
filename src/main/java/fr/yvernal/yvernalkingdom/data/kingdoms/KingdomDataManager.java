@@ -28,12 +28,12 @@ public class KingdomDataManager {
 
     public void makePlayerJoin(UUID uuid, String kingdomName) {
         dataManager.getPlayerAccountManager().getPlayerAccount(uuid).setKingdomName(kingdomName);
-        getKingdom(kingdomName).getKingdomData().getPlayersIn().add(uuid);
+        getKingdomByNumber(kingdomName).getKingdomData().getPlayersIn().add(uuid);
     }
 
     public void makePlayerJoinWaitingList(UUID uuid, String kingdomName) {
         dataManager.getPlayerAccountManager().getPlayerAccount(uuid).setWaitingKingdomName(kingdomName);
-        getKingdom(kingdomName).getKingdomData().getWaitingPlayers().add(uuid);
+        getKingdomByNumber(kingdomName).getKingdomData().getWaitingPlayers().add(uuid);
     }
 
     private List<Guild> getGuildsIn(String kingdomName) {
@@ -92,10 +92,26 @@ public class KingdomDataManager {
         return kingdoms;
     }
 
-    public Kingdom getKingdom(String kingdomName) {
+    public Kingdom getKingdomByName(String kingdomName) {
         return getKingdoms().stream()
                 .filter(Objects::nonNull)
                 .filter(kingdom -> kingdom.getKingdomProperties().getName().equals(kingdomName))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Kingdom getKingdomByNumber(String kingdomNumber) {
+        return getKingdoms().stream()
+                .filter(Objects::nonNull)
+                .filter(kingdom -> kingdom.getKingdomProperties().getNumber().equals(kingdomNumber))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Kingdom getKingdomByUniqueId(UUID playerUniqueId) {
+        return getKingdoms().stream()
+                .filter(Objects::nonNull)
+                .filter(kingdom -> kingdom.getKingdomData().getPlayersIn().contains(playerUniqueId))
                 .findFirst()
                 .orElse(null);
     }

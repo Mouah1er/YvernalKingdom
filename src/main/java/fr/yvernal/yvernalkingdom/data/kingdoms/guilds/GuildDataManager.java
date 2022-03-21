@@ -156,7 +156,7 @@ public class GuildDataManager {
         return guilds;
     }
 
-    public Guild getGuild(String guildName) {
+    public Guild getGuildByName(String guildName) {
         return getGuilds().stream()
                 .filter(Objects::nonNull)
                 .filter(guild -> guild.getGuildData().getName().equals(guildName))
@@ -164,7 +164,7 @@ public class GuildDataManager {
                 .orElse(null);
     }
 
-    public Guild getGuild(UUID uuid) {
+    public Guild getGuildByPlayer(UUID uuid) {
         return getGuilds().stream()
                 .filter(Objects::nonNull)
                 .filter(guild -> guild.getGuildData().getMembersUniqueId().contains(uuid))

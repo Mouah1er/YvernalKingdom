@@ -43,14 +43,18 @@ public abstract class YvernalArg {
         return true;
     }
 
-    protected boolean guildRankIsMember(Player player, PlayerAccount playerAccount) {
-        if (checkPlayerGuildRank(playerAccount, GuildRank.MEMBER)) {
+    protected boolean guildRankIsMember(PlayerAccount playerAccount) {
+        return checkPlayerGuildRank(playerAccount, GuildRank.MEMBER);
+    }
+
+    protected boolean guildRankIsMemberWithMessage(Player player, PlayerAccount playerAccount) {
+        if (guildRankIsMember(playerAccount)) {
             player.sendMessage("player-guild-permission-error");
 
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     protected String joinArgs(String[] args) {
