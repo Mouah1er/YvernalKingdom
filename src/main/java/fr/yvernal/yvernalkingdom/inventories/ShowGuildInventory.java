@@ -256,17 +256,8 @@ public class ShowGuildInventory extends InventoryCreator {
                     if (playerGuild.getGuildData().getGuildUniqueId().equals(guild.getGuildData().getGuildUniqueId())) {
                         if (playerGuild.getGuildData().getOwnerUniqueId().equals(player.getUniqueId())) {
                             player.performCommand("g manage " + currentItem.getItemMeta().getDisplayName().substring(2));
-                        } else {
-                            player.closeInventory();
-                            player.sendMessage(messagesManager.getString("player-guild-permission-error"));
                         }
-                    } else {
-                        player.closeInventory();
-                        player.sendMessage(messagesManager.getString("player-not-in-certain-guild"));
                     }
-                } else {
-                    player.closeInventory();
-                    player.sendMessage(messagesManager.getString("player-not-in-guild"));
                 }
             }
         }
