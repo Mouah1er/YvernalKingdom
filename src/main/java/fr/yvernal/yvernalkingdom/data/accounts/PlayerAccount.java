@@ -21,9 +21,10 @@ public class PlayerAccount {
 
     private int powerTaskId;
     private boolean isWaitingToTeleportToHome;
+    private boolean isNew;
 
     public PlayerAccount(UUID uniqueId, int power, double valis, String guildName, String guildUniqueId, GuildRank guildRank,
-                         String waitingKingdomName, String kingdomName, long kills, long deaths) {
+                         String waitingKingdomName, String kingdomName, long kills, long deaths, boolean isNew) {
         this.uniqueId = uniqueId;
         this.power = power;
         this.valis = valis;
@@ -34,6 +35,7 @@ public class PlayerAccount {
         this.kingdomName = kingdomName;
         this.kills = kills;
         this.deaths = deaths;
+        this.isNew = isNew;
     }
 
     public UUID getUniqueId() {
@@ -110,6 +112,14 @@ public class PlayerAccount {
 
     public void setDeaths(long deaths) {
         this.deaths = deaths;
+    }
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean isNew) {
+        this.isNew = isNew;
     }
 
     public int getPowerTaskId() {

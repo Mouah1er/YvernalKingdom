@@ -61,21 +61,21 @@ public class GuildCommand implements YvernalCommand {
                             } else if (args[0].equalsIgnoreCase("unclaim") && args[1].equalsIgnoreCase("all")) {
                                 new UnClaimAllArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("show")) {
-
+                                new ShowPlayerArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("manage")) {
-
+                                new ManagePlayerArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("invite")) {
                                 new InviteArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("kick")) {
-
+                                new KickPlayerArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("power")) {
                                 new PlayerPowerArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("leader")) {
 
                             } else if (args[0].equalsIgnoreCase("promote")) {
-
+                                new PromotePlayerArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("demote")) {
-
+                                new DemotePlayerArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("join")) {
                                 new JoinArg().execute(player, args);
                             } else {

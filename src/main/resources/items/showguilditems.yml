@@ -4,8 +4,11 @@ enchantment_table_name: "§b%guilde%"
 enchantment_table_lore:
   - "§7Royaume: §e%kingdom%"
 
-first_book_name: "§ePower: %power%"
-first_boot_lore: [ ]
+first_book_name: "§eInfos"
+first_book_lore:
+  - "§eClaims: %claims%"
+  - "§ePower: %power%"
+  - "§eMax Power: %max_power%"
 
 second_book_name: "§7Description:"
 second_book_lore: [ ] # la description sera bien mise, mais ne rajoute rien ici
@@ -16,7 +19,7 @@ third_book_lore: [ ]
 fourth_book_name: "Changer la description"
 fourth_book_lore: [ ]
 
-owner_item_name: "§7%player%"
+owner_item_name: "§7%player%" # ça serait bien que tu ne changes pas ça, si tu le fais préviens moi
 owner_item_lore:
   - "%guilde_rank%"
   - ""
@@ -24,7 +27,7 @@ owner_item_lore:
   - ""
 
 player_item_name: "§7%player%"
-player_item_lore: [ ]
+player_item_lore: [ ] # si le mec qui ouvre le gui est l'owner, y aura dans le lore une ligne avec "Gérer" et ça va ouvrir le menu du /g manage
 
 paper_item_name: "§6Infos:"
 paper_item_lore:

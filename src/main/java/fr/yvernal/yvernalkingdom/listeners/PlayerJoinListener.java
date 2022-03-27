@@ -4,6 +4,7 @@ import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccountManager;
 import fr.yvernal.yvernalkingdom.inventories.ChooseKingdomInventory;
+import fr.yvernal.yvernalkingdom.kingdoms.guilds.GuildRank;
 import fr.yvernal.yvernalkingdom.tasks.PowerAdditionsBukkitRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,10 +18,11 @@ public class PlayerJoinListener implements YvernalListener<PlayerJoinEvent> {
     public void onEvent(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         final PlayerAccountManager playerAccountManager = Main.getInstance().getDataManager().getPlayerAccountManager();
-        PlayerAccount playerAccount = playerAccountManager.getPlayerAccountFromDatabase(player.getUniqueId());
+        PlayerAccount playerAccount = playerAccountManager.getPlayerAccount(player.getUniqueId());
 
         if (playerAccount == null) {
-            playerAccount = playerAccountManager.createPlayerAccount(player.getUniqueId());
+            playerAccount = new PlayerAccount(player.getUniqueId(), 0, 0, "no-guild", "no-guild",
+                    GuildRank.NO_GUILD, "no-waiting-kingdom", "no-kingdom", 0, 0, true);
         }
 
         playerAccountManager.getAccounts().add(playerAccount);

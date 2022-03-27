@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum GuildRank {
-    MASTER("**Maître de guilde", ChatColor.RED),
-    OFFICER("*Offcier", ChatColor.AQUA),
-    SENIOR_MEMBER("Membre+", ChatColor.GREEN),
-    MEMBER("Membre", ChatColor.DARK_GREEN),
-    NO_GUILD("no-guild", ChatColor.GRAY)
+    MASTER("**Maître de guilde", ChatColor.RED, 3),
+    OFFICER("*Officier", ChatColor.AQUA, 2),
+    SENIOR_MEMBER("Membre+", ChatColor.GREEN, 1),
+    MEMBER("Membre", ChatColor.DARK_GREEN, 0),
+    NO_GUILD("no-guild", ChatColor.GRAY, -1)
 
     ;
 
@@ -24,10 +24,12 @@ public enum GuildRank {
 
     private final String name;
     private final ChatColor chatColor;
+    private final int power;
 
-    GuildRank(String name, ChatColor chatColor) {
+    GuildRank(String name, ChatColor chatColor, int power) {
         this.name = name;
         this.chatColor = chatColor;
+        this.power = power;
     }
 
     public String getName() {
@@ -40,6 +42,18 @@ public enum GuildRank {
 
     public String getColorizedName() {
         return getChatColor() + getName();
+    }
+
+    public int getPower() {
+        return power;
+    }
+
+    public GuildRank getNextRank() {
+        return GuildRank.values()[this.ordinal() - 1];
+    }
+
+    public GuildRank getPreviousRank() {
+        return GuildRank.values()[this.ordinal() + 1];
     }
 
     public static GuildRank getByName(String name) {

@@ -1,0 +1,5 @@
+inventory_name: "§7%player% -> manage"
+
+first_glass_name: "§aPromouvoir %player%"
+second_glass_name: "§eRétrograder %player%"
+third_glass_name: "§cKick %player%"

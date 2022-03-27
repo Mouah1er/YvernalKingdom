@@ -3,7 +3,6 @@ package fr.yvernal.yvernalkingdom.data.database;
 import fr.yvernal.yvernalkingdom.utils.ConfigUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.*;
 import java.util.function.Consumer;
 
@@ -77,24 +76,41 @@ public class DatabaseManager {
                 "uniqueId VARCHAR(37))");
     }
 
-    public void update(String query) {
+    @SafeVarargs
+    public final <T> void update(String query, T... values) {
         connect();
 
         try (final Connection connection = getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            if (values.length > 0) {
+                for (int i = 0; i < values.length; i++) {
+                    preparedStatement.setObject(i + 1, values[i]);
+                }
+            }
+
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void query(String query, Consumer<ResultSet> consumer) {
+    @SafeVarargs
+    public final <T> void query(String query, Consumer<ResultSet> consumer, T... values) {
         connect();
 
         try (final Connection connection = getConnection();
-             final PreparedStatement preparedStatement = connection.prepareStatement(query);
-             final ResultSet resultSet = preparedStatement.executeQuery()) {
-            consumer.accept(resultSet);
+             final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            if (values.length > 0) {
+                for (int i = 0; i < values.length; i++) {
+                    preparedStatement.setObject(i + 1, values[i]);
+                }
+            }
+
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                consumer.accept(resultSet);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

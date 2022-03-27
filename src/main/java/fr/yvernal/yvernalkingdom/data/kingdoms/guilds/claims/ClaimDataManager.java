@@ -40,11 +40,15 @@ public class ClaimDataManager {
 
     public void addClaim(Guild guild, Chunk chunk) {
         dataManager.getDatabaseManager().update("INSERT INTO claims (x, z, guildName, guildUniqueId) VALUES(" +
-                "" + chunk.getX() + ", " +
-                "" + chunk.getZ() + ", " +
-                "'" + guild.getGuildData().getName() + "', " +
-                "'" + guild.getGuildData().getGuildUniqueId() + "'" +
-                ")");
+                        "?, " +
+                        "?, " +
+                        "?, " +
+                        "?" +
+                        ")",
+                chunk.getX(),
+                chunk.getZ(),
+                guild.getGuildData().getName(),
+                guild.getGuildData().getGuildUniqueId());
     }
 
     public void unClaim(Guild guild, Claim claim) {
@@ -64,12 +68,15 @@ public class ClaimDataManager {
             }
         } else {
             dataManager.getDatabaseManager().update("UPDATE claims SET " +
-                    "x=" + claim.getClaimData().getX() + ", " +
-                    "z=" + claim.getClaimData().getZ() + ", " +
-                    "guildName='" + claim.getClaimData().getGuildName() + "' " +
-                    "WHERE x=" + claim.getClaimData().getX() + " " +
-                    "AND z=" + claim.getClaimData().getZ() + " " +
-                    "AND guildUniqueId='" + claim.getClaimData().getGuildUniqueId() + "'");
+                            "guildName=?, " +
+                            "guildUniqueId=? " +
+                            "WHERE x=?" +
+                            "AND z=?",
+                    claim.getClaimData().getGuildName(),
+                    claim.getClaimData().getGuildUniqueId(),
+                    claim.getClaimData().getX(),
+                    claim.getClaimData().getZ());
+
         }
     }
 

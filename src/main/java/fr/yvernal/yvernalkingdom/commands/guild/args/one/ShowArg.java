@@ -14,7 +14,7 @@ public class ShowArg extends YvernalArg {
         final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
         
         if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
-            new ShowGuildInventory(playerGuild).open(player);
+            new ShowGuildInventory(player, playerGuild).open(player);
         }
     }
 }

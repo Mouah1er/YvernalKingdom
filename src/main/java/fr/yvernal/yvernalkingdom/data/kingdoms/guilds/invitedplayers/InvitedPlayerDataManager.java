@@ -40,14 +40,18 @@ public class InvitedPlayerDataManager {
 
     private void deleteInviteFromDatabase(InvitedPlayer invitedPlayer) {
         dataManager.getDatabaseManager().update("DELETE FROM invitedPlayers " +
-                "WHERE uniqueId='" + invitedPlayer.getInvitedPlayerData().getUniqueId() + "' AND " +
-                "guildUniqueId='" + invitedPlayer.getInvitedPlayerData().getGuildUniqueId() + "'");
+                "WHERE uniqueId=? AND " +
+                "guildUniqueId=?",
+                invitedPlayer.getInvitedPlayerData().getUniqueId().toString(),
+                invitedPlayer.getInvitedPlayerData().getGuildUniqueId().toString());
     }
 
     private void createInviteToDatabase(InvitedPlayer invitedPlayer) {
         dataManager.getDatabaseManager().update("INSERT INTO invitedPlayers (guildUniqueId, uniqueId) VALUES (" +
-                "'" + invitedPlayer.getInvitedPlayerData().getGuildUniqueId() + "', " +
-                "'" + invitedPlayer.getInvitedPlayerData().getUniqueId() + "')");
+                "?, " +
+                "?)",
+                invitedPlayer.getInvitedPlayerData().getGuildUniqueId().toString(),
+                invitedPlayer.getInvitedPlayerData().getUniqueId().toString());
     }
 
     public void updateInvitedPlayerToDatabase(InvitedPlayer invitedPlayer) {
@@ -60,8 +64,10 @@ public class InvitedPlayerDataManager {
             }
         } else {
             dataManager.getDatabaseManager().update("UPDATE invitedPlayers SET " +
-                    "guildUniqueId='" + invitedPlayer.getInvitedPlayerData().getGuildUniqueId() + "' WHERE " +
-                    "uniqueId='" + invitedPlayer.getInvitedPlayerData().getUniqueId() + "'");
+                    "guildUniqueId=? WHERE " +
+                    "uniqueId=?",
+                    invitedPlayer.getInvitedPlayerData().getGuildUniqueId().toString(),
+                    invitedPlayer.getInvitedPlayerData().getUniqueId().toString());
         }
     }
 

@@ -11,19 +11,34 @@ import java.util.List;
 public class ItemsConfigManager {
     private final FileConfiguration chooseKingdomItemsConfig;
     private final FileConfiguration showGuildItemsConfig;
+    private final FileConfiguration managePlayerItemsConfig;
 
     public ItemsConfigManager() {
         final String parentFileName = Main.getInstance().getDataFolder() + File.separator + "items";
         final File chooseKingdomItemsFile = new File(parentFileName, "choosekingdomitems.yml");
         final File showGuildItemsFile = new File(parentFileName, "showguilditems.yml");
+        final File managePlayerItemsFile = new File(parentFileName, "manageplayeritems.yml");
 
         ConfigUtils.createFileIfNotExists(chooseKingdomItemsFile);
         ConfigUtils.writeToFile("items", chooseKingdomItemsFile);
         ConfigUtils.createFileIfNotExists(showGuildItemsFile);
         ConfigUtils.writeToFile("items", showGuildItemsFile);
+        ConfigUtils.createFileIfNotExists(managePlayerItemsFile);
+        ConfigUtils.writeToFile("items", managePlayerItemsFile);
 
         this.chooseKingdomItemsConfig = YamlConfiguration.loadConfiguration(chooseKingdomItemsFile);
         this.showGuildItemsConfig = YamlConfiguration.loadConfiguration(showGuildItemsFile);
+        this.managePlayerItemsConfig = YamlConfiguration.loadConfiguration(managePlayerItemsFile);
+    }
+
+    public ManagePlayerItems getManageGuildItems() {
+        final String inventoryName = managePlayerItemsConfig.getString("inventory_name");
+
+        final String firstGlassName = managePlayerItemsConfig.getString("first_glass_name");
+        final String secondGlassName = managePlayerItemsConfig.getString("second_glass_name");
+        final String thirdGlassName = managePlayerItemsConfig.getString("third_glass_name");
+
+        return new ManagePlayerItems(inventoryName, firstGlassName, secondGlassName, thirdGlassName);
     }
 
     public ShowGuildItems getShowGuildItems() {

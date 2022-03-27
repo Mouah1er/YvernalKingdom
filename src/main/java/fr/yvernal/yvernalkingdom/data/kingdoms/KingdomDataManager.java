@@ -39,7 +39,7 @@ public class KingdomDataManager {
     private List<Guild> getGuildsIn(String kingdomName) {
         final List<Guild> guilds = new ArrayList<>();
 
-        dataManager.getDatabaseManager().query("SELECT * FROM guilds WHERE kingdomName='" + kingdomName + "'", resultSet -> {
+        dataManager.getDatabaseManager().query("SELECT * FROM guilds WHERE kingdomName=?", resultSet -> {
             try {
                 while (resultSet.next()) {
                     final String guildUniqueId = resultSet.getString("guildUniqueId");
@@ -49,7 +49,7 @@ public class KingdomDataManager {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        });
+        }, kingdomName);
 
         return guilds;
     }
@@ -58,7 +58,7 @@ public class KingdomDataManager {
         final List<UUID> uuids = new ArrayList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM accounts " +
-                "WHERE kingdomName='no-kingdom' AND waitingKingdomName='" + kingdomName + "'", resultSet -> {
+                "WHERE kingdomName=? AND waitingKingdomName=?", resultSet -> {
             try {
                 while (resultSet.next()) {
                     uuids.add(UUID.fromString(resultSet.getString("uniqueId")));
@@ -66,7 +66,7 @@ public class KingdomDataManager {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        });
+        }, "no-kingdom", kingdomName);
 
         return uuids;
     }
@@ -74,8 +74,8 @@ public class KingdomDataManager {
     private List<UUID> getPlayersIn(String kingdomName) {
         final List<UUID> uuids = new ArrayList<>();
 
-        dataManager.getDatabaseManager().query("SELECT * FROM accounts WHERE kingdomName='" + kingdomName + "' AND " +
-                "waitingKingdomName='no-waiting-kingdom'", resultSet -> {
+        dataManager.getDatabaseManager().query("SELECT * FROM accounts WHERE kingdomName=? AND " +
+                "waitingKingdomName=?", resultSet -> {
             try {
                 while (resultSet.next()) {
                     uuids.add(UUID.fromString(resultSet.getString("uniqueId")));
@@ -83,7 +83,7 @@ public class KingdomDataManager {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        });
+        }, kingdomName, "no-waiting-kingdom");
 
         return uuids;
     }

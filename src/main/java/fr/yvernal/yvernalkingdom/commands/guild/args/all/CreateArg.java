@@ -53,8 +53,8 @@ public class CreateArg extends YvernalArg {
                         playerGuild.setNew(true);
                     } else {
                         final Guild guild = new Guild(new GuildData(guildUniqueId, playerAccount.getKingdomName(), joinedArgs,
-                                "", 10, null, player.getUniqueId(), Collections.singletonList(player.getUniqueId())),
-                                false, true);
+                                "", playerAccount.getPower(), null, player.getUniqueId(),
+                                Collections.singletonList(player.getUniqueId())), false, true);
 
                         dataManager.getGuildDataManager().getGuilds().add(guild);
                         dataManager.getKingdomDataManager().getKingdomByNumber(playerAccount.getKingdomName())

@@ -60,7 +60,7 @@ public class GuildDataManager {
     public Guild getGuildFromDatabase(String guildUniqueId) {
         final AtomicReference<Guild> guild = new AtomicReference<>();
 
-        dataManager.getDatabaseManager().query("SELECT * FROM guilds WHERE guildUniqueId='" + guildUniqueId + "'", resultSet -> {
+        dataManager.getDatabaseManager().query("SELECT * FROM guilds WHERE guildUniqueId=?", resultSet -> {
             try {
                 if (resultSet.next()) {
                     final String guildName = resultSet.getString("guildName");
@@ -81,7 +81,7 @@ public class GuildDataManager {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        });
+        }, guildUniqueId);
 
         return guild.get();
     }
@@ -90,29 +90,28 @@ public class GuildDataManager {
         final String home = guild.getGuildData().getHome() == null ? "no-home" : LocationUtils.locationToString(guild.getGuildData().getHome());
 
         dataManager.getDatabaseManager().update("INSERT INTO guilds (guildUniqueId, guildName, description, power, home, ownerUniqueId, kingdomName) " +
-                "VALUES (" +
-                "'" + guild.getGuildData().getGuildUniqueId() + "', " +
-                "'" + guild.getGuildData().getName() + "', " +
-                "'" + guild.getGuildData().getDescription() + "', " +
-                "'" + guild.getGuildData().getPower() + "', " +
-                "'" + home + "', " +
-                "'" + guild.getGuildData().getOwnerUniqueId() + "', " +
-                "'" + guild.getGuildData().getKingdomName() + "'" +
-                ")");
+                        "VALUES (" +
+                        "?, " +
+                        "?, " +
+                        "?, " +
+                        "?, " +
+                        "?, " +
+                        "?, " +
+                        "?" +
+                        ")",
+                guild.getGuildData().getGuildUniqueId(),
+                guild.getGuildData().getName(),
+                guild.getGuildData().getDescription(),
+                guild.getGuildData().getPower(),
+                home,
+                guild.getGuildData().getOwnerUniqueId(),
+                guild.getGuildData().getKingdomName());
     }
 
 
     private void deleteGuildFromDatabase(Guild guild) {
-        final String home = guild.getGuildData().getHome() == null ? "no-home" : LocationUtils.locationToString(guild.getGuildData().getHome());
-
         dataManager.getDatabaseManager().update("DELETE FROM guilds " +
-                "WHERE guildName='" + guild.getGuildData().getName() + "' " +
-                "AND description='" + guild.getGuildData().getDescription() + "' " +
-                "AND power=" + guild.getGuildData().getPower() + " " +
-                "AND home='" + home + "' " +
-                "AND ownerUniqueId='" + guild.getGuildData().getOwnerUniqueId() + "' " +
-                "AND kingdomName='" + guild.getGuildData().getKingdomName() + "' " +
-                "AND guildUniqueId='" + guild.getGuildData().getGuildUniqueId() + "'");
+                "WHERE guildUniqueId=?", guild.getGuildData().getGuildUniqueId());
     }
 
     public void updateGuildToDatabase(Guild guild) {
@@ -127,20 +126,27 @@ public class GuildDataManager {
             final String home = guild.getGuildData().getHome() == null ? "no-home" : LocationUtils.locationToString(guild.getGuildData().getHome());
 
             dataManager.getDatabaseManager().update("UPDATE guilds SET " +
-                    "guildName='" + guild.getGuildData().getName() + "', " +
-                    "description='" + guild.getGuildData().getDescription() + "', " +
-                    "home='" + home + "', " +
-                    "ownerUniqueId='" + guild.getGuildData().getOwnerUniqueId() + "', " +
-                    "kingdomName='" + guild.getGuildData().getKingdomName() + "', " +
-                    "power=" + guild.getGuildData().getPower() + " " +
-                    "WHERE guildUniqueId='" + guild.getGuildData().getGuildUniqueId() + "'");
+                            "guildName=?, " +
+                            "description=?, " +
+                            "home=?, " +
+                            "ownerUniqueId=?, " +
+                            "kingdomName=?, " +
+                            "power=? " +
+                            "WHERE guildUniqueId=?",
+                    guild.getGuildData().getName(),
+                    guild.getGuildData().getDescription(),
+                    home,
+                    guild.getGuildData().getOwnerUniqueId(),
+                    guild.getGuildData().getKingdomName(),
+                    guild.getGuildData().getPower(),
+                    guild.getGuildData().getGuildUniqueId());
         }
     }
 
     private List<UUID> getMembersUniqueId(String guildUniqueId) {
         final List<UUID> uuids = new ArrayList<>();
 
-        dataManager.getDatabaseManager().query("SELECT * FROM accounts WHERE guildUniqueId='" + guildUniqueId + "'", resultSet -> {
+        dataManager.getDatabaseManager().query("SELECT * FROM accounts WHERE guildUniqueId=?", resultSet -> {
             try {
                 while (resultSet.next()) {
                     uuids.add(UUID.fromString(resultSet.getString("uniqueId")));
@@ -148,7 +154,7 @@ public class GuildDataManager {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        });
+        }, guildUniqueId);
 
         return uuids;
     }

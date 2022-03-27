@@ -25,7 +25,9 @@ public abstract class YvernalArg {
     }
 
     protected boolean playerIsInGuild(Guild playerGuild, PlayerAccount playerAccount) {
-        return playerAccount.getGuildRank() != GuildRank.NO_GUILD && playerGuild != null && !playerGuild.isDeleted();
+        return playerAccount.getGuildRank() != GuildRank.NO_GUILD &&
+                playerGuild != null &&
+                !playerGuild.isDeleted();
     }
 
     private boolean checkPlayerGuildRank(PlayerAccount playerAccount, GuildRank guildRank) {
@@ -34,6 +36,7 @@ public abstract class YvernalArg {
 
     protected boolean guildRankIsMasterWithMessage(Player player, PlayerAccount playerAccount) {
         if (!guildRankIsMaster(playerAccount)) {
+            System.out.println("test 1");
             player.sendMessage(messagesManager.getString("player-guild-permission-error"));
 
             return false;
@@ -52,12 +55,28 @@ public abstract class YvernalArg {
 
     protected boolean guildRankIsMemberWithMessage(Player player, PlayerAccount playerAccount) {
         if (guildRankIsMember(playerAccount)) {
+            System.out.println("test 2");
             player.sendMessage(messagesManager.getString("player-guild-permission-error"));
 
             return true;
         }
 
         return false;
+    }
+
+    protected boolean guildRankIsOfficerWithMessage(Player player, PlayerAccount playerAccount) {
+        if (!guildRankIsOfficer(playerAccount)) {
+            System.out.println("test 3");
+            player.sendMessage(messagesManager.getString("player-guild-permission-error"));
+
+            return false;
+        }
+
+        return true;
+    }
+
+    protected boolean guildRankIsOfficer(PlayerAccount playerAccount) {
+        return checkPlayerGuildRank(playerAccount, GuildRank.OFFICER);
     }
 
     protected String joinArgs(String[] args) {

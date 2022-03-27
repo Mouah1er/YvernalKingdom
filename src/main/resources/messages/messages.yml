@@ -32,6 +32,7 @@ player-not-in-guild: "§cVous ne pouvez pas exécuter cette commande car vous n'
 player-guild-permission-error: "§cVous n'avez pas le grade nécessaire dans cette guilde pour exécuter cette commande !"
 guild-name-already-exists: "§cLe nom de la guilde est déjà pris !"
 
+player-try-claim-outside-kingdom: "§cVous ne pouvez pas claim un chunk hors de votre royaume !"
 already-claim-by-guild-error: "§cLa guilde %guilde% a déjà claim ce chunk !"
 successfully-claimed-chunk: "§aLe joueur §b%player% §aa claim le chunk aux coordonnées suivantes: §9%x% §a; §9%z%"
 
@@ -85,6 +86,7 @@ ou /g lead <joueur> pour promouvoir un joueur à Maitre de Guilde)"
 guild-member-left: "§aLe joueur %player% a quitté la guilde !"
 guild-left: "§aVous avez quitté la guilde !"
 
+guild-home-set-not-in-guild-claims: "§cVous devez être dans un claim de guilde pour mettre votre home ici !"
 guild-home-set: "§aLe §cMaitre de Guilde §aa défini le point de spawn de la guilde !"
 
 guild-home-not-set: "§cLe Maitre de Guilde n'a pas défini le point de spawn de la guilde !"
@@ -93,3 +95,16 @@ guild-home-deleted: "§aLe §cMaitre de Guilde §aa supprimé le point de spawn 
 player-has-moved: "§cVous avez bougé, vous n'avez donc pas été téléporté à votre home !"
 teleporting-to-home: "§aVous êtes en train de vous téléporter à votre home, encore %time% secondes !"
 teleported-to-home: "§aVous avez été téléporté à votre home !"
+
+cannot-promote-player: "§cVous ne pouvez pas promouvoir %player% car votre rang est inférieur ou égal à celui de %player% !"
+
+player-not-in-your-guild: "§cLe joueur %player% n'est pas dans votre guilde !"
+player-promoted: "§aLe joueur %player% a été promu au rang de %rank% !"
+
+cannot-demote: "§cVous ne pouvez pas rétrograder %player% car votre rang est inférieur ou égal à celui de %player% !"
+cannot-demote-player-to-no-guild: "§cVous ne pouvez pas rétrograder %player% car il est déjà Membre !"
+player-demoted: "§aLe joueur %player% a été rétrogradé au rang de %rank% !"
+
+cannot-kick: "§cVous ne pouvez pas kicker %player% car votre rang est inférieur ou égal à celui de %player% !"
+player-kicked-from-guild: "§aLe joueur %player% a été kick de la guilde !"
+player-kicked: "§cVous avez été kick de votre guilde !"

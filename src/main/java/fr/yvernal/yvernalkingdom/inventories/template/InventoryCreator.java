@@ -36,7 +36,7 @@ public abstract class InventoryCreator implements InventoryHolder {
     }
 
     protected void setGlassToEmptySlots() {
-        for (int i = 0; i < 54; i++) {
+        for (int i = 0; i < inventory.getSize(); i++) {
             if (getItem(i) == null) {
                 setItem(i, new ItemBuilder(Material.STAINED_GLASS_PANE)
                         .name("§c")

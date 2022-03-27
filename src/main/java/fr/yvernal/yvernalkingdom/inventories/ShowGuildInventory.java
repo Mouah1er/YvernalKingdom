@@ -30,7 +30,7 @@ public class ShowGuildInventory extends InventoryCreator {
     private final ShowGuildItems showGuildItems;
     private final Guild guild;
 
-    public ShowGuildInventory(Guild guild) {
+    public ShowGuildInventory(Player player, Guild guild) {
         super(Main.getInstance().getConfigManager().getItemsManager().getShowGuildItems().getInventoryName()
                 .replace("%guilde%", guild.getGuildData().getName()), 54);
 
@@ -63,9 +63,23 @@ public class ShowGuildInventory extends InventoryCreator {
                 .build());
 
         setItem(9, new ItemBuilder(Material.BOOK)
-                .name(showGuildItems.getFirstBookName()
-                        .replace("%power%", String.valueOf(guild.getGuildData().getPower())))
-                .lore(showGuildItems.getFirstBookLore())
+                .name(showGuildItems.getFirstBookName())
+                .lore(ListUtils.modifyList(showGuildItems.getFirstBookLore(), list -> list.replaceAll(s -> {
+                    if (s.contains("%power%")) {
+                        return s.replace("%power%", String.valueOf(guild.getGuildData().getPower()));
+                    }
+
+                    if (s.contains("%max_power%")) {
+                        return s.replace("%max_power%", String.valueOf(guild.getGuildData().getMembersUniqueId().size() * 10));
+                    }
+
+                    if (s.contains("%claims%")) {
+                        return s.replace("%claims%", String.valueOf(Main.getInstance().getDataManager()
+                                .getClaimManager().getClaims(guild).size()));
+                    }
+
+                    return s;
+                })))
                 .build());
 
         setItem(10, new ItemBuilder(Material.BOOK)
@@ -92,26 +106,15 @@ public class ShowGuildInventory extends InventoryCreator {
 
         final OfflinePlayer ownerOfflinePlayer = Bukkit.getOfflinePlayer(guild.getGuildData().getOwnerUniqueId());
 
-        PlayerAccount ownerAccount;
+        final PlayerAccount ownerAccount = playerAccountManager.getPlayerAccount(ownerOfflinePlayer.getUniqueId());
 
-        if (ownerOfflinePlayer.isOnline()) {
-            ownerAccount = playerAccountManager.getPlayerAccount(ownerOfflinePlayer.getUniqueId());
-            setItem(21, new ItemBuilder(Material.STAINED_GLASS_PANE, (byte) 13)
-                    .name("§aConnecté")
-                    .build());
-            setItem(23, new ItemBuilder(Material.STAINED_GLASS_PANE, (byte) 13)
-                    .name("§aConnecté")
-                    .build());
-        } else {
-            ownerAccount = playerAccountManager
-                    .getPlayerAccountFromDatabase(ownerOfflinePlayer.getUniqueId());
-            setItem(21, new ItemBuilder(Material.STAINED_GLASS_PANE, (byte) 14)
-                    .name("§cDéconnecté")
-                    .build());
-            setItem(23, new ItemBuilder(Material.STAINED_GLASS_PANE, (byte) 14)
-                    .name("§cDéconnecté")
-                    .build());
-        }
+        final ItemStack isOnline = new ItemBuilder(Material.STAINED_GLASS_PANE, ownerOfflinePlayer.isOnline() ? (byte) 13 : (byte) 14)
+                .name(ownerOfflinePlayer.isOnline() ? "§aConnecté" : "§cDéconnecté")
+                .build();
+
+        setItem(21, isOnline);
+        setItem(23, isOnline);
+
 
         setItem(22, new ItemBuilder(Material.SKULL_ITEM, (byte) 3)
                 .name(showGuildItems.getOwnerItemName()
@@ -162,15 +165,13 @@ public class ShowGuildInventory extends InventoryCreator {
 
             final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
             final boolean isConnected = offlinePlayer.isOnline();
-            final PlayerAccount playerAccount = !isConnected ?
-                    playerAccountManager.getPlayerAccountFromDatabase(offlinePlayer.getUniqueId()) :
-                    playerAccountManager.getPlayerAccount(offlinePlayer.getUniqueId());
+            final PlayerAccount playerAccount = playerAccountManager.getPlayerAccount(offlinePlayer.getUniqueId());
 
             setItem(slot, new ItemBuilder(Material.SKULL_ITEM, (byte) 3)
                     .name(showGuildItems.getPlayerItemName()
                             .replace("%player%", offlinePlayer.getName()))
                     .owner(offlinePlayer)
-                    .lore(showGuildItems.getPlayerItemLore())
+                    .lore(guild.getGuildData().getOwnerUniqueId().equals(player.getUniqueId()) ? "§cGérer le joueur" : "")
                     .build());
 
             setItem(slot + 9, new ItemBuilder(Material.STAINED_GLASS_PANE, isConnected ? (byte) 13 : (byte) 14)
@@ -205,9 +206,9 @@ public class ShowGuildInventory extends InventoryCreator {
         final ItemStack currentItem = event.getCurrentItem();
         final MessagesManager messagesManager = Main.getInstance().getConfigManager().getMessagesManager();
 
-        if (currentItem.getType() == Material.BOOK_AND_QUILL) {
-            final Guild playerGuild = Main.getInstance().getDataManager().getGuildDataManager().getGuildByPlayer(player.getUniqueId());
+        final Guild playerGuild = Main.getInstance().getDataManager().getGuildDataManager().getGuildByPlayer(player.getUniqueId());
 
+        if (currentItem.getType() == Material.BOOK_AND_QUILL) {
             if (playerGuild != null) {
                 if (playerGuild.getGuildData().getGuildUniqueId().equals(guild.getGuildData().getGuildUniqueId())) {
                     if (playerGuild.getGuildData().getOwnerUniqueId().equals(player.getUniqueId())) {
@@ -248,6 +249,25 @@ public class ShowGuildInventory extends InventoryCreator {
             } else {
                 player.closeInventory();
                 player.sendMessage(messagesManager.getString("player-not-in-guild"));
+            }
+        } else if (currentItem.getType() == Material.SKULL_ITEM) {
+            if (event.getSlot() != 22) {
+                if (playerGuild != null) {
+                    if (playerGuild.getGuildData().getGuildUniqueId().equals(guild.getGuildData().getGuildUniqueId())) {
+                        if (playerGuild.getGuildData().getOwnerUniqueId().equals(player.getUniqueId())) {
+                            player.performCommand("g manage " + currentItem.getItemMeta().getDisplayName().substring(2));
+                        } else {
+                            player.closeInventory();
+                            player.sendMessage(messagesManager.getString("player-guild-permission-error"));
+                        }
+                    } else {
+                        player.closeInventory();
+                        player.sendMessage(messagesManager.getString("player-not-in-certain-guild"));
+                    }
+                } else {
+                    player.closeInventory();
+                    player.sendMessage(messagesManager.getString("player-not-in-guild"));
+                }
             }
         }
     }
