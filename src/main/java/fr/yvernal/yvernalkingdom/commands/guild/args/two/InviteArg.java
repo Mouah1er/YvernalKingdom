@@ -6,6 +6,7 @@ import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.invitedplayers.InvitedPlayerData;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.invitedplayers.InvitedPlayer;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -70,6 +71,12 @@ public class InviteArg extends YvernalArg {
                                             .getString("player-invited-in-guild")
                                             .replace("%guilde%", playerGuild.getGuildData().getName())
                                             .replace("%player%", player.getName()));
+                                    messageTextComponent.setColor(ChatColor.GREEN);
+                                    final TextComponent acceptTextComponent = new TextComponent(" " + messagesManager
+                                            .getString("click-to-join-guild"));
+                                    acceptTextComponent.setColor(ChatColor.ITALIC);
+                                    acceptTextComponent.setColor(ChatColor.GRAY);
+                                    messageTextComponent.addExtra(acceptTextComponent);
                                     messageTextComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/g join " +
                                             playerGuild.getGuildData().getName()));
                                     messageTextComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{

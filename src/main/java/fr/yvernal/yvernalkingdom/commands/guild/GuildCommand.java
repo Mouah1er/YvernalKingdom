@@ -71,7 +71,7 @@ public class GuildCommand implements YvernalCommand {
                             } else if (args[0].equalsIgnoreCase("power")) {
                                 new PlayerPowerArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("leader")) {
-
+                                new LeadPlayerArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("promote")) {
                                 new PromotePlayerArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("demote")) {
