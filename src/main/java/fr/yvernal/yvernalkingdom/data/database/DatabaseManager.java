@@ -60,7 +60,7 @@ public class DatabaseManager {
                 "guildName VARCHAR(17), " +
                 "description VARCHAR(255), " +
                 "power INT, " +
-                "home VARCHAR(50), " +
+                "home VARCHAR(255), " +
                 "ownerUniqueId VARCHAR(37), " +
                 "kingdomName VARCHAR(255)" +
                 ")");

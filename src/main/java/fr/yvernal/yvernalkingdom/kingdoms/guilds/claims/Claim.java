@@ -31,6 +31,7 @@ public class Claim {
     }
 
     public void setUnClaim(boolean unClaim) {
+        System.out.println(unClaim);
         isUnClaim = unClaim;
     }
 

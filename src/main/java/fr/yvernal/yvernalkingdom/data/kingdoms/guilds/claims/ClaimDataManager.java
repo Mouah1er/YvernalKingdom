@@ -48,8 +48,10 @@ public class ClaimDataManager {
     }
 
     public void unClaim(Guild guild, Claim claim) {
-        dataManager.getDatabaseManager().update("DELETE FROM claims WHERE x=" + claim.getClaimData().getX() + " " +
-                "AND z=" + claim.getClaimData().getX() + " AND guildUniqueId='" + guild.getGuildData().getGuildUniqueId() + "'");
+        dataManager.getDatabaseManager().update("DELETE FROM claims " +
+                "WHERE x=" + claim.getClaimData().getX() + " " +
+                "AND z=" + claim.getClaimData().getZ() + " " +
+                "AND guildUniqueId='" + guild.getGuildData().getGuildUniqueId() + "'");
     }
 
     public void updateClaimToDatabase(Guild guild, Claim claim) {

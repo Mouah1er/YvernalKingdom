@@ -116,14 +116,11 @@ public class GuildDataManager {
     }
 
     public void updateGuildToDatabase(Guild guild) {
-        System.out.println(guild);
         if (guild.isDeleted() || guild.isNew()) {
             if (guild.isDeleted()) {
-                System.out.println("delete");
                 deleteGuildFromDatabase(guild);
             }
             if (guild.isNew()) {
-                System.out.println("create");
                 createGuild(guild);
             }
         } else {

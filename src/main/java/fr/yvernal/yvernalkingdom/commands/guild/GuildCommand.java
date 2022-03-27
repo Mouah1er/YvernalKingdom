@@ -2,9 +2,9 @@ package fr.yvernal.yvernalkingdom.commands.guild;
 
 import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.commands.YvernalCommand;
-import fr.yvernal.yvernalkingdom.commands.guild.args.all.RenameArg;
 import fr.yvernal.yvernalkingdom.commands.guild.args.all.CreateArg;
 import fr.yvernal.yvernalkingdom.commands.guild.args.all.DescArg;
+import fr.yvernal.yvernalkingdom.commands.guild.args.all.RenameArg;
 import fr.yvernal.yvernalkingdom.commands.guild.args.one.*;
 import fr.yvernal.yvernalkingdom.commands.guild.args.two.*;
 import org.bukkit.command.Command;
@@ -45,11 +45,13 @@ public class GuildCommand implements YvernalCommand {
                             } else if (args[0].equalsIgnoreCase("power")) {
                                 new PowerArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("sethome")) {
-
+                                new SetHomeArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("delhome")) {
-
+                                new DelHomeArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("home")) {
-
+                                new HomeArg().execute(player, args);
+                            } else if (args[0].equalsIgnoreCase("leave")) {
+                                new LeaveArg().execute(player, args);
                             } else {
                                 sendHelp(player);
                             }

@@ -47,7 +47,6 @@ public class Guild {
     }
 
     public void setNew(boolean isNew) {
-        System.out.println(isNew);
         this.isNew = isNew;
     }
 

@@ -20,6 +20,7 @@ public class PlayerAccount {
     private long deaths;
 
     private int powerTaskId;
+    private boolean isWaitingToTeleportToHome;
 
     public PlayerAccount(UUID uniqueId, int power, double valis, String guildName, String guildUniqueId, GuildRank guildRank,
                          String waitingKingdomName, String kingdomName, long kills, long deaths) {
@@ -95,14 +96,6 @@ public class PlayerAccount {
         this.kingdomName = kingdomName;
     }
 
-    public int getPowerTaskId() {
-        return powerTaskId;
-    }
-
-    public void setPowerTaskId(int powerTaskId) {
-        this.powerTaskId = powerTaskId;
-    }
-
     public long getKills() {
         return kills;
     }
@@ -117,6 +110,22 @@ public class PlayerAccount {
 
     public void setDeaths(long deaths) {
         this.deaths = deaths;
+    }
+
+    public int getPowerTaskId() {
+        return powerTaskId;
+    }
+
+    public void setPowerTaskId(int powerTaskId) {
+        this.powerTaskId = powerTaskId;
+    }
+
+    public boolean isWaitingToTeleportToHome() {
+        return isWaitingToTeleportToHome;
+    }
+
+    public void setWaitingToTeleportToHome(boolean waitingToTeleportToHome) {
+        isWaitingToTeleportToHome = waitingToTeleportToHome;
     }
 
     @Override

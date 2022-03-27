@@ -53,3 +53,4 @@ game:
   cps-max-speed: 12
   max-cristal-level: 150
   kingdom-max-players: 50
+  time-to-teleport-to-guild-home: 5 # c'est en secondes

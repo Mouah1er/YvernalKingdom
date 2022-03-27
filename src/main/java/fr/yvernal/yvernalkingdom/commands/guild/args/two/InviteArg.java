@@ -36,7 +36,7 @@ public class InviteArg extends YvernalArg {
                     if (!guildRankIsMemberWithMessage(player, playerAccount)) {
                         if (playerIsInGuild(Main.getInstance().getDataManager().getGuildDataManager().getGuildByPlayer(targetPlayer.getUniqueId()),
                                 targetPlayerAccount)) {
-                            player.sendMessage(messagesManager.getString("certain-player-not-in-guild")
+                            player.sendMessage(messagesManager.getString("certain-player-is-in-guild")
                                     .replace("%player%", targetPlayer.getName()));
                         } else {
                             if (!targetPlayerAccount.getKingdomName().equals(playerAccount.getKingdomName())) {
@@ -62,6 +62,8 @@ public class InviteArg extends YvernalArg {
 
                                             return;
                                         }
+
+                                        invitedPlayer.setStillInvited(true);
                                     }
 
                                     final TextComponent messageTextComponent = new TextComponent(messagesManager

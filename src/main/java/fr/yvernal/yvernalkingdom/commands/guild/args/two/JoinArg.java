@@ -46,6 +46,7 @@ public class JoinArg extends YvernalArg {
                             playerAccount.setGuildUniqueId(targetGuild.getGuildData().getGuildUniqueId());
                             playerAccount.setGuildName(targetGuild.getGuildData().getName());
                             playerAccount.setGuildRank(GuildRank.MEMBER);
+                            targetGuild.getGuildData().setPower(targetGuild.getGuildData().getPower() + playerAccount.getPower());
                             targetGuild.getGuildData().getMembersUniqueId().add(player.getUniqueId());
                             targetGuild.sendMessageToMembers(messagesManager.getString("guild-join")
                                     .replace("%player%", player.getName()));

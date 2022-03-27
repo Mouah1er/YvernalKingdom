@@ -68,7 +68,7 @@ player-not-in-certain-guild: "§cVous n'êtes pas dans la guilde %guilde% !"
 
 successfully-changed-guild-name: "§aLe nom de la guilde a changé pour devenir: §7%guilde%"
 
-certain-player-not-in-guild: "§cLe joueur %player% n'a pas de guilde !"
+certain-player-is-in-guild: "§cLe joueur %player% est déjà dans une guilde !"
 player-invited-in-guild: "§aVous avez été invité par le joueur %player% dans la guilde §a%guilde%, voulez-vous la rejoindre ? §7§o(Clique sur le message §7§opour rejoindre)"
 successfully-invited-player-in-guild: "§aVous avez bien invité le joueur %player% dans votre guilde !"
 certain-player-already-invited-in-guild: "§cLe joueur %player% est déjà invité dans une guilde !"
@@ -79,3 +79,17 @@ guild-join: "§aLe joueur %player% a rejoint la guilde !"
 not-invited-in-guild: "§cVous n'êtes pas invité dans la guilde %guilde% !"
 certain-player-not-in-kingdom: "§cLe joueur %player% n'est pas dans votre Royaume !"
 cant-invite-yourself: "§cVous ne pouvez pas vous inviter vous même dans une guilde !"
+
+master-cannot-leave-guild: "§cLe Maitre de Guilde ne peut pas quitter sa guilde ! §7§o(/g disband pour supprimer votre guilde,
+ou /g lead <joueur> pour promouvoir un joueur à Maitre de Guilde)"
+guild-member-left: "§aLe joueur %player% a quitté la guilde !"
+guild-left: "§aVous avez quitté la guilde !"
+
+guild-home-set: "§aLe §cMaitre de Guilde §aa défini le point de spawn de la guilde !"
+
+guild-home-not-set: "§cLe Maitre de Guilde n'a pas défini le point de spawn de la guilde !"
+guild-home-deleted: "§aLe §cMaitre de Guilde §aa supprimé le point de spawn de la guilde !"
+
+player-has-moved: "§cVous avez bougé, vous n'avez donc pas été téléporté à votre home !"
+teleporting-to-home: "§aVous êtes en train de vous téléporter à votre home, encore %time% secondes !"
+teleported-to-home: "§aVous avez été téléporté à votre home !"
