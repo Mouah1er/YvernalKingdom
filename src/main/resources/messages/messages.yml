@@ -109,3 +109,5 @@ player-demoted: "§aLe joueur %player% a été rétrogradé au rang de %rank% !"
 cannot-kick: "§cVous ne pouvez pas kicker %player% car votre rang est inférieur ou égal à celui de %player% !"
 player-kicked-from-guild: "§aLe joueur %player% a été kick de la guilde !"
 player-kicked: "§cVous avez été kick de votre guilde !"
+
+guild-new-leader: "§aLe joueur %player% a été promu §cMaitre de Guilde §a!"

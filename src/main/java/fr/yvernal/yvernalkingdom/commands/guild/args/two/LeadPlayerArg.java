@@ -3,6 +3,7 @@ package fr.yvernal.yvernalkingdom.commands.guild.args.two;
 import fr.yvernal.yvernalkingdom.commands.YvernalArg;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
+import fr.yvernal.yvernalkingdom.kingdoms.guilds.GuildRank;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -31,7 +32,11 @@ public class LeadPlayerArg extends YvernalArg {
                             player.sendMessage(messagesManager.getString("player-not-in-your-guild")
                                     .replace("%player%", targetPlayer.getName()));
                         } else {
-                            
+                            targetPlayerAccount.setGuildRank(GuildRank.MASTER);
+                            playerAccount.setGuildRank(GuildRank.OFFICER);
+                            playerGuild.getGuildData().setOwnerUniqueId(targetPlayer.getUniqueId());
+                            playerGuild.sendMessageToMembers(messagesManager.getString("guild-new-leader")
+                                    .replace("%player%", targetPlayer.getName()));
                         }
                     }
                 }
