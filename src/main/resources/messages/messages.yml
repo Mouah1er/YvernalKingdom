@@ -76,5 +76,6 @@ no-invitation: "§cVous n'êtes invité dans aucune guilde !"
 guild-not-found: "§cLa guilde %guilde% n'a pas été trouvée !"
 guild-full: "§cLa guilde %guilde% est pleine !"
 guild-join: "§aLe joueur %player% a rejoint la guilde !"
-
+not-invited-in-guild: "§cVous n'êtes pas invité dans la guilde %guilde% !"
+certain-player-not-in-kingdom: "§cLe joueur %player% n'est pas dans votre Royaume !"
 cant-invite-yourself: "§cVous ne pouvez pas vous inviter vous même dans une guilde !"

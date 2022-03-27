@@ -9,6 +9,7 @@ import fr.yvernal.yvernalkingdom.kingdoms.guilds.invitedplayers.InvitedPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Locale;
+import java.util.UUID;
 
 public class JoinArg extends YvernalArg {
 
@@ -31,18 +32,24 @@ public class JoinArg extends YvernalArg {
                     player.sendMessage(messagesManager.getString("guild-not-found")
                             .replace("%guilde%", args[1]));
                 } else {
-                    if (targetGuild.getGuildData().getMembersUniqueId().size() > 10) {
-                        player.sendMessage(messagesManager.getString("guild-full")
-                                .replace("%guilde%", args[1]));
+                    if (!UUID.fromString(targetGuild.getGuildData().getGuildUniqueId())
+                            .equals(invitedPlayer.getInvitedPlayerData().getGuildUniqueId())) {
+                        player.sendMessage(messagesManager.getString("not-invited-in-guild")
+                                .replace("%guilde%", targetGuild.getGuildData().getName()));
                     } else {
-                        invitedPlayer.setStillInvited(false);
-                        invitedPlayer.setNew(false);
-                        playerAccount.setGuildUniqueId(targetGuild.getGuildData().getGuildUniqueId());
-                        playerAccount.setGuildName(targetGuild.getGuildData().getName());
-                        playerAccount.setGuildRank(GuildRank.MEMBER);
-                        targetGuild.getGuildData().getMembersUniqueId().add(player.getUniqueId());
-                        targetGuild.sendMessageToMembers(messagesManager.getString("guild-join")
-                                .replace("%player%", player.getName()));
+                        if (targetGuild.getGuildData().getMembersUniqueId().size() > 10) {
+                            player.sendMessage(messagesManager.getString("guild-full")
+                                    .replace("%guilde%", args[1]));
+                        } else {
+                            invitedPlayer.setStillInvited(false);
+                            invitedPlayer.setNew(false);
+                            playerAccount.setGuildUniqueId(targetGuild.getGuildData().getGuildUniqueId());
+                            playerAccount.setGuildName(targetGuild.getGuildData().getName());
+                            playerAccount.setGuildRank(GuildRank.MEMBER);
+                            targetGuild.getGuildData().getMembersUniqueId().add(player.getUniqueId());
+                            targetGuild.sendMessageToMembers(messagesManager.getString("guild-join")
+                                    .replace("%player%", player.getName()));
+                        }
                     }
                 }
             }

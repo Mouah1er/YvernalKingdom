@@ -39,41 +39,45 @@ public class InviteArg extends YvernalArg {
                             player.sendMessage(messagesManager.getString("certain-player-not-in-guild")
                                     .replace("%player%", targetPlayer.getName()));
                         } else {
-                            if (playerGuild.getGuildData().getMembersUniqueId().size() > 10) {
-                                player.sendMessage(messagesManager.getString("guild-full"));
-                            } else {
-                                InvitedPlayer invitedPlayer = dataManager.getInvitedPlayerDataManager()
-                                        .getInvitedPlayerByUniqueId(targetPlayer.getUniqueId());
-
-                                if (invitedPlayer == null) {
-                                    invitedPlayer = new InvitedPlayer(
-                                            new InvitedPlayerData(targetPlayer.getUniqueId(),
-                                                    UUID.fromString(playerGuild.getGuildData().getGuildUniqueId())), true, true);
-                                    dataManager.getInvitedPlayerDataManager().getInvitedPlayers().add(invitedPlayer);
-                                } else {
-                                    if (invitedPlayer.isStillInvited()) {
-                                        player.sendMessage(messagesManager.getString("certain-player-already-invited-in-guild")
-                                                .replace("%player%", targetPlayer.getName()));
-
-                                        return;
-                                    }
-                                }
-
-                                System.out.println(invitedPlayer);
-
-                                final TextComponent messageTextComponent = new TextComponent(messagesManager
-                                        .getString("player-invited-in-guild")
-                                        .replace("%guilde%", playerGuild.getGuildData().getName())
-                                        .replace("%player%", player.getName()));
-                                messageTextComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/g join " +
-                                        playerGuild.getGuildData().getName()));
-                                messageTextComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{
-                                        new TextComponent("§aClique pour rejoindre !")
-                                }));
-
-                                targetPlayer.spigot().sendMessage(messageTextComponent);
-                                player.sendMessage(messagesManager.getString("successfully-invited-player-in-guild")
+                            if (!targetPlayerAccount.getKingdomName().equals(playerAccount.getKingdomName())) {
+                                player.sendMessage(messagesManager.getString("certain-player-not-in-kingdom")
                                         .replace("%player%", targetPlayer.getName()));
+                            } else {
+                                if (playerGuild.getGuildData().getMembersUniqueId().size() > 10) {
+                                    player.sendMessage(messagesManager.getString("guild-full"));
+                                } else {
+                                    InvitedPlayer invitedPlayer = dataManager.getInvitedPlayerDataManager()
+                                            .getInvitedPlayerByUniqueId(targetPlayer.getUniqueId());
+
+                                    if (invitedPlayer == null) {
+                                        invitedPlayer = new InvitedPlayer(
+                                                new InvitedPlayerData(targetPlayer.getUniqueId(),
+                                                        UUID.fromString(playerGuild.getGuildData().getGuildUniqueId())), true,
+                                                true);
+                                        dataManager.getInvitedPlayerDataManager().getInvitedPlayers().add(invitedPlayer);
+                                    } else {
+                                        if (invitedPlayer.isStillInvited()) {
+                                            player.sendMessage(messagesManager.getString("certain-player-already-invited-in-guild")
+                                                    .replace("%player%", targetPlayer.getName()));
+
+                                            return;
+                                        }
+                                    }
+
+                                    final TextComponent messageTextComponent = new TextComponent(messagesManager
+                                            .getString("player-invited-in-guild")
+                                            .replace("%guilde%", playerGuild.getGuildData().getName())
+                                            .replace("%player%", player.getName()));
+                                    messageTextComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/g join " +
+                                            playerGuild.getGuildData().getName()));
+                                    messageTextComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{
+                                            new TextComponent("§aClique pour rejoindre !")
+                                    }));
+
+                                    targetPlayer.spigot().sendMessage(messageTextComponent);
+                                    player.sendMessage(messagesManager.getString("successfully-invited-player-in-guild")
+                                            .replace("%player%", targetPlayer.getName()));
+                                }
                             }
                         }
                     }
