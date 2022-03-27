@@ -93,14 +93,7 @@ public class ChooseKingdomInventory extends InventoryCreator {
             setItem(43, waitingLineFalseItemStack);
         }
 
-        for (int i = 0; i < 54; i++) {
-            if (getItem(i) == null) {
-                setItem(i, new ItemBuilder(Material.STAINED_GLASS_PANE)
-                        .name("§c")
-                        .flags(ItemFlag.HIDE_ATTRIBUTES)
-                        .build());
-            }
-        }
+        setGlassToEmptySlots();
     }
 
     @Override

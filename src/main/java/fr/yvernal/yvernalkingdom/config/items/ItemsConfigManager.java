@@ -6,26 +6,51 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 public class ItemsConfigManager {
     private final FileConfiguration chooseKingdomItemsConfig;
+    private final FileConfiguration showGuildItemsConfig;
 
     public ItemsConfigManager() {
-        final File chooseKingdomItemsFile = new File(Main.getInstance().getDataFolder() + File.separator + "items",
-                "choosekingdomitems.yml");
+        final String parentFileName = Main.getInstance().getDataFolder() + File.separator + "items";
+        final File chooseKingdomItemsFile = new File(parentFileName, "choosekingdomitems.yml");
+        final File showGuildItemsFile = new File(parentFileName, "showguilditems.yml");
 
-        if (!chooseKingdomItemsFile.getParentFile().exists()) chooseKingdomItemsFile.getParentFile().mkdirs();
-        try {
-            chooseKingdomItemsFile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        ConfigUtils.createFileIfNotExists(chooseKingdomItemsFile);
         ConfigUtils.writeToFile("items", chooseKingdomItemsFile);
+        ConfigUtils.createFileIfNotExists(showGuildItemsFile);
+        ConfigUtils.writeToFile("items", showGuildItemsFile);
 
         this.chooseKingdomItemsConfig = YamlConfiguration.loadConfiguration(chooseKingdomItemsFile);
+        this.showGuildItemsConfig = YamlConfiguration.loadConfiguration(showGuildItemsFile);
+    }
+
+    public ShowGuildItems getShowGuildItems() {
+        final String inventoryName = showGuildItemsConfig.getString("inventory_name");
+
+        final String enchantmentTableName = showGuildItemsConfig.getString("enchantment_table_name");
+        final List<String> enchantmentTableLore = showGuildItemsConfig.getStringList("enchantment_table_lore");
+
+        final String firstBookName = showGuildItemsConfig.getString("first_book_name");
+        final List<String> firstBookLore = showGuildItemsConfig.getStringList("first_book_lore");
+        final String secondBookName = showGuildItemsConfig.getString("second_book_name");
+        final List<String> secondBookLore = showGuildItemsConfig.getStringList("second_book_lore");
+        final String thirdBookName = showGuildItemsConfig.getString("third_book_name");
+        final List<String> thirdBookLore = showGuildItemsConfig.getStringList("third_book_lore");
+        final String fourthBookName = showGuildItemsConfig.getString("fourth_book_name");
+        final List<String> fourthBookLore = showGuildItemsConfig.getStringList("fourth_book_lore");
+
+        final String ownerItemName = showGuildItemsConfig.getString("owner_item_name");
+        final List<String> ownerItemLore = showGuildItemsConfig.getStringList("owner_item_lore");
+        final String playerItemName = showGuildItemsConfig.getString("player_item_name");
+        final List<String> playerItemLore = showGuildItemsConfig.getStringList("player_item_lore");
+        final String paperItemName = showGuildItemsConfig.getString("paper_item_name");
+        final List<String> paperItemLore = showGuildItemsConfig.getStringList("paper_item_lore");
+
+        return new ShowGuildItems(inventoryName, enchantmentTableName, enchantmentTableLore, firstBookName, firstBookLore, secondBookName,
+                secondBookLore, thirdBookName, thirdBookLore, fourthBookName, fourthBookLore, ownerItemName, ownerItemLore,
+                playerItemName, playerItemLore, paperItemName, paperItemLore);
     }
 
     public ChooseKingdomItems getChooseKingdomItems() {

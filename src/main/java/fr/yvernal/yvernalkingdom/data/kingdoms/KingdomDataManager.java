@@ -60,7 +60,7 @@ public class KingdomDataManager {
         dataManager.getDatabaseManager().query("SELECT * FROM accounts " +
                 "WHERE kingdomName='no-kingdom' AND waitingKingdomName='" + kingdomName + "'", resultSet -> {
             try {
-                if (resultSet.next()) {
+                while (resultSet.next()) {
                     uuids.add(UUID.fromString(resultSet.getString("uniqueId")));
                 }
             } catch (SQLException e) {
@@ -77,7 +77,7 @@ public class KingdomDataManager {
         dataManager.getDatabaseManager().query("SELECT * FROM accounts WHERE kingdomName='" + kingdomName + "' AND " +
                 "waitingKingdomName='no-waiting-kingdom'", resultSet -> {
             try {
-                if (resultSet.next()) {
+                while (resultSet.next()) {
                     uuids.add(UUID.fromString(resultSet.getString("uniqueId")));
                 }
             } catch (SQLException e) {

@@ -46,7 +46,17 @@ public class Guild {
         return isNew;
     }
 
-    public void setNew(boolean aNew) {
-        isNew = aNew;
+    public void setNew(boolean isNew) {
+        System.out.println(isNew);
+        this.isNew = isNew;
+    }
+
+    @Override
+    public String toString() {
+        return "Guild{" +
+                "guildData=" + guildData +
+                ", isDeleted=" + isDeleted +
+                ", isNew=" + isNew +
+                '}';
     }
 }

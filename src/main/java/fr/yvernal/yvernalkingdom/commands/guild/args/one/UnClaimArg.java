@@ -34,16 +34,14 @@ public class UnClaimArg extends YvernalArg {
                     } else {
                         if (!claim.getClaimData().getGuildUniqueId().equals(playerGuild.getGuildData().getGuildUniqueId())) {
                             player.sendMessage(messagesManager.getString("not-claimed-by-player-guild-error")
-                                    .replace("%guild%", claim.getClaimData().getGuildName()));
+                                    .replace("%guilde%", claim.getClaimData().getGuildName()));
                         } else {
                             playerGuild.sendMessageToMembers(messagesManager.getString("successfully-unclaimed")
                                             .replace("%player%", player.getName())
                                             .replace("%x%", String.valueOf(playerChunk.getX()))
                                             .replace("%z%", String.valueOf(playerChunk.getZ())));
-                            dataManager.getClaimManager().getClaims().remove(claim);
                             claim.setNew(false);
                             claim.setUnClaim(true);
-                            dataManager.getClaimManager().getClaims().add(claim);
                         }
                     }
                 } else {

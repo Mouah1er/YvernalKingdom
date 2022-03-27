@@ -86,7 +86,7 @@ public class GuildDataManager {
         return guild.get();
     }
 
-    public void createGuild(Guild guild) {
+    private void createGuild(Guild guild) {
         final String home = guild.getGuildData().getHome() == null ? "no-home" : LocationUtils.locationToString(guild.getGuildData().getHome());
 
         dataManager.getDatabaseManager().update("INSERT INTO guilds (guildUniqueId, guildName, description, power, home, ownerUniqueId, kingdomName) " +
@@ -102,7 +102,7 @@ public class GuildDataManager {
     }
 
 
-    public void deleteGuild(Guild guild) {
+    private void deleteGuildFromDatabase(Guild guild) {
         final String home = guild.getGuildData().getHome() == null ? "no-home" : LocationUtils.locationToString(guild.getGuildData().getHome());
 
         dataManager.getDatabaseManager().update("DELETE FROM guilds " +
@@ -116,15 +116,19 @@ public class GuildDataManager {
     }
 
     public void updateGuildToDatabase(Guild guild) {
+        System.out.println(guild);
         if (guild.isDeleted() || guild.isNew()) {
             if (guild.isDeleted()) {
-                deleteGuild(guild);
+                System.out.println("delete");
+                deleteGuildFromDatabase(guild);
             }
             if (guild.isNew()) {
+                System.out.println("create");
                 createGuild(guild);
             }
         } else {
             final String home = guild.getGuildData().getHome() == null ? "no-home" : LocationUtils.locationToString(guild.getGuildData().getHome());
+
             dataManager.getDatabaseManager().update("UPDATE guilds SET " +
                     "guildName='" + guild.getGuildData().getName() + "', " +
                     "description='" + guild.getGuildData().getDescription() + "', " +
@@ -141,7 +145,7 @@ public class GuildDataManager {
 
         dataManager.getDatabaseManager().query("SELECT * FROM accounts WHERE guildUniqueId='" + guildUniqueId + "'", resultSet -> {
             try {
-                if (resultSet.next()) {
+                while (resultSet.next()) {
                     uuids.add(UUID.fromString(resultSet.getString("uniqueId")));
                 }
             } catch (SQLException e) {
@@ -168,6 +172,14 @@ public class GuildDataManager {
         return getGuilds().stream()
                 .filter(Objects::nonNull)
                 .filter(guild -> guild.getGuildData().getMembersUniqueId().contains(uuid))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Guild getGuildByUniqueId(UUID guildUniqueId) {
+        return getGuilds().stream()
+                .filter(Objects::nonNull)
+                .filter(guild -> UUID.fromString(guild.getGuildData().getGuildUniqueId()).equals(guildUniqueId))
                 .findFirst()
                 .orElse(null);
     }

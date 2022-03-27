@@ -10,10 +10,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class Main extends JavaPlugin {
     private ConfigManager configManager;
     private DataManager dataManager;
+    private HashMap<UUID, CompletableFuture<String>> messageWaiter;
 
     @Override
     public void onEnable() {
@@ -23,6 +27,7 @@ public class Main extends JavaPlugin {
 
         this.configManager = new ConfigManager();
         this.dataManager = new DataManager(getDataFolder().getAbsolutePath() + File.separator + "database.db");
+        this.messageWaiter = new HashMap<>();
 
         YvernalListener.registerListeners();
         YvernalCommand.registerCommands();
@@ -39,13 +44,14 @@ public class Main extends JavaPlugin {
 
             playerAccountManager.updatePlayerAccountToDatabase(playerAccountManager.getPlayerAccount(player.getUniqueId()));
             playerAccountManager.getAccounts().remove(playerAccountManager.getPlayerAccount(player.getUniqueId()));
-            
+
             player.kickPlayer("§aLe serveur redémarre !");
         });
 
         getDataManager().getGuildDataManager().getGuilds().forEach(guild -> {
             getDataManager().getGuildDataManager().updateGuildToDatabase(guild);
             getDataManager().getClaimManager().getClaims(guild).forEach(claim -> getDataManager().getClaimManager().updateClaimToDatabase(guild, claim));
+            getDataManager().getInvitedPlayerDataManager().getInvitedPlayers().forEach(invitedPlayer -> getDataManager().getInvitedPlayerDataManager().updateInvitedPlayerToDatabase(invitedPlayer));
         });
     }
 
@@ -59,5 +65,9 @@ public class Main extends JavaPlugin {
 
     public DataManager getDataManager() {
         return dataManager;
+    }
+
+    public HashMap<UUID, CompletableFuture<String>> getMessageWaiter() {
+        return messageWaiter;
     }
 }

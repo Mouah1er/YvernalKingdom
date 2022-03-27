@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -32,12 +33,14 @@ public class PlayerAccountManager {
         final GuildRank guildRank = getGuildRank(uuid);
         final String waitingKingdomName = getWaitingKingdomName(uuid);
         final String kingdomName = getKingdomName(uuid);
+        final long kills = getKills(uuid);
+        final long deaths = getDeaths(uuid);
 
         if (guild == null || guildRank == null || waitingKingdomName == null || kingdomName == null) {
             return null;
         }
 
-        return new PlayerAccount(uuid, power, valis, guild, guildUniqueId, guildRank, waitingKingdomName, kingdomName);
+        return new PlayerAccount(uuid, power, valis, guild, guildUniqueId, guildRank, waitingKingdomName, kingdomName, kills, deaths);
     }
 
     public void updatePlayerAccountToDatabase(PlayerAccount playerAccount) {
@@ -48,7 +51,9 @@ public class PlayerAccountManager {
                 "guildUniqueId='" + playerAccount.getGuildUniqueId() + "', " +
                 "guildRank='" + playerAccount.getGuildRank().getName() + "', " +
                 "waitingKingdomName='" + playerAccount.getWaitingKingdomName() + "', " +
-                "kingdomName='" + playerAccount.getKingdomName() + "' " +
+                "kingdomName='" + playerAccount.getKingdomName() + "', " +
+                "kills='" + playerAccount.getKills() + "', " +
+                "deaths='" + playerAccount.getDeaths() + "' " +
                 "WHERE uniqueId='" + playerAccount.getUniqueId() + "'");
     }
 
@@ -64,9 +69,10 @@ public class PlayerAccountManager {
         }
 
         final PlayerAccount playerAccount = new PlayerAccount(uuid, 0, 0, "no-guild", "no-guild",
-                GuildRank.NO_GUILD, "no-waiting-kingdom", "no-kingdom");
+                GuildRank.NO_GUILD, "no-waiting-kingdom", "no-kingdom", 0, 0);
         dataManager.getDatabaseManager().update(
-                "INSERT INTO accounts (uniqueId, power, valis, guildName, guildUniqueId, guildRank, waitingKingdomName, kingdomName)" +
+                "INSERT INTO accounts (uniqueId, power, valis, guildName, guildUniqueId, guildRank, waitingKingdomName, kingdomName," +
+                        "kills, deaths)" +
                         " VALUES (" +
                         "'" + uuid + "', " +
                         "'" + playerAccount.getPower() + "', " +
@@ -75,7 +81,9 @@ public class PlayerAccountManager {
                         "'" + playerAccount.getGuildUniqueId() + "', " +
                         "'" + playerAccount.getGuildRank().getName() + "', " +
                         "'" + playerAccount.getWaitingKingdomName() + "', " +
-                        "'" + playerAccount.getKingdomName() + "')");
+                        "'" + playerAccount.getKingdomName() + "', " +
+                        "'" + playerAccount.getKills() + "', " +
+                        "'" + playerAccount.getDeaths() + "')");
 
         accounts.add(playerAccount);
 
@@ -187,6 +195,38 @@ public class PlayerAccountManager {
         });
 
         return kingdomName.get();
+    }
+
+    private long getKills(UUID uuid) {
+        final AtomicLong kills = new AtomicLong();
+
+        dataManager.getDatabaseManager().query("SELECT * FROM accounts WHERE uniqueId='" + uuid + "'", resultSet -> {
+            try {
+                if (resultSet.next()) {
+                    kills.set(resultSet.getLong("kills"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+        return kills.get();
+    }
+
+    private long getDeaths(UUID uuid) {
+        final AtomicLong deaths = new AtomicLong();
+
+        dataManager.getDatabaseManager().query("SELECT * FROM accounts WHERE uniqueId='" + uuid + "'", resultSet -> {
+            try {
+                if (resultSet.next()) {
+                    deaths.set(resultSet.getLong("deaths"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+        return deaths.get();
     }
 
     public List<PlayerAccount> getAccounts() {

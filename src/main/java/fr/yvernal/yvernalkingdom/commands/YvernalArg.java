@@ -25,22 +25,25 @@ public abstract class YvernalArg {
     }
 
     protected boolean playerIsInGuild(Guild playerGuild, PlayerAccount playerAccount) {
-        return (playerAccount.getGuildRank() != GuildRank.NO_GUILD || playerGuild != null) &&
-                (!playerGuild.isDeleted() || playerAccount.getGuildRank() != GuildRank.NO_GUILD);
+        return playerAccount.getGuildRank() != GuildRank.NO_GUILD && playerGuild != null && !playerGuild.isDeleted();
     }
 
     private boolean checkPlayerGuildRank(PlayerAccount playerAccount, GuildRank guildRank) {
         return playerAccount.getGuildRank() == guildRank;
     }
 
-    protected boolean guildRankIsMaster(Player player, PlayerAccount playerAccount) {
-        if (checkPlayerGuildRank(playerAccount, GuildRank.MASTER)) {
-            player.sendMessage("player-guild-permission-error");
+    protected boolean guildRankIsMasterWithMessage(Player player, PlayerAccount playerAccount) {
+        if (!guildRankIsMaster(playerAccount)) {
+            player.sendMessage(messagesManager.getString("player-guild-permission-error"));
 
             return false;
         }
 
         return true;
+    }
+
+    protected boolean guildRankIsMaster(PlayerAccount playerAccount) {
+        return checkPlayerGuildRank(playerAccount, GuildRank.MASTER);
     }
 
     protected boolean guildRankIsMember(PlayerAccount playerAccount) {
@@ -49,7 +52,7 @@ public abstract class YvernalArg {
 
     protected boolean guildRankIsMemberWithMessage(Player player, PlayerAccount playerAccount) {
         if (guildRankIsMember(playerAccount)) {
-            player.sendMessage("player-guild-permission-error");
+            player.sendMessage(messagesManager.getString("player-guild-permission-error"));
 
             return true;
         }

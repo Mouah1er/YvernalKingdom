@@ -1,3 +1,5 @@
+permission-message: "§cVous n'avez pas la permission pour faire ceci !"
+
 join-kingdom-message: "§aVous avez rejoint le royaume %kingdom% !"
 join-kingdom-waiting-list-message: "§aVous avez rejoint la file d'attente du royaume %kingdom% !"
 
@@ -28,11 +30,12 @@ guild-command-help: [ "§7§m----------§9 Help Guildes §7§m----------",
 already-in-guild: "§cVous êtes déjà dans une guilde !"
 player-not-in-guild: "§cVous ne pouvez pas exécuter cette commande car vous n'êtes pas dans une guilde !"
 player-guild-permission-error: "§cVous n'avez pas le grade nécessaire dans cette guilde pour exécuter cette commande !"
+guild-name-already-exists: "§cLe nom de la guilde est déjà pris !"
 
 already-claim-by-guild-error: "§cLa guilde %guilde% a déjà claim ce chunk !"
 successfully-claimed-chunk: "§aLe joueur §b%player% §aa claim le chunk aux coordonnées suivantes: §9%x% §a; §9%z%"
 
-not-claimed-by-player-guild-error: "§cCe n'est pas votre guilde qui possède le claim mais la guilde §b%guild% §c!"
+not-claimed-by-player-guild-error: "§cCe n'est pas votre guilde qui possède le claim mais la guilde §b%guilde% §c!"
 not-claimed: "§cCe chunk n'est pas claim !"
 successfully-unclaimed: "§aLe joueur §b%player% §aa unclaim le chunk aux coordonnées suivantes: §9%x% §a; §9%z%"
 
@@ -40,7 +43,7 @@ guild-does-not-have-any-claim: "§cVotre guilde n'a aucun claim !"
 successfully-unclaimed-all-chunk: "§aLe joueur §b%player% §aa unclaim tous les chunks de la guilde !"
 
 guild-name-too-big: "§cLe nom que vous avez donné à votre guilde est trop gros ! §7(16 caractères max)"
-successfully-created-guild: "§aVous avez bien créé la guilde §b%guild% §a!"
+successfully-created-guild: "§aVous avez bien créé la guilde §b%guilde% §a!"
 
 successfully-deleted-guild: "§aLa guilde a été supprimée !"
 
@@ -57,3 +60,21 @@ send-power-to-player: "§aTon power est de %power% !"
 send-player-power-to-player: "§aLe power de %player% est de %power% !"
 
 player-not-found: "§cLe joueur %player% n'a pas été trouvé !"
+
+ask-player-change-desc: "§aEntrez la nouvelle description de la guilde dans le chat !"
+ask-player-change-name: "§aEntrez le nouveau nom de la guilde dans le chat !"
+
+player-not-in-certain-guild: "§cVous n'êtes pas dans la guilde %guilde% !"
+
+successfully-changed-guild-name: "§aLe nom de la guilde a changé pour devenir: §7%guilde%"
+
+certain-player-not-in-guild: "§cLe joueur %player% n'a pas de guilde !"
+player-invited-in-guild: "§aVous avez été invité par le joueur %player% dans la guilde §a%guilde%, voulez-vous la rejoindre ? §7§o(Clique sur le message §7§opour rejoindre)"
+successfully-invited-player-in-guild: "§aVous avez bien invité le joueur %player% dans votre guilde !"
+certain-player-already-invited-in-guild: "§cLe joueur %player% est déjà invité dans une guilde !"
+no-invitation: "§cVous n'êtes invité dans aucune guilde !"
+guild-not-found: "§cLa guilde %guilde% n'a pas été trouvée !"
+guild-full: "§cLa guilde %guilde% est pleine !"
+guild-join: "§aLe joueur %player% a rejoint la guilde !"
+
+cant-invite-yourself: "§cVous ne pouvez pas vous inviter vous même dans une guilde !"

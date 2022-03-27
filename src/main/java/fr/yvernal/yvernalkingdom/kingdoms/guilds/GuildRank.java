@@ -1,14 +1,16 @@
 package fr.yvernal.yvernalkingdom.kingdoms.guilds;
 
+import org.bukkit.ChatColor;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public enum GuildRank {
-    MASTER("**Maître de guilde"),
-    OFFICER("*Offcier"),
-    SENIOR_MEMBER("Membre+"),
-    MEMBER("Membre"),
-    NO_GUILD("no-guild")
+    MASTER("**Maître de guilde", ChatColor.RED),
+    OFFICER("*Offcier", ChatColor.AQUA),
+    SENIOR_MEMBER("Membre+", ChatColor.GREEN),
+    MEMBER("Membre", ChatColor.DARK_GREEN),
+    NO_GUILD("no-guild", ChatColor.GRAY)
 
     ;
 
@@ -21,13 +23,23 @@ public enum GuildRank {
     }
 
     private final String name;
+    private final ChatColor chatColor;
 
-    GuildRank(String name) {
+    GuildRank(String name, ChatColor chatColor) {
         this.name = name;
+        this.chatColor = chatColor;
     }
 
     public String getName() {
         return name;
+    }
+
+    public ChatColor getChatColor() {
+        return chatColor;
+    }
+
+    public String getColorizedName() {
+        return getChatColor() + getName();
     }
 
     public static GuildRank getByName(String name) {

@@ -2,12 +2,11 @@ package fr.yvernal.yvernalkingdom.commands.guild;
 
 import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.commands.YvernalCommand;
-import fr.yvernal.yvernalkingdom.commands.guild.args.one.*;
+import fr.yvernal.yvernalkingdom.commands.guild.args.all.RenameArg;
 import fr.yvernal.yvernalkingdom.commands.guild.args.all.CreateArg;
 import fr.yvernal.yvernalkingdom.commands.guild.args.all.DescArg;
-import fr.yvernal.yvernalkingdom.commands.guild.args.two.ListArg;
-import fr.yvernal.yvernalkingdom.commands.guild.args.two.PlayerPowerArg;
-import fr.yvernal.yvernalkingdom.commands.guild.args.two.UnClaimAllArg;
+import fr.yvernal.yvernalkingdom.commands.guild.args.one.*;
+import fr.yvernal.yvernalkingdom.commands.guild.args.two.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -29,6 +28,8 @@ public class GuildCommand implements YvernalCommand {
                         new CreateArg().execute(player, args);
                     } else if (args[0].equalsIgnoreCase("desc")) {
                         new DescArg().execute(player, args);
+                    } else if (args[0].equalsIgnoreCase("rename")) {
+                        new RenameArg().execute(player, args);
                     } else {
                         if (args.length == 1) {
                             if (args[0].equalsIgnoreCase("claim")) {
@@ -62,19 +63,19 @@ public class GuildCommand implements YvernalCommand {
                             } else if (args[0].equalsIgnoreCase("manage")) {
 
                             } else if (args[0].equalsIgnoreCase("invite")) {
-
+                                new InviteArg().execute(player, args);
                             } else if (args[0].equalsIgnoreCase("kick")) {
 
                             } else if (args[0].equalsIgnoreCase("power")) {
                                 new PlayerPowerArg().execute(player, args);
-                            } else if (args[0].equalsIgnoreCase("rename")) {
-
                             } else if (args[0].equalsIgnoreCase("leader")) {
 
                             } else if (args[0].equalsIgnoreCase("promote")) {
 
                             } else if (args[0].equalsIgnoreCase("demote")) {
 
+                            } else if (args[0].equalsIgnoreCase("join")) {
+                                new JoinArg().execute(player, args);
                             } else {
                                 sendHelp(player);
                             }
@@ -83,6 +84,8 @@ public class GuildCommand implements YvernalCommand {
                         }
                     }
                 }
+            } else {
+                player.sendMessage(Main.getInstance().getConfigManager().getMessagesManager().getString("permission-message"));
             }
         }
         return false;

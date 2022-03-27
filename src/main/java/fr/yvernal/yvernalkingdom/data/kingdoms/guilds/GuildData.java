@@ -83,4 +83,18 @@ public class GuildData {
     public List<UUID> getMembersUniqueId() {
         return membersUniqueId;
     }
+
+    @Override
+    public String toString() {
+        return "GuildData{" +
+                "guildUniqueId='" + guildUniqueId + '\'' +
+                ", kingdomName='" + kingdomName + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", power=" + power +
+                ", home=" + home +
+                ", ownerUniqueId=" + ownerUniqueId +
+                ", membersUniqueId=" + membersUniqueId +
+                '}';
+    }
 }

@@ -14,7 +14,7 @@ public class DisbandArg extends YvernalArg {
         final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
 
         if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
-            if (guildRankIsMaster(player, playerAccount)) {
+            if (guildRankIsMasterWithMessage(player, playerAccount)) {
                 playerGuild.setDeleted(true);
                 playerGuild.setNew(false);
                 dataManager.getKingdomDataManager().getKingdomByNumber(playerAccount.getKingdomName()).getKingdomData().getGuildsIn()
@@ -22,7 +22,7 @@ public class DisbandArg extends YvernalArg {
                         .filter(guild -> guild.getGuildData().getGuildUniqueId().equals(playerGuild.getGuildData().getGuildUniqueId()))
                         .forEach(guild -> {
                             guild.setDeleted(true);
-                            guild.setNew(true);
+                            guild.setNew(false);
                         });
                 playerAccount.setGuildRank(GuildRank.NO_GUILD);
                 playerAccount.setGuildName("no-guild");

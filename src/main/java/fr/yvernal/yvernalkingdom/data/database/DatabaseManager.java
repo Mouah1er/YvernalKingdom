@@ -1,5 +1,7 @@
 package fr.yvernal.yvernalkingdom.data.database;
 
+import fr.yvernal.yvernalkingdom.utils.ConfigUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
@@ -15,20 +17,13 @@ public class DatabaseManager {
 
     /**
      * Constructeur appelé à chaque fois que le serveur se lance
+     *
      * @param dbPath le chemin vers le fichier de la base de données
      */
     public DatabaseManager(String dbPath) {
         final File file = new File(dbPath);
 
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ConfigUtils.createFileIfNotExists(file);
 
         this.dbPath = dbPath;
 
@@ -54,7 +49,9 @@ public class DatabaseManager {
                 "guildUniqueId VARCHAR(37), " +
                 "guildRank VARCHAR(255), " +
                 "waitingKingdomName VARCHAR(255), " +
-                "kingdomName VARCHAR(255)" +
+                "kingdomName VARCHAR(255), " +
+                "kills BIGINT, " +
+                "deaths BIGINT" +
                 ")");
 
         update("CREATE TABLE IF NOT EXISTS guilds(" +
@@ -73,6 +70,11 @@ public class DatabaseManager {
                 "z BIGINT, " +
                 "guildName VARCHAR(16), " +
                 "guildUniqueId VARCHAR(37))");
+
+        update("CREATE TABLE IF NOT EXISTS invitedPlayers(" +
+                "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "guildUniqueId VARCHAR(37), " +
+                "uniqueId VARCHAR(37))");
     }
 
     public void update(String query) {

@@ -1,17 +1,23 @@
 package fr.yvernal.yvernalkingdom.utils;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -159,8 +165,67 @@ public class ItemBuilder {
         return meta(LeatherArmorMeta.class, m -> m.setColor(color));
     }
 
+    public ItemBuilder skullTexture(String base64) {
+        final SkullMeta skullMeta = (SkullMeta) this.meta;
+
+        try {
+            final Method profileMethod = skullMeta.getClass().getDeclaredMethod("setProfile", GameProfile.class);
+            profileMethod.setAccessible(true);
+            profileMethod.invoke(skullMeta, gameProfile(base64));
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            try {
+                final Field profileField = skullMeta.getClass().getDeclaredField("profile");
+                profileField.setAccessible(true);
+                profileField.set(skullMeta, gameProfile(base64));
+            } catch (NoSuchFieldException | IllegalAccessException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        item.setItemMeta(skullMeta);
+
+        return this;
+    }
+
+    public ItemBuilder owner(OfflinePlayer offlinePlayer) {
+        if (this.meta instanceof SkullMeta) {
+            final SkullMeta skullMeta = (SkullMeta) this.meta;
+
+            final CraftPlayer craftPlayer = (CraftPlayer) Bukkit.getPlayer(offlinePlayer.getUniqueId());
+
+            final GameProfile gameProfile = craftPlayer == null ? new GameProfile(offlinePlayer.getUniqueId(),
+                    offlinePlayer.getName()) : craftPlayer.getProfile();
+
+            try {
+                final Method profileMethod = skullMeta.getClass().getDeclaredMethod("setProfile", GameProfile.class);
+                profileMethod.setAccessible(true);
+                profileMethod.invoke(skullMeta, gameProfile);
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                try {
+                    final Field profileField = skullMeta.getClass().getDeclaredField("profile");
+                    profileField.setAccessible(true);
+                    profileField.set(skullMeta, gameProfile);
+                } catch (NoSuchFieldException | IllegalAccessException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            item.setItemMeta(skullMeta);
+        }
+
+        return this;
+    }
+
     public ItemStack build() {
         this.item.setItemMeta(this.meta);
         return this.item;
+    }
+
+    private GameProfile gameProfile(String base64) {
+        final GameProfile profile = new GameProfile(UUID.randomUUID(), "Player");
+
+        profile.getProperties().put("textures", new Property("textures", base64));
+
+        return profile;
     }
 }

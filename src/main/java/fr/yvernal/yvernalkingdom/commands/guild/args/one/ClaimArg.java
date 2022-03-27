@@ -36,9 +36,7 @@ public class ClaimArg extends YvernalArg {
                         player.sendMessage(messagesManager.getString("already-claim-by-guild-error")
                                 .replace("%guilde%", claim.getClaimData().getGuildName()));
                     } else {
-                        dataManager.getClaimManager().getClaims().remove(claim);
                         claim.setUnClaim(false);
-                        dataManager.getClaimManager().getClaims().add(claim);
 
                         playerGuild.getGuildData().getMembersUniqueId()
                                 .stream()

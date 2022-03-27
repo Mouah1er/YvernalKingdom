@@ -16,11 +16,13 @@ public class PlayerAccount {
     private GuildRank guildRank;
     private String waitingKingdomName;
     private String kingdomName;
+    private long kills;
+    private long deaths;
 
     private int powerTaskId;
 
     public PlayerAccount(UUID uniqueId, int power, double valis, String guildName, String guildUniqueId, GuildRank guildRank,
-                         String waitingKingdomName, String kingdomName) {
+                         String waitingKingdomName, String kingdomName, long kills, long deaths) {
         this.uniqueId = uniqueId;
         this.power = power;
         this.valis = valis;
@@ -29,6 +31,8 @@ public class PlayerAccount {
         this.guildRank = guildRank;
         this.waitingKingdomName = waitingKingdomName;
         this.kingdomName = kingdomName;
+        this.kills = kills;
+        this.deaths = deaths;
     }
 
     public UUID getUniqueId() {
@@ -47,7 +51,7 @@ public class PlayerAccount {
         return valis;
     }
 
-    public void setValis(int valis) {
+    public void setValis(double valis) {
         this.valis = valis;
     }
 
@@ -97,5 +101,38 @@ public class PlayerAccount {
 
     public void setPowerTaskId(int powerTaskId) {
         this.powerTaskId = powerTaskId;
+    }
+
+    public long getKills() {
+        return kills;
+    }
+
+    public void setKills(long kills) {
+        this.kills = kills;
+    }
+
+    public long getDeaths() {
+        return deaths;
+    }
+
+    public void setDeaths(long deaths) {
+        this.deaths = deaths;
+    }
+
+    @Override
+    public String toString() {
+        return "PlayerAccount{" +
+                "uniqueId=" + uniqueId +
+                ", power=" + power +
+                ", valis=" + valis +
+                ", guildName='" + guildName + '\'' +
+                ", guildUniqueId='" + guildUniqueId + '\'' +
+                ", guildRank=" + guildRank +
+                ", waitingKingdomName='" + waitingKingdomName + '\'' +
+                ", kingdomName='" + kingdomName + '\'' +
+                ", kills=" + kills +
+                ", deaths=" + deaths +
+                ", powerTaskId=" + powerTaskId +
+                '}';
     }
 }

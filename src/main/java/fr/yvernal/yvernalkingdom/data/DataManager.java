@@ -5,6 +5,7 @@ import fr.yvernal.yvernalkingdom.data.database.DatabaseManager;
 import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.GuildDataManager;
 import fr.yvernal.yvernalkingdom.data.kingdoms.KingdomDataManager;
 import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.claims.ClaimDataManager;
+import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.invitedplayers.InvitedPlayerDataManager;
 
 /**
  * Permet d'accéder à toutes les informations dans la base de données
@@ -15,6 +16,7 @@ public class DataManager {
     private final GuildDataManager guildDataManager;
     private final PlayerAccountManager playerAccountManager;
     private final ClaimDataManager claimDataManager;
+    private final InvitedPlayerDataManager invitedPlayerDataManager;
 
     public DataManager(String dbPath) {
         this.databaseManager = new DatabaseManager(dbPath);
@@ -22,6 +24,7 @@ public class DataManager {
         this.guildDataManager = new GuildDataManager(this);
         this.playerAccountManager = new PlayerAccountManager(this);
         this.claimDataManager = new ClaimDataManager(this);
+        this.invitedPlayerDataManager = new InvitedPlayerDataManager(this);
     }
 
     public DatabaseManager getDatabaseManager() {
@@ -42,5 +45,9 @@ public class DataManager {
 
     public ClaimDataManager getClaimManager() {
         return claimDataManager;
+    }
+
+    public InvitedPlayerDataManager getInvitedPlayerDataManager() {
+        return invitedPlayerDataManager;
     }
 }

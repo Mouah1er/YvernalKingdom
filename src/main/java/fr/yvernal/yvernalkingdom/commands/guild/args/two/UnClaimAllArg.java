@@ -28,10 +28,8 @@ public class UnClaimAllArg extends YvernalArg {
                 } else {
 
                     for (Claim claim : claimsNoUnclaim) {
-                        dataManager.getClaimManager().getClaims().remove(claim);
                         claim.setUnClaim(true);
                         claim.setNew(false);
-                        dataManager.getClaimManager().getClaims().add(claim);
                     }
 
                     playerGuild.sendMessageToMembers(messagesManager.getString("successfully-unclaimed-all-chunk")

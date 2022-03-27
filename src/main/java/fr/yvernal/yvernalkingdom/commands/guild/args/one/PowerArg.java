@@ -9,7 +9,6 @@ public class PowerArg extends YvernalArg {
     @Override
     public void execute(Player player, String[] args) {
         final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
-        System.out.println(playerAccount.getPower() + " power");
 
         player.sendMessage(messagesManager.getString("send-power-to-player")
                 .replace("%power%", String.valueOf(playerAccount.getPower())));

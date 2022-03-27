@@ -10,9 +10,22 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class ConfigUtils {
+
+    public static void createFileIfNotExists(File file) {
+        if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void writeToFile(String category, File file) {
         final URL localInputUrl = Main.class.getResource("/" + category + "/" + file.getName());
@@ -42,7 +55,7 @@ public class ConfigUtils {
         }
     }
 
-    public static FileSystem initFileSystem(URI uri) throws IOException {
+    private static FileSystem initFileSystem(URI uri) throws IOException {
         try {
             return FileSystems.getFileSystem(uri);
         } catch (FileSystemNotFoundException e) {
