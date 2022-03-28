@@ -6,6 +6,7 @@ import fr.yvernal.yvernalkingdom.data.DataManager;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccountManager;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.listeners.YvernalListener;
+import fr.yvernal.yvernalkingdom.utils.GroupManagerHook;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,6 +19,7 @@ public class Main extends JavaPlugin {
     private ConfigManager configManager;
     private DataManager dataManager;
     private HashMap<UUID, CompletableFuture<String>> messageWaiter;
+    private GroupManagerHook groupManagerHook;
 
     @Override
     public void onEnable() {
@@ -28,6 +30,7 @@ public class Main extends JavaPlugin {
         this.configManager = new ConfigManager();
         this.dataManager = new DataManager(getDataFolder().getAbsolutePath() + File.separator + "database.db");
         this.messageWaiter = new HashMap<>();
+        this.groupManagerHook = new GroupManagerHook(this);
 
         YvernalListener.registerListeners();
         YvernalCommand.registerCommands();
@@ -69,5 +72,9 @@ public class Main extends JavaPlugin {
 
     public HashMap<UUID, CompletableFuture<String>> getMessageWaiter() {
         return messageWaiter;
+    }
+
+    public GroupManagerHook getGroupManagerHook() {
+        return groupManagerHook;
     }
 }

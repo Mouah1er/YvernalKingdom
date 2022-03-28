@@ -11,13 +11,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class PlayerJoinListener implements YvernalListener<PlayerJoinEvent> {
+public class PlayerJoinListener extends YvernalListener<PlayerJoinEvent> {
 
     @Override
     @EventHandler
     public void onEvent(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        final PlayerAccountManager playerAccountManager = Main.getInstance().getDataManager().getPlayerAccountManager();
+        final PlayerAccountManager playerAccountManager = dataManager.getPlayerAccountManager();
         PlayerAccount playerAccount = playerAccountManager.getPlayerAccount(player.getUniqueId());
 
         if (playerAccount == null) {
@@ -31,7 +31,9 @@ public class PlayerJoinListener implements YvernalListener<PlayerJoinEvent> {
             Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> new ChooseKingdomInventory().open(player), 1);
         }
 
-        playerAccount.setPowerTaskId(new PowerAdditionsBukkitRunnable(player, playerAccount)
-                .runTaskTimerAsynchronously(Main.getInstance(), 10, 20).getTaskId());
+        final PowerAdditionsBukkitRunnable powerAdditionsBukkitRunnable = new PowerAdditionsBukkitRunnable(player, playerAccount);
+        powerAdditionsBukkitRunnable.runTaskTimerAsynchronously(Main.getInstance(), 10, 20);
+
+        playerAccount.setPowerRunnable(powerAdditionsBukkitRunnable);
     }
 }

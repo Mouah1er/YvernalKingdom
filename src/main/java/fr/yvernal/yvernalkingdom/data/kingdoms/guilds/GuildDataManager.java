@@ -2,6 +2,7 @@ package fr.yvernal.yvernalkingdom.data.kingdoms.guilds;
 
 import fr.yvernal.yvernalkingdom.data.DataManager;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
+import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
 import fr.yvernal.yvernalkingdom.utils.LocationUtils;
 import org.bukkit.Location;
 

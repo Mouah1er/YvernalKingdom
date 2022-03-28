@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-public class PlayerMoveListener implements YvernalListener<PlayerMoveEvent> {
+public class PlayerMoveListener extends YvernalListener<PlayerMoveEvent> {
 
     @Override
     @EventHandler
@@ -15,12 +15,12 @@ public class PlayerMoveListener implements YvernalListener<PlayerMoveEvent> {
 
         if (event.getFrom().getBlockX() != event.getTo().getBlockX() || event.getFrom().getBlockZ() != event.getTo().getBlockZ() ||
                 event.getFrom().getBlockY() != event.getTo().getBlockY()) {
-            final PlayerAccount playerAccount = Main.getInstance().getDataManager().getPlayerAccountManager()
+            final PlayerAccount playerAccount = dataManager.getPlayerAccountManager()
                     .getPlayerAccount(player.getUniqueId());
 
             if (playerAccount.isWaitingToTeleportToHome()) {
                 playerAccount.setWaitingToTeleportToHome(false);
-                player.sendMessage(Main.getInstance().getConfigManager().getMessagesManager().getString("player-has-moved"));
+                player.sendMessage(messagesManager.getString("player-has-moved"));
             }
         }
     }

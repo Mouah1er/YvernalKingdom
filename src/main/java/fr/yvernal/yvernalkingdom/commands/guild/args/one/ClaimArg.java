@@ -10,6 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -28,39 +30,46 @@ public class ClaimArg extends YvernalArg {
 
                 final Kingdom kingdom = dataManager.getKingdomDataManager().getKingdomByUniqueId(player.getUniqueId());
 
-                if (!kingdom.getKingdomProperties().getTotalTerritoryCuboid().isIn(player))  {
+                if (!kingdom.getKingdomProperties().getTotalTerritoryCuboid().isIn(player)) {
                     player.sendMessage(messagesManager.getString("player-try-claim-outside-kingdom"));
                 } else {
-                    final Optional<Claim> optionalClaim = claims.stream().filter(claim -> claim.getClaimData().getX() == playerChunk.getX() &&
-                                    claim.getClaimData().getZ() == playerChunk.getZ())
-                            .findFirst();
-
-                    if (optionalClaim.isPresent()) {
-                        final Claim claim = optionalClaim.get();
-
-                        if (!claim.isUnClaim()) {
-                            player.sendMessage(messagesManager.getString("already-claim-by-guild-error")
-                                    .replace("%guilde%", claim.getClaimData().getGuildName()));
-                        } else {
-                            claim.setUnClaim(false);
-
-                            playerGuild.getGuildData().getMembersUniqueId()
-                                    .stream()
-                                    .map(Bukkit::getPlayer)
-                                    .filter(Objects::nonNull)
-                                    .forEach(player1 -> player1.sendMessage(messagesManager.getString("successfully-claimed-chunk")
-                                            .replace("%player%", player.getName())
-                                            .replace("%x%", String.valueOf(playerChunk.getX()))
-                                            .replace("%z%", String.valueOf(playerChunk.getZ()))));
-                        }
+                    if (playerAccount.getPower() == 0) {
+                        final int hour = playerAccount.getPowerRunnable().getTimer() / 3600;
+                        final int minuts = (playerAccount.getPowerRunnable().getTimer() % 3600) / 60;
+                        player.sendMessage(messagesManager.getString("no-power-to-claim")
+                                .replace("%time%", hour + "h" + minuts + "min"));
                     } else {
-                        dataManager.getClaimManager().getClaims().add(new Claim(new ClaimData(playerGuild.getGuildData().getGuildUniqueId(),
-                                playerGuild.getGuildData().getName(), playerChunk.getX(), playerChunk.getZ()), false, true));
+                        final Optional<Claim> optionalClaim = claims.stream().filter(claim -> claim.getClaimData().getX() == playerChunk.getX() &&
+                                        claim.getClaimData().getZ() == playerChunk.getZ())
+                                .findFirst();
 
-                        playerGuild.sendMessageToMembers(messagesManager.getString("successfully-claimed-chunk")
-                                .replace("%player%", player.getName())
-                                .replace("%x%", String.valueOf(playerChunk.getX()))
-                                .replace("%z%", String.valueOf(playerChunk.getZ())));
+                        if (optionalClaim.isPresent()) {
+                            final Claim claim = optionalClaim.get();
+
+                            if (!claim.isUnClaim()) {
+                                player.sendMessage(messagesManager.getString("already-claim-by-guild-error")
+                                        .replace("%guilde%", claim.getClaimData().getGuildName()));
+                            } else {
+                                claim.setUnClaim(false);
+
+                                playerGuild.getGuildData().getMembersUniqueId()
+                                        .stream()
+                                        .map(Bukkit::getPlayer)
+                                        .filter(Objects::nonNull)
+                                        .forEach(player1 -> player1.sendMessage(messagesManager.getString("successfully-claimed-chunk")
+                                                .replace("%player%", player.getName())
+                                                .replace("%x%", String.valueOf(playerChunk.getX()))
+                                                .replace("%z%", String.valueOf(playerChunk.getZ()))));
+                            }
+                        } else {
+                            dataManager.getClaimManager().getClaims().add(new Claim(new ClaimData(playerGuild.getGuildData().getGuildUniqueId(),
+                                    playerGuild.getGuildData().getName(), playerChunk.getX(), playerChunk.getZ()), false, true));
+
+                            playerGuild.sendMessageToMembers(messagesManager.getString("successfully-claimed-chunk")
+                                    .replace("%player%", player.getName())
+                                    .replace("%x%", String.valueOf(playerChunk.getX()))
+                                    .replace("%z%", String.valueOf(playerChunk.getZ())));
+                        }
                     }
                 }
             }

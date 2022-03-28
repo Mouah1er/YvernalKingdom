@@ -8,18 +8,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerLeaveListener implements YvernalListener<PlayerQuitEvent> {
+public class PlayerLeaveListener extends YvernalListener<PlayerQuitEvent> {
 
     @Override
     @EventHandler
     public void onEvent(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
-        final PlayerAccountManager playerAccountManager = Main.getInstance().getDataManager().getPlayerAccountManager();
+        final PlayerAccountManager playerAccountManager = dataManager.getPlayerAccountManager();
         final PlayerAccount playerAccount = playerAccountManager.getPlayerAccount(player.getUniqueId());
 
         playerAccountManager.updatePlayerAccountToDatabase(playerAccount);
         playerAccountManager.getAccounts().remove(playerAccount);
 
-        Bukkit.getScheduler().cancelTask(playerAccount.getPowerTaskId());
+        Bukkit.getScheduler().cancelTask(playerAccount.getPowerRunnable().getTaskId());
     }
 }

@@ -1,6 +1,7 @@
 package fr.yvernal.yvernalkingdom.data.accounts;
 
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.GuildRank;
+import fr.yvernal.yvernalkingdom.tasks.PowerAdditionsBukkitRunnable;
 
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ public class PlayerAccount {
     private long kills;
     private long deaths;
 
-    private int powerTaskId;
+    private PowerAdditionsBukkitRunnable powerRunnable;
     private boolean isWaitingToTeleportToHome;
     private boolean isNew;
 
@@ -122,12 +123,12 @@ public class PlayerAccount {
         this.isNew = isNew;
     }
 
-    public int getPowerTaskId() {
-        return powerTaskId;
+    public PowerAdditionsBukkitRunnable getPowerRunnable() {
+        return powerRunnable;
     }
 
-    public void setPowerTaskId(int powerTaskId) {
-        this.powerTaskId = powerTaskId;
+    public void setPowerRunnable(PowerAdditionsBukkitRunnable powerRunnable) {
+        this.powerRunnable = powerRunnable;
     }
 
     public boolean isWaitingToTeleportToHome() {
@@ -151,7 +152,9 @@ public class PlayerAccount {
                 ", kingdomName='" + kingdomName + '\'' +
                 ", kills=" + kills +
                 ", deaths=" + deaths +
-                ", powerTaskId=" + powerTaskId +
+                ", powerRunnable=" + powerRunnable +
+                ", isWaitingToTeleportToHome=" + isWaitingToTeleportToHome +
+                ", isNew=" + isNew +
                 '}';
     }
 }

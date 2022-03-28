@@ -90,4 +90,13 @@ public class ClaimDataManager {
                 .filter(claim -> claim.getClaimData().getGuildName().equals(guild.getGuildData().getName()))
                 .collect(Collectors.toList());
     }
+
+    public Claim getClaimAt(int x, int z) {
+        return getClaims().stream()
+                .filter(Objects::nonNull)
+                .filter(claim -> claim.getClaimData().getX() == x)
+                .filter(claim -> claim.getClaimData().getZ() == z)
+                .findFirst()
+                .orElse(null);
+    }
 }

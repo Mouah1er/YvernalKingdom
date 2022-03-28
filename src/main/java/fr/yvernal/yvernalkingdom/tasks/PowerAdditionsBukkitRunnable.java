@@ -11,7 +11,7 @@ public class PowerAdditionsBukkitRunnable extends BukkitRunnable {
     private final Player player;
     private final PlayerAccount playerAccount;
 
-    private int timer;
+    private int timer = 7200;
 
     public PowerAdditionsBukkitRunnable(Player player, PlayerAccount playerAccount) {
         this.player = player;
@@ -20,9 +20,9 @@ public class PowerAdditionsBukkitRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
-        timer++;
+        timer--;
 
-        if (timer == 7200) { // 2 heures
+        if (timer == 0) { // 2 heures
             if (playerAccount.getPower() != 10) {
                 playerAccount.setPower(playerAccount.getPower() + 2);
                 final Guild playerGuild = Main.getInstance().getDataManager().getGuildDataManager()
@@ -33,7 +33,11 @@ public class PowerAdditionsBukkitRunnable extends BukkitRunnable {
                 player.sendMessage(Main.getInstance().getConfigManager().getMessagesManager().getString("added-power-to-player"));
             }
 
-            timer = 0;
+            timer = 7200;
         }
+    }
+
+    public int getTimer() {
+        return timer;
     }
 }

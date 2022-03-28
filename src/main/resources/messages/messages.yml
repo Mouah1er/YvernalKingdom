@@ -34,6 +34,7 @@ guild-name-already-exists: "§cLe nom de la guilde est déjà pris !"
 
 player-try-claim-outside-kingdom: "§cVous ne pouvez pas claim un chunk hors de votre royaume !"
 already-claim-by-guild-error: "§cLa guilde %guilde% a déjà claim ce chunk !"
+no-power-to-claim: "§cVous n'avez pas assez de power pour claim ce chunk ! §7§o(Encore %time% pour avoir 2 power)"
 successfully-claimed-chunk: "§aLe joueur §b%player% §aa claim le chunk aux coordonnées suivantes: §9%x% §a; §9%z%"
 
 not-claimed-by-player-guild-error: "§cCe n'est pas votre guilde qui possède le claim mais la guilde §b%guilde% §c!"
@@ -111,3 +112,8 @@ player-kicked-from-guild: "§aLe joueur %player% a été kick de la guilde !"
 player-kicked: "§cVous avez été kick de votre guilde !"
 
 guild-new-leader: "§aLe joueur %player% a été promu §cMaitre de Guilde §a!"
+
+too-many-guilds-on-map: "§cIl y a trop de guildes (>%max_number%) sur cette map !"
+map-center-tooltip: "§aVous êtes ici !"
+map-wilderness-tooltip: "§2Wilderness §7(%chunk_x% | %chunk_z%)"
+map-guild-tooltip: "§aGuilde: %guilde% §7(%chunk_x% | %chunk_z%)"

@@ -46,8 +46,8 @@ game:
   cristal-regen-after-death-time: 3600 # c'est en secondes
   cristal-regen-health: 30 # c'est en hp, pas en coeurs
   cristal-regen-time: 60 # c'est en secondes
-  chat-format: "%{guild}% %{rank}% %{name}% &d»&f %{message}%"
-  general-chat-format: "%{guild}% %{rank}% %{name}% &d» %{kingdom-color}%%{message}%"
+  kingdom-chat-format: "%{guild_rank_prefix}% %{guild}% %{player_grade}% %{name}% &7:&f %{message}%"
+  global-chat-format: "%{guild_rank_prefix}%%{guild}% %{player_grade}% %{name}% &7: %{kingdom_color}%%{message}%"
   golem-damage: 20 # c'est en hp
   golem-name: "Golème"
   cps-max-speed: 12

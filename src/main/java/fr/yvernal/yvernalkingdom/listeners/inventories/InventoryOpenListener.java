@@ -5,7 +5,7 @@ import fr.yvernal.yvernalkingdom.listeners.YvernalListener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
-public class InventoryOpenListener implements YvernalListener<InventoryOpenEvent> {
+public class InventoryOpenListener extends YvernalListener<InventoryOpenEvent> {
 
     @Override
     @EventHandler
