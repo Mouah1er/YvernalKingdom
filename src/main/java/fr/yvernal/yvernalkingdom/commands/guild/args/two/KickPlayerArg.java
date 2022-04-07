@@ -38,17 +38,7 @@ public class KickPlayerArg extends YvernalArg {
                                 player.sendMessage(messagesManager.getString("cannot-kick")
                                         .replace("%player%", targetPlayer.getName()));
                             } else {
-                                playerGuild.getGuildData().getMembersUniqueId().remove(targetPlayer.getUniqueId());
-                                targetPlayerAccount.setGuildName("no-guild");
-                                targetPlayerAccount.setGuildUniqueId("no-guild");
-                                targetPlayerAccount.setGuildRank(GuildRank.NO_GUILD);
-                                playerGuild.getGuildData().setPower(targetPlayerGuild.getGuildData().getPower() - targetPlayerAccount
-                                        .getPower());
-                                playerGuild.sendMessageToMembers(messagesManager.getString("player-kicked-from-guild")
-                                        .replace("%player%", player.getName()));
-                                if (targetPlayer.isOnline()) {
-                                    ((Player) targetPlayer).sendMessage(messagesManager.getString("player-kicked"));
-                                }
+                                targetPlayerGuild.kickPlayer(targetPlayerAccount, targetPlayer, messagesManager);
                             }
                         }
                     }

@@ -25,7 +25,6 @@ public class ClaimArg extends YvernalArg {
 
         if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
             if (!guildRankIsMemberWithMessage(player, playerAccount)) {
-                final List<Claim> claims = dataManager.getClaimManager().getClaims();
                 final Chunk playerChunk = player.getLocation().getChunk();
 
                 final Kingdom kingdom = dataManager.getKingdomDataManager().getKingdomByUniqueId(player.getUniqueId());
@@ -39,29 +38,9 @@ public class ClaimArg extends YvernalArg {
                         player.sendMessage(messagesManager.getString("no-power-to-claim")
                                 .replace("%time%", hour + "h" + minuts + "min"));
                     } else {
-                        final Optional<Claim> optionalClaim = claims.stream().filter(claim -> claim.getClaimData().getX() == playerChunk.getX() &&
-                                        claim.getClaimData().getZ() == playerChunk.getZ())
-                                .findFirst();
+                        final Claim claim = dataManager.getClaimManager().getClaimAt(playerChunk.getX(), playerChunk.getZ());
 
-                        if (optionalClaim.isPresent()) {
-                            final Claim claim = optionalClaim.get();
-
-                            if (!claim.isUnClaim()) {
-                                player.sendMessage(messagesManager.getString("already-claim-by-guild-error")
-                                        .replace("%guilde%", claim.getClaimData().getGuildName()));
-                            } else {
-                                claim.setUnClaim(false);
-
-                                playerGuild.getGuildData().getMembersUniqueId()
-                                        .stream()
-                                        .map(Bukkit::getPlayer)
-                                        .filter(Objects::nonNull)
-                                        .forEach(player1 -> player1.sendMessage(messagesManager.getString("successfully-claimed-chunk")
-                                                .replace("%player%", player.getName())
-                                                .replace("%x%", String.valueOf(playerChunk.getX()))
-                                                .replace("%z%", String.valueOf(playerChunk.getZ()))));
-                            }
-                        } else {
+                        if (claim == null) {
                             dataManager.getClaimManager().getClaims().add(new Claim(new ClaimData(playerGuild.getGuildData().getGuildUniqueId(),
                                     playerGuild.getGuildData().getName(), playerChunk.getX(), playerChunk.getZ()), false, true));
 
@@ -69,6 +48,8 @@ public class ClaimArg extends YvernalArg {
                                     .replace("%player%", player.getName())
                                     .replace("%x%", String.valueOf(playerChunk.getX()))
                                     .replace("%z%", String.valueOf(playerChunk.getZ())));
+                        } else {
+                            claim.claim(playerGuild, player, messagesManager);
                         }
                     }
                 }

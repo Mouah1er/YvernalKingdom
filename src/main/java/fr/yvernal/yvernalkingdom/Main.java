@@ -3,6 +3,7 @@ package fr.yvernal.yvernalkingdom;
 import fr.yvernal.yvernalkingdom.commands.YvernalCommand;
 import fr.yvernal.yvernalkingdom.config.ConfigManager;
 import fr.yvernal.yvernalkingdom.data.DataManager;
+import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccountManager;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.listeners.YvernalListener;
@@ -19,6 +20,7 @@ public class Main extends JavaPlugin {
     private ConfigManager configManager;
     private DataManager dataManager;
     private HashMap<UUID, CompletableFuture<String>> messageWaiter;
+    private HashMap<UUID, PlayerAccount> spawnedCreepersByPlayer;
     private GroupManagerHook groupManagerHook;
 
     @Override
@@ -30,6 +32,7 @@ public class Main extends JavaPlugin {
         this.configManager = new ConfigManager();
         this.dataManager = new DataManager(getDataFolder().getAbsolutePath() + File.separator + "database.db");
         this.messageWaiter = new HashMap<>();
+        this.spawnedCreepersByPlayer = new HashMap<>();
         this.groupManagerHook = new GroupManagerHook(this);
 
         YvernalListener.registerListeners();
@@ -53,7 +56,7 @@ public class Main extends JavaPlugin {
 
         getDataManager().getGuildDataManager().getGuilds().forEach(guild -> {
             getDataManager().getGuildDataManager().updateGuildToDatabase(guild);
-            getDataManager().getClaimManager().getClaims(guild).forEach(claim -> getDataManager().getClaimManager().updateClaimToDatabase(guild, claim));
+            getDataManager().getClaimManager().getGuildClaims(guild).forEach(claim -> getDataManager().getClaimManager().updateClaimToDatabase(guild, claim));
             getDataManager().getInvitedPlayerDataManager().getInvitedPlayers().forEach(invitedPlayer -> getDataManager().getInvitedPlayerDataManager().updateInvitedPlayerToDatabase(invitedPlayer));
         });
     }
@@ -72,6 +75,10 @@ public class Main extends JavaPlugin {
 
     public HashMap<UUID, CompletableFuture<String>> getMessageWaiter() {
         return messageWaiter;
+    }
+
+    public HashMap<UUID, PlayerAccount> getSpawnedCreepersByPlayer() {
+        return spawnedCreepersByPlayer;
     }
 
     public GroupManagerHook getGroupManagerHook() {

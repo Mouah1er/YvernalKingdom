@@ -117,3 +117,30 @@ too-many-guilds-on-map: "§cIl y a trop de guildes (>%max_number%) sur cette map
 map-center-tooltip: "§aVous êtes ici !"
 map-wilderness-tooltip: "§2Wilderness §7(%chunk_x% | %chunk_z%)"
 map-guild-tooltip: "§aGuilde: %guilde% §7(%chunk_x% | %chunk_z%)"
+
+admin-mode-enabled: "§cAttention ! Vous êtes passé dans le mode admin !"
+admin-mode-commands: [ "§7§m----------§9 Commandes en Admin §7§m----------",
+                       "§7-§6/guilde admin§3: Alterner entre le mode Admin et le mode Normal",
+                       "§7-§6/guilde disband <guild>§3: Supprimer ladite guilde",
+                       "§7-§6/guilde kick <joueur>§3: Kick ledit joueur de sa guilde",
+                       "§7-§6/guilde unclaim§3: Unclaim votre chunk",
+                       "§7-§6/guilde claim <guilde>§3: Claim un chunk pour une guilde",
+                       "§7-§6/guilde fullpower <joueur>§3: Mettre le power dudit joueur au max",
+                       "§7-§6/cristal givexp <exp> <kingdom>§3: Donner de l'exp à un cristal",
+                       "§7-§6/cristal givelvl <lvl> <kingdom>§3: Donner des levels à un cristal",
+                       "§7-§6/cristal takexp <exp> <kingdom>§3: Retirer de l'exp au cristal",
+                       "§7-§6/cristal takelvl <lvl> <kingdom>§3: Retirer des levels à un cristal" ]
+admin-mode-disabled: "§cAttention ! Vous avez quitté le mode admin !"
+
+admin-full-power-player: "§aVotre power a été mis à 10 !"
+admin-full-powered-player: "§aVous avez défini le power de %player% à 10 !"
+
+player-cant-interact-in-claim: "§cVous ne pouvez pas intéragir avec cet objet car vous n'êtes pas dans votre claim !"
+player-cant-place-in-claim: "§cVous ne pouvez pas poser de block car vous n'êtes pas dans votre claim !"
+player-cant-break-in-claim: "§cVous ne pouvez pas casser de block car vous n'êtes pas dans votre claim !"
+
+player-cant-attack-kingdom-member: "§cVous ne pouvez pas attaquer %player% car il est dans votre Royaume !"
+
+player-has-moved-to-new-kingdom: "§cAttention ! Vous êtes entré dans le Royaume ennemi %kingdom% !"
+player-cant-attack-because-not-in-battle: "§cVous ne pouvez pas attaquer %player% car vous n'êtes pas en combat avec lui !"
+player-in-battle: "§cVous êtes entré en combat avec %player% !"

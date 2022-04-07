@@ -75,7 +75,7 @@ public class ShowGuildInventory extends InventoryCreator {
 
                     if (s.contains("%claims%")) {
                         return s.replace("%claims%", String.valueOf(Main.getInstance().getDataManager()
-                                .getClaimManager().getClaims(guild).size()));
+                                .getClaimManager().getGuildClaims(guild).size()));
                     }
 
                     return s;

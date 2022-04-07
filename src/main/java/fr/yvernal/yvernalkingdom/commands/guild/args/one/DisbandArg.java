@@ -15,24 +15,7 @@ public class DisbandArg extends YvernalArg {
 
         if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
             if (guildRankIsMasterWithMessage(player, playerAccount)) {
-                playerGuild.setDeleted(true);
-                playerGuild.setNew(false);
-                dataManager.getKingdomDataManager().getKingdomByNumber(playerAccount.getKingdomName()).getKingdomData().getGuildsIn()
-                        .stream()
-                        .filter(guild -> guild.getGuildData().getGuildUniqueId().equals(playerGuild.getGuildData().getGuildUniqueId()))
-                        .forEach(guild -> {
-                            guild.setDeleted(true);
-                            guild.setNew(false);
-                        });
-                playerAccount.setGuildRank(GuildRank.NO_GUILD);
-                playerAccount.setGuildName("no-guild");
-                playerAccount.setGuildUniqueId("no-guild");
-                dataManager.getClaimManager().getClaims(playerGuild).forEach(claim -> {
-                    claim.setUnClaim(true);
-                    claim.setNew(false);
-                });
-
-                playerGuild.sendMessageToMembers(messagesManager.getString("successfully-deleted-guild"));
+                playerGuild.disband(dataManager, messagesManager);
             }
         }
     }

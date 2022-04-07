@@ -84,7 +84,7 @@ public class ClaimDataManager {
         return claims;
     }
 
-    public List<Claim> getClaims(Guild guild) {
+    public List<Claim> getGuildClaims(Guild guild) {
         return getClaims().stream()
                 .filter(Objects::nonNull)
                 .filter(claim -> claim.getClaimData().getGuildName().equals(guild.getGuildData().getName()))

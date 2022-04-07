@@ -9,15 +9,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public interface YvernalCommand extends CommandExecutor, TabCompleter {
+public abstract class YvernalCommand implements CommandExecutor, TabCompleter {
+    @Override
+    public abstract boolean onCommand(CommandSender sender, Command cmd, String label, String[] args);
 
     @Override
-    boolean onCommand(CommandSender sender, Command cmd, String label, String[] args);
+    public abstract List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args);
 
-    @Override
-    List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args);
-
-    static void registerCommands() {
+    public static void registerCommands() {
         final Reflections reflections = new Reflections("fr.yvernal.yvernalkingdom");
 
         final Set<Class<? extends YvernalCommand>> classes = reflections.getSubTypesOf(YvernalCommand.class);

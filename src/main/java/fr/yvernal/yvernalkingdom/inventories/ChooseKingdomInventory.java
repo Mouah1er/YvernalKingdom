@@ -6,15 +6,13 @@ import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.inventories.template.InventoryCreator;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.utils.ItemBuilder;
+import fr.yvernal.yvernalkingdom.utils.TagUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 public class ChooseKingdomInventory extends InventoryCreator {
@@ -123,11 +121,11 @@ public class ChooseKingdomInventory extends InventoryCreator {
                 player.sendMessage(Main.getInstance().getConfigManager().getMessagesManager().getString("join-kingdom-waiting-list-message")
                         .replace("%kingdom%", displayName));
             } else if (inventory.getItem(event.getSlot() + 9).getDurability() == 5) {
-
                 Main.getInstance().getDataManager().getKingdomDataManager().makePlayerJoin(player.getUniqueId(),
                         kingdomName);
                 player.sendMessage(Main.getInstance().getConfigManager().getMessagesManager().getString("join-kingdom-message")
                         .replace("%kingdom%", displayName));
+                TagUtils.handlePlayerDisplayName(player);
             }
 
             player.closeInventory();

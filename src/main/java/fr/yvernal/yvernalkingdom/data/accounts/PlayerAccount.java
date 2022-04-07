@@ -3,7 +3,7 @@ package fr.yvernal.yvernalkingdom.data.accounts;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.GuildRank;
 import fr.yvernal.yvernalkingdom.tasks.PowerAdditionsBukkitRunnable;
 
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Représente les données d'un joueur
@@ -23,6 +23,8 @@ public class PlayerAccount {
     private PowerAdditionsBukkitRunnable powerRunnable;
     private boolean isWaitingToTeleportToHome;
     private boolean isNew;
+    private boolean isInAdminMode;
+    private final List<UUID> playerWithWhomInBattle = new ArrayList<>();
 
     public PlayerAccount(UUID uniqueId, int power, double valis, String guildName, String guildUniqueId, GuildRank guildRank,
                          String waitingKingdomName, String kingdomName, long kills, long deaths, boolean isNew) {
@@ -137,6 +139,18 @@ public class PlayerAccount {
 
     public void setWaitingToTeleportToHome(boolean waitingToTeleportToHome) {
         isWaitingToTeleportToHome = waitingToTeleportToHome;
+    }
+
+    public boolean isInAdminMode() {
+        return isInAdminMode;
+    }
+
+    public void setInAdminMode(boolean isInAdminMode) {
+        this.isInAdminMode = isInAdminMode;
+    }
+
+    public List<UUID> getPlayerWithWhomInBattle() {
+        return playerWithWhomInBattle;
     }
 
     @Override

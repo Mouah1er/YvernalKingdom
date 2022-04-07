@@ -3,6 +3,7 @@ package fr.yvernal.yvernalkingdom.data.kingdoms;
 import fr.yvernal.yvernalkingdom.data.DataManager;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
+import org.bukkit.Location;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -112,6 +113,14 @@ public class KingdomDataManager {
         return getKingdoms().stream()
                 .filter(Objects::nonNull)
                 .filter(kingdom -> kingdom.getKingdomData().getPlayersIn().contains(playerUniqueId))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Kingdom getKingdomByLocation(Location location) {
+        return getKingdoms().stream()
+                .filter(Objects::nonNull)
+                .filter(kingdom -> kingdom.getKingdomProperties().getTotalTerritoryCuboid().isIn(location))
                 .findFirst()
                 .orElse(null);
     }

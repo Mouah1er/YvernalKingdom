@@ -20,6 +20,7 @@ public class ListArg extends YvernalArg {
             final Joiner joiner = Joiner.on(", ");
             final String guilds = joiner.join(kingdom.getKingdomData().getGuildsIn()
                     .stream()
+                    .filter(guild -> !guild.isDeleted())
                     .map(guild -> guild.getGuildData().getName())
                     .collect(Collectors.toList()));
 

@@ -6,6 +6,7 @@ import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccountManager;
 import fr.yvernal.yvernalkingdom.inventories.ChooseKingdomInventory;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.GuildRank;
 import fr.yvernal.yvernalkingdom.tasks.PowerAdditionsBukkitRunnable;
+import fr.yvernal.yvernalkingdom.utils.TagUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,6 +27,8 @@ public class PlayerJoinListener extends YvernalListener<PlayerJoinEvent> {
         }
 
         playerAccountManager.getAccounts().add(playerAccount);
+
+        TagUtils.handlePlayerDisplayName(player);
 
         if (playerAccount.getWaitingKingdomName().equals("no-waiting-kingdom") && playerAccount.getKingdomName().equals("no-kingdom")) {
             Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> new ChooseKingdomInventory().open(player), 1);

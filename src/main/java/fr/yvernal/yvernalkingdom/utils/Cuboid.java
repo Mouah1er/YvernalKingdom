@@ -2,6 +2,7 @@ package fr.yvernal.yvernalkingdom.utils;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class Cuboid {
@@ -40,7 +41,7 @@ public class Cuboid {
                 .getBlockZ() >= this.zMin && loc.getBlockZ() <= this.zMax;
     }
 
-    public boolean isIn(final Player player) {
-        return this.isIn(player.getLocation());
+    public boolean isIn(final Entity entity) {
+        return this.isIn(entity.getLocation());
     }
 }

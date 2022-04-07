@@ -8,7 +8,6 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.Optional;
 
 public class UnClaimArg extends YvernalArg {
 
@@ -19,16 +18,13 @@ public class UnClaimArg extends YvernalArg {
 
         if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
             if (!guildRankIsMemberWithMessage(player, playerAccount)) {
-                final List<Claim> claims = dataManager.getClaimManager().getClaims();
                 final Chunk playerChunk = player.getLocation().getChunk();
 
-                final Optional<Claim> optionalClaim = claims.stream().filter(claim -> claim.getClaimData().getX() == playerChunk.getX() &&
-                                claim.getClaimData().getZ() == playerChunk.getZ())
-                        .findFirst();
+                final Claim claim = dataManager.getClaimManager().getClaimAt(playerChunk.getX(), playerChunk.getZ());
 
-                if (optionalClaim.isPresent()) {
-                    final Claim claim = optionalClaim.get();
-
+                if (claim == null) {
+                    player.sendMessage(messagesManager.getString("not-claimed"));
+                } else {
                     if (claim.isUnClaim()) {
                         player.sendMessage(messagesManager.getString("not-claimed"));
                     } else {
@@ -37,15 +33,13 @@ public class UnClaimArg extends YvernalArg {
                                     .replace("%guilde%", claim.getClaimData().getGuildName()));
                         } else {
                             playerGuild.sendMessageToMembers(messagesManager.getString("successfully-unclaimed")
-                                            .replace("%player%", player.getName())
-                                            .replace("%x%", String.valueOf(playerChunk.getX()))
-                                            .replace("%z%", String.valueOf(playerChunk.getZ())));
+                                    .replace("%player%", player.getName())
+                                    .replace("%x%", String.valueOf(playerChunk.getX()))
+                                    .replace("%z%", String.valueOf(playerChunk.getZ())));
                             claim.setNew(false);
                             claim.setUnClaim(true);
                         }
                     }
-                } else {
-                    player.sendMessage(messagesManager.getString("not-claimed"));
                 }
             }
         }

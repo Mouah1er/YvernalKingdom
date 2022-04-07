@@ -21,7 +21,7 @@ public class SetHomeArg extends YvernalArg {
         if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
             if (guildRankIsMasterWithMessage(player, playerAccount)) {
                 final Location playerLocation = player.getLocation();
-                final List<Chunk> claims = dataManager.getClaimManager().getClaims(playerGuild)
+                final List<Chunk> claims = dataManager.getClaimManager().getGuildClaims(playerGuild)
                         .stream()
                         .map(Claim::toChunk)
                         .collect(Collectors.toList());

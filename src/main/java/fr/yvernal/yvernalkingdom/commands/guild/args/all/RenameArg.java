@@ -22,25 +22,29 @@ public class RenameArg extends YvernalArg {
             if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
                 final String joinedArgs = joinArgs(args);
 
-                final Kingdom kingdomByUniqueId = dataManager.getKingdomDataManager().getKingdomByUniqueId(player.getUniqueId());
-                final List<Guild> guildsIn = kingdomByUniqueId
-                        .getKingdomData()
-                        .getGuildsIn();
-                for (Guild guild : guildsIn) {
-                    if (guild.getGuildData().getName().equals(joinedArgs) && !guild.isDeleted()) {
-                        player.sendMessage(messagesManager.getString("guild-name-already-exists"));
-
-                        return;
-                    }
-                }
-
-                if (joinedArgs.length() > 16) {
-                    player.sendMessage(messagesManager.getString("guild-name-too-big"));
+                if (joinedArgs.equalsIgnoreCase("no-guild")) {
+                    player.sendMessage(messagesManager.getString("could-not-create-guild"));
                 } else {
-                    playerGuild.getGuildData().setName(joinedArgs);
+                    final Kingdom kingdomByUniqueId = dataManager.getKingdomDataManager().getKingdomByUniqueId(player.getUniqueId());
+                    final List<Guild> guildsIn = kingdomByUniqueId
+                            .getKingdomData()
+                            .getGuildsIn();
+                    for (Guild guild : guildsIn) {
+                        if (guild.getGuildData().getName().equals(joinedArgs) && !guild.isDeleted()) {
+                            player.sendMessage(messagesManager.getString("guild-name-already-exists"));
 
-                    playerGuild.sendMessageToMembers(messagesManager.getString("successfully-changed-guild-name")
-                            .replace("%guilde%", playerGuild.getGuildData().getName()));
+                            return;
+                        }
+                    }
+
+                    if (joinedArgs.length() > 16) {
+                        player.sendMessage(messagesManager.getString("guild-name-too-big"));
+                    } else {
+                        playerGuild.getGuildData().setName(joinedArgs);
+
+                        playerGuild.sendMessageToMembers(messagesManager.getString("successfully-changed-guild-name")
+                                .replace("%guilde%", playerGuild.getGuildData().getName()));
+                    }
                 }
             }
         }
