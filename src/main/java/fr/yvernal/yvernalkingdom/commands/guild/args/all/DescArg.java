@@ -13,8 +13,8 @@ public class DescArg extends YvernalArg {
             player.sendMessage(messagesManager.getStringList("guild-command-help")
                     .toArray(new String[0]));
         } else {
-            final Guild playerGuild = dataManager.getGuildDataManager().getGuildByPlayer(player.getUniqueId());
             final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
+            final Guild playerGuild = playerAccount.getGuild();
 
             if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
                 final String joinedArgs = joinArgs(args);

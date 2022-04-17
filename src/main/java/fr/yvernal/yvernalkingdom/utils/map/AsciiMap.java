@@ -24,9 +24,6 @@ public class AsciiMap {
     private static final int WIDTH_HALF = WIDTH / 2;
     private static final int HEIGHT = 8;
     private static final int HEIGHT_HALF = HEIGHT / 2;
-    private static final String OVERFLOW_MESSAGE = Main.getInstance().getConfigManager().getMessagesManager()
-            .getString("too-many-guilds-on-map")
-            .replace("%max_number%", String.valueOf(GUILD_KEY_CHARS.length));
 
     private final double angle;
     private final Map<Guild, String> guildChars = new HashMap<>();
@@ -71,8 +68,7 @@ public class AsciiMap {
                                         .replace("%chunk_x%", String.valueOf(chunkAt.getX()))
                                         .replace("%chunk_z%", String.valueOf(chunkAt.getZ())));
                     } else {
-                        final Guild guildAt = Main.getInstance().getDataManager().getGuildDataManager()
-                                .getGuildByUniqueId(UUID.fromString(claimAt.getClaimData().getGuildUniqueId()));
+                        final Guild guildAt = claimAt.getClaimData().getGuild();
 
                         String guildChar = this.guildChars.get(guildAt);
 
@@ -86,16 +82,16 @@ public class AsciiMap {
                             if (guildChar != null) {
                                 jsonMessage.then(guildChar);
                             } else {
-                                final Guild playerGuild =
-                                        Main.getInstance().getDataManager().getGuildDataManager().getGuildByPlayer(player.getUniqueId());
+                                final Guild playerGuild = Main.getInstance().getDataManager().getPlayerAccountManager().getPlayerAccount(player.getUniqueId())
+                                        .getGuild();
 
                                 ChatColor color = ChatColor.GRAY;
                                 String name = guildAt.getGuildData().getName();
                                 if (playerGuild != null && !playerGuild.isDeleted()) {
                                     final boolean isPlayerGuild = playerGuild.getGuildData().getGuildUniqueId()
                                             .equals(guildAt.getGuildData().getGuildUniqueId());
-                                    final boolean isAlly = playerGuild.getGuildData().getKingdomName()
-                                            .equals(guildAt.getGuildData().getKingdomName());
+                                    final boolean isAlly = playerGuild.getGuildData().getKingdom().getKingdomProperties().getNumber()
+                                            .equals(guildAt.getGuildData().getKingdom().getKingdomProperties().getNumber());
 
                                     color = isPlayerGuild ? ChatColor.AQUA : isAlly ? ChatColor.GREEN :
                                             ChatColor.RED; // si la guilde est alliée, on affiche en vert, sinon en rouge
@@ -109,6 +105,8 @@ public class AsciiMap {
                                                 .replace("%guilde%", name)
                                                 .replace("%chunk_x%", String.valueOf(chunkAt.getX()))
                                                 .replace("%chunk_z%", String.valueOf(chunkAt.getZ())));
+
+                                guildChars.put(guildAt, guildChar);
                             }
                         }
                     }

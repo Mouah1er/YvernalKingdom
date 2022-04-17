@@ -2,6 +2,8 @@ package fr.yvernal.yvernalkingdom.kingdoms;
 
 import fr.yvernal.yvernalkingdom.Main;
 
+import java.util.Locale;
+
 public enum Kingdoms {
     KINGDOM_1(new Kingdom(Main.getInstance().getConfigManager().getKingdomPropertiesManager().getProperties("kingdom_1"),
             Main.getInstance().getDataManager().getKingdomDataManager().getKingdomDataFromDatabase("kingdom_1"))),
@@ -22,5 +24,17 @@ public enum Kingdoms {
 
     public Kingdom getKingdom() {
         return kingdom;
+    }
+
+    public static Kingdom getByNumber(String kingdomNumber) {
+        try {
+            return valueOf(kingdomNumber).getKingdom();
+        } catch (IllegalArgumentException e) {
+            try {
+                return valueOf(kingdomNumber.toUpperCase(Locale.ROOT)).getKingdom();
+            } catch (IllegalArgumentException ex) {
+                return null;
+            }
+        }
     }
 }

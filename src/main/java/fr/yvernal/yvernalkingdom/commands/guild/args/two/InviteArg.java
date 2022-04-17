@@ -29,18 +29,20 @@ public class InviteArg extends YvernalArg {
             if (targetPlayer.getUniqueId().equals(player.getUniqueId())) {
                 player.sendMessage(messagesManager.getString("cant-invite-yourself"));
             } else {
-                final Guild playerGuild = dataManager.getGuildDataManager().getGuildByPlayer(player.getUniqueId());
                 final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
+                final Guild playerGuild = playerAccount.getGuild();
+
                 final PlayerAccount targetPlayerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(targetPlayer.getUniqueId());
+                final Guild targetPlayerGuild = targetPlayerAccount.getGuild();
 
                 if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
                     if (!guildRankIsMemberWithMessage(player, playerAccount)) {
-                        if (playerIsInGuild(Main.getInstance().getDataManager().getGuildDataManager().getGuildByPlayer(targetPlayer.getUniqueId()),
-                                targetPlayerAccount)) {
+                        if (playerIsInGuild(targetPlayerGuild, targetPlayerAccount)) {
                             player.sendMessage(messagesManager.getString("certain-player-is-in-guild")
                                     .replace("%player%", targetPlayer.getName()));
                         } else {
-                            if (!targetPlayerAccount.getKingdomName().equals(playerAccount.getKingdomName())) {
+                            if (!targetPlayerAccount.getKingdom().getKingdomProperties().getNumber()
+                                    .equals(playerAccount.getKingdom().getKingdomProperties().getNumber())) {
                                 player.sendMessage(messagesManager.getString("certain-player-not-in-kingdom")
                                         .replace("%player%", targetPlayer.getName()));
                             } else {
@@ -52,8 +54,7 @@ public class InviteArg extends YvernalArg {
 
                                     if (invitedPlayer == null) {
                                         invitedPlayer = new InvitedPlayer(
-                                                new InvitedPlayerData(targetPlayer.getUniqueId(),
-                                                        UUID.fromString(playerGuild.getGuildData().getGuildUniqueId())), true,
+                                                new InvitedPlayerData(targetPlayer.getUniqueId(), playerGuild), true,
                                                 true);
                                         dataManager.getInvitedPlayerDataManager().getInvitedPlayers().add(invitedPlayer);
                                     } else {

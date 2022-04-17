@@ -25,8 +25,7 @@ public class PowerAdditionsBukkitRunnable extends BukkitRunnable {
         if (timer == 0) { // 2 heures
             if (playerAccount.getPower() != 10) {
                 playerAccount.setPower(playerAccount.getPower() + 2);
-                final Guild playerGuild = Main.getInstance().getDataManager().getGuildDataManager()
-                        .getGuildByPlayer(player.getUniqueId());
+                final Guild playerGuild = playerAccount.getGuild();
                 if (playerGuild != null) {
                     playerGuild.getGuildData().setPower(playerGuild.getGuildData().getPower() + 2);
                 }

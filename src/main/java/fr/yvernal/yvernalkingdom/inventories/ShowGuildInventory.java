@@ -48,9 +48,7 @@ public class ShowGuildInventory extends InventoryCreator {
                         .replace("%guilde%", guild.getGuildData().getName()))
                 .lore(ListUtils.modifyList(showGuildItems.getEnchantmentTableLore(), list -> list.replaceAll(s -> {
                     if (s.contains("%kingdom%")) {
-                        return s.replace("%kingdom%", Kingdoms.valueOf(guild.getGuildData().getKingdomName().toUpperCase(Locale.ROOT))
-                                .getKingdom()
-                                .getKingdomProperties().getName());
+                        return s.replace("%kingdom%", guild.getGuildData().getKingdom().getKingdomProperties().getName());
                     }
 
                     return s;
@@ -74,8 +72,7 @@ public class ShowGuildInventory extends InventoryCreator {
                     }
 
                     if (s.contains("%claims%")) {
-                        return s.replace("%claims%", String.valueOf(Main.getInstance().getDataManager()
-                                .getClaimManager().getGuildClaims(guild).size()));
+                        return s.replace("%claims%", String.valueOf(guild.getGuildData().getClaims().size()));
                     }
 
                     return s;
@@ -206,7 +203,7 @@ public class ShowGuildInventory extends InventoryCreator {
         final ItemStack currentItem = event.getCurrentItem();
         final MessagesManager messagesManager = Main.getInstance().getConfigManager().getMessagesManager();
 
-        final Guild playerGuild = Main.getInstance().getDataManager().getGuildDataManager().getGuildByPlayer(player.getUniqueId());
+        final Guild playerGuild = Main.getInstance().getDataManager().getPlayerAccountManager().getPlayerAccount(player.getUniqueId()).getGuild();
 
         if (currentItem.getType() == Material.BOOK_AND_QUILL) {
             if (playerGuild != null) {

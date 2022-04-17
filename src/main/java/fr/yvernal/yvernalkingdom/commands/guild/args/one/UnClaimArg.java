@@ -7,14 +7,12 @@ import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 public class UnClaimArg extends YvernalArg {
 
     @Override
     public void execute(Player player, String[] args) {
-        final Guild playerGuild = dataManager.getGuildDataManager().getGuildByPlayer(player.getUniqueId());
         final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
+        final Guild playerGuild = playerAccount.getGuild();
 
         if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
             if (!guildRankIsMemberWithMessage(player, playerAccount)) {
@@ -28,9 +26,9 @@ public class UnClaimArg extends YvernalArg {
                     if (claim.isUnClaim()) {
                         player.sendMessage(messagesManager.getString("not-claimed"));
                     } else {
-                        if (!claim.getClaimData().getGuildUniqueId().equals(playerGuild.getGuildData().getGuildUniqueId())) {
+                        if (!claim.getClaimData().getGuild().getGuildData().getGuildUniqueId().equals(playerGuild.getGuildData().getGuildUniqueId())) {
                             player.sendMessage(messagesManager.getString("not-claimed-by-player-guild-error")
-                                    .replace("%guilde%", claim.getClaimData().getGuildName()));
+                                    .replace("%guilde%", claim.getClaimData().getGuild().getGuildData().getName()));
                         } else {
                             playerGuild.sendMessageToMembers(messagesManager.getString("successfully-unclaimed")
                                     .replace("%player%", player.getName())

@@ -1,5 +1,8 @@
 package fr.yvernal.yvernalkingdom.data.kingdoms.guilds;
 
+import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
+import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
+import fr.yvernal.yvernalkingdom.kingdoms.guilds.invitedplayers.InvitedPlayer;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
@@ -11,18 +14,20 @@ import java.util.UUID;
  */
 public class GuildData {
     private final String guildUniqueId;
-    private final String kingdomName;
+    private final Kingdom kingdom;
     private String name;
     private String description;
     private int power;
     private Location home;
     private UUID ownerUniqueId;
     private final List<UUID> membersUniqueId;
+    private final List<Claim> claims;
+    private final List<InvitedPlayer> invitedPlayers;
 
-    public GuildData(String guildUniqueId, String kingdomName, String name, String description, int power, Location home, UUID ownerUniqueId,
-                     List<UUID> membersUniqueId) {
+    public GuildData(String guildUniqueId, Kingdom kingdom, String name, String description, int power, Location home, UUID ownerUniqueId,
+                     List<UUID> membersUniqueId, List<Claim> claims, List<InvitedPlayer> invitedPlayers) {
         this.guildUniqueId = guildUniqueId;
-        this.kingdomName = kingdomName;
+        this.kingdom = kingdom;
         this.name = name;
         this.description = description;
         this.power = power;
@@ -30,14 +35,16 @@ public class GuildData {
         this.ownerUniqueId = ownerUniqueId;
         // au cas où la list est immutable on crée une nouvelle ArrayList
         this.membersUniqueId = new ArrayList<>(membersUniqueId);
+        this.claims = new ArrayList<>(claims);
+        this.invitedPlayers = invitedPlayers;
     }
 
     public String getGuildUniqueId() {
         return guildUniqueId;
     }
 
-    public String getKingdomName() {
-        return kingdomName;
+    public Kingdom getKingdom() {
+        return kingdom;
     }
 
     public String getName() {
@@ -84,11 +91,19 @@ public class GuildData {
         return membersUniqueId;
     }
 
+    public List<Claim> getClaims() {
+        return claims;
+    }
+
+    public List<InvitedPlayer> getInvitedPlayers() {
+        return invitedPlayers;
+    }
+
     @Override
     public String toString() {
         return "GuildData{" +
                 "guildUniqueId='" + guildUniqueId + '\'' +
-                ", kingdomName='" + kingdomName + '\'' +
+                ", kingdom='" + kingdom + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", power=" + power +

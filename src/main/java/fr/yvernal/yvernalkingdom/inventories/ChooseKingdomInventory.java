@@ -6,7 +6,6 @@ import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.inventories.template.InventoryCreator;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.utils.ItemBuilder;
-import fr.yvernal.yvernalkingdom.utils.TagUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -99,8 +98,8 @@ public class ChooseKingdomInventory extends InventoryCreator {
         final Player player = (Player) event.getPlayer();
         final PlayerAccount playerAccount = Main.getInstance().getDataManager().getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
 
-        if (playerAccount == null || (playerAccount.getKingdomName().equals("no-kingdom") &&
-                playerAccount.getWaitingKingdomName().equals("no-waiting-kingdom"))) {
+        if (playerAccount == null || (playerAccount.getKingdom() == null &&
+                playerAccount.getWaitingKingdom() == null)) {
             Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> this.open(player), 1);
         }
     }
@@ -117,15 +116,15 @@ public class ChooseKingdomInventory extends InventoryCreator {
 
             if (inventory.getItem(event.getSlot() + 9).getDurability() == 14) {
                 Main.getInstance().getDataManager().getKingdomDataManager().makePlayerJoinWaitingList(player.getUniqueId(),
-                        kingdomName);
+                        Kingdoms.getByNumber(kingdomName));
                 player.sendMessage(Main.getInstance().getConfigManager().getMessagesManager().getString("join-kingdom-waiting-list-message")
                         .replace("%kingdom%", displayName));
             } else if (inventory.getItem(event.getSlot() + 9).getDurability() == 5) {
                 Main.getInstance().getDataManager().getKingdomDataManager().makePlayerJoin(player.getUniqueId(),
-                        kingdomName);
+                        Kingdoms.getByNumber(kingdomName));
                 player.sendMessage(Main.getInstance().getConfigManager().getMessagesManager().getString("join-kingdom-message")
                         .replace("%kingdom%", displayName));
-                TagUtils.handlePlayerDisplayName(player);
+                Main.getInstance().getNameTagManager().showPlayerNameTag(player);
             }
 
             player.closeInventory();

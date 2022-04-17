@@ -4,9 +4,10 @@ import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccountManager;
 import fr.yvernal.yvernalkingdom.inventories.ChooseKingdomInventory;
+import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.GuildRank;
 import fr.yvernal.yvernalkingdom.tasks.PowerAdditionsBukkitRunnable;
-import fr.yvernal.yvernalkingdom.utils.TagUtils;
+import fr.yvernal.yvernalkingdom.utils.nametag.NameTagManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,15 +23,15 @@ public class PlayerJoinListener extends YvernalListener<PlayerJoinEvent> {
         PlayerAccount playerAccount = playerAccountManager.getPlayerAccount(player.getUniqueId());
 
         if (playerAccount == null) {
-            playerAccount = new PlayerAccount(player.getUniqueId(), 0, 0, "no-guild", "no-guild",
-                    GuildRank.NO_GUILD, "no-waiting-kingdom", "no-kingdom", 0, 0, true);
+            playerAccount = new PlayerAccount(player.getUniqueId(), 0, 0, null, GuildRank.NO_GUILD, null,
+                    null, 0, 0, true);
         }
 
         playerAccountManager.getAccounts().add(playerAccount);
 
-        TagUtils.handlePlayerDisplayName(player);
+        Main.getInstance().getNameTagManager().showPlayerNameTag(player);
 
-        if (playerAccount.getWaitingKingdomName().equals("no-waiting-kingdom") && playerAccount.getKingdomName().equals("no-kingdom")) {
+        if (playerAccount.getWaitingKingdom() == null && playerAccount.getKingdom() == null) {
             Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> new ChooseKingdomInventory().open(player), 1);
         }
 

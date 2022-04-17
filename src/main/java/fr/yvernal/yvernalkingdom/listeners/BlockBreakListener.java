@@ -19,7 +19,7 @@ public class BlockBreakListener extends YvernalListener<BlockBreakEvent> {
         if (claim != null && !claim.isUnClaim()) {
             final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
 
-            if (!claim.getClaimData().getGuildUniqueId().equals(playerAccount.getGuildUniqueId())) {
+            if (!claim.getClaimData().getGuild().getGuildData().getGuildUniqueId().equals(playerAccount.getGuild().getGuildData().getGuildUniqueId())) {
                 event.setCancelled(true);
                 player.sendMessage(messagesManager.getString("player-cant-break-in-claim"));
             }

@@ -6,22 +6,15 @@ import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.claims.ClaimData;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 public class ClaimArg extends YvernalArg {
 
     @Override
     public void execute(Player player, String[] args) {
-        final Guild playerGuild = dataManager.getGuildDataManager().getGuildByPlayer(player.getUniqueId());
         final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
+        final Guild playerGuild = playerAccount.getGuild();
 
         if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
             if (!guildRankIsMemberWithMessage(player, playerAccount)) {
@@ -41,8 +34,8 @@ public class ClaimArg extends YvernalArg {
                         final Claim claim = dataManager.getClaimManager().getClaimAt(playerChunk.getX(), playerChunk.getZ());
 
                         if (claim == null) {
-                            dataManager.getClaimManager().getClaims().add(new Claim(new ClaimData(playerGuild.getGuildData().getGuildUniqueId(),
-                                    playerGuild.getGuildData().getName(), playerChunk.getX(), playerChunk.getZ()), false, true));
+                            dataManager.getClaimManager().getClaims().add(new Claim(new ClaimData(playerGuild, playerChunk.getX(), playerChunk.getZ()),
+                                    false, true));
 
                             playerGuild.sendMessageToMembers(messagesManager.getString("successfully-claimed-chunk")
                                     .replace("%player%", player.getName())

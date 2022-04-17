@@ -9,7 +9,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class Guild {
     private final GuildData guildData;
@@ -18,9 +17,10 @@ public class Guild {
 
     /**
      * Représente une guild
+     *
      * @param guildData les data de la guild stockées en base de données
      * @param isDeleted si la guild est supprimée et doit l'être dans la base de données
-     * @param isNew si la guild est nouvelle et doit l'être dans la base de données
+     * @param isNew     si la guild est nouvelle et doit l'être dans la base de données
      */
     public Guild(GuildData guildData, boolean isDeleted, boolean isNew) {
         this.guildData = guildData;
@@ -42,31 +42,28 @@ public class Guild {
         this.getGuildData().getMembersUniqueId().stream()
                 .map(uuid -> dataManager.getPlayerAccountManager().getPlayerAccount(uuid))
                 .forEach(playerAccount -> {
-                    playerAccount.setGuildName("no-guild");
+                    playerAccount.setGuild(null);
                     playerAccount.setGuildRank(GuildRank.NO_GUILD);
-                    playerAccount.setGuildUniqueId("no-guild");
                 });
 
         this.setDeleted(true);
         this.setNew(false);
         this.getGuildData().getMembersUniqueId().clear();
 
-        dataManager.getClaimManager().getGuildClaims(this).forEach(claim -> {
+        this.getGuildData().getClaims().forEach(claim -> {
             claim.setUnClaim(true);
             claim.setNew(false);
         });
 
-        dataManager.getInvitedPlayerDataManager().getInvitedPlayersByGuild(UUID.fromString(this.getGuildData().getGuildUniqueId()))
-                .forEach(invitedPlayerData -> {
-                    invitedPlayerData.setStillInvited(false);
-                    invitedPlayerData.setNew(false);
-                });
+        this.getGuildData().getInvitedPlayers().forEach(invitedPlayerData -> {
+            invitedPlayerData.setStillInvited(false);
+            invitedPlayerData.setNew(false);
+        });
     }
 
     public void kickPlayer(PlayerAccount playerAccount, OfflinePlayer player, MessagesManager messagesManager) {
         this.getGuildData().getMembersUniqueId().remove(playerAccount.getUniqueId());
-        playerAccount.setGuildName("no-guild");
-        playerAccount.setGuildUniqueId("no-guild");
+        playerAccount.setGuild(null);
         playerAccount.setGuildRank(GuildRank.NO_GUILD);
         this.getGuildData().setPower(this.getGuildData().getPower() - playerAccount.getPower());
         this.sendMessageToMembers(messagesManager.getString("player-kicked-from-guild")

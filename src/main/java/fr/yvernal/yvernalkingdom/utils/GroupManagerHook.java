@@ -12,7 +12,7 @@ import java.util.List;
 
 public class GroupManagerHook {
     private GroupManager groupManager;
-    private Plugin plugin;
+    private final Plugin plugin;
 
     public GroupManagerHook(final Plugin plugin) {
         this.plugin = plugin;

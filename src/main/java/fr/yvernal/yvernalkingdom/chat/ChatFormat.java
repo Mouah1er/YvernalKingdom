@@ -16,24 +16,25 @@ public class ChatFormat {
         final GroupManagerHook groupManagerHook = Main.getInstance().getGroupManagerHook();
 
         if (chatMode == ChatMode.KINGDOM) {
-            toFormat = Main.getInstance().getConfigManager().getGameConfigManager().getString("kingdom-chat-format")
-                    .replace("%{guild_rank_prefix}%", playerAccount.getGuildRank().getPrefix())
-                    .replace("%{guild}%", playerAccount.getGuildName().equals("no-guild") ? "§2Wilderness" : playerAccount.getGuildName())
-                    .replace("%{player_grade}%", groupManagerHook.getGroup(player))
-                    .replace("%{name}%", player.getName())
-                    .replace("%{message}%", message);
+            toFormat = ChatColor.translateAlternateColorCodes('&',
+                    Main.getInstance().getConfigManager().getGameConfigManager().getString("kingdom-chat-format")
+                            .replace("%{guild_rank_prefix}%", playerAccount.getGuildRank().getPrefix())
+                            .replace("%{guild}%", playerAccount.getGuild() == null ? "§2Wilderness" : playerAccount.getGuild().getGuildData().getName())
+                            .replace("%{player_grade}%", groupManagerHook.getGroup(player))
+                            .replace("%{name}%", player.getName())
+                            .replace("%{message}%", message));
         } else if (chatMode == ChatMode.GLOBAL) {
             final Kingdom playerKingdom = Main.getInstance().getDataManager().getKingdomDataManager()
                     .getKingdomByUniqueId(player.getUniqueId());
 
             toFormat = ChatColor.translateAlternateColorCodes('&',
                     Main.getInstance().getConfigManager().getGameConfigManager().getString("global-chat-format")
-                    .replace("%{guild_rank_prefix}%", playerAccount.getGuildRank().getPrefix())
-                    .replace("%{guild}%", playerAccount.getGuildName().equals("no-guild") ? "§2Wilderness" : playerAccount.getGuildName())
-                    .replace("%{player_grade}%", groupManagerHook.getPrefix(player) + groupManagerHook.getGroup(player))
-                    .replace("%{name}%", player.getName())
-                    .replace("%{kingdom_color}%", playerKingdom.getKingdomProperties().getColor().toString())
-                    .replace("%{message}%", message));
+                            .replace("%{guild_rank_prefix}%", playerAccount.getGuildRank().getPrefix())
+                            .replace("%{guild}%", playerAccount.getGuild() == null ? "§2Wilderness" : playerAccount.getGuild().getGuildData().getName())
+                            .replace("%{player_grade}%", groupManagerHook.getPrefix(player) + groupManagerHook.getGroup(player))
+                            .replace("%{name}%", player.getName())
+                            .replace("%{kingdom_color}%", playerKingdom.getKingdomProperties().getColor().toString())
+                            .replace("%{message}%", message));
         }
 
         return toFormat;

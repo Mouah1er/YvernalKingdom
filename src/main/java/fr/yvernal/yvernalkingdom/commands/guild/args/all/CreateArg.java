@@ -3,14 +3,13 @@ package fr.yvernal.yvernalkingdom.commands.guild.args.all;
 import fr.yvernal.yvernalkingdom.commands.YvernalArg;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.GuildData;
-import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.GuildRank;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CreateArg extends YvernalArg {
 
@@ -20,8 +19,8 @@ public class CreateArg extends YvernalArg {
             player.sendMessage(messagesManager.getStringList("guild-command-help")
                     .toArray(new String[0]));
         } else {
-            final Guild playerGuild = dataManager.getGuildDataManager().getGuildByPlayer(player.getUniqueId());
             final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
+            Guild playerGuild = playerAccount.getGuild();
 
             if (!playerIsInGuild(playerGuild, playerAccount)) {
                 final String joinedArgs = joinArgs(args);
@@ -29,9 +28,7 @@ public class CreateArg extends YvernalArg {
                 if (joinedArgs.equalsIgnoreCase("no-guild")) {
                     player.sendMessage(messagesManager.getString("could-not-create-guild"));
                 } else {
-                    final Kingdom kingdomByUniqueId = dataManager.getKingdomDataManager().getKingdomByUniqueId(player.getUniqueId());
-                    final List<Guild> guildsIn = kingdomByUniqueId.getKingdomData().getGuildsIn();
-                    for (Guild guild : guildsIn) {
+                    for (Guild guild : dataManager.getGuildDataManager().getGuilds()) {
                         if (guild.getGuildData().getName().equals(joinedArgs) && !guild.isDeleted()) {
                             player.sendMessage(messagesManager.getString("guild-name-already-exists"));
 
@@ -42,7 +39,15 @@ public class CreateArg extends YvernalArg {
                     if (joinedArgs.length() > 16) {
                         player.sendMessage(messagesManager.getString("guild-name-too-big"));
                     } else {
-                        final String guildUniqueId = UUID.randomUUID().toString();
+                        String guildUniqueId = UUID.randomUUID().toString();
+
+                        while (dataManager.getGuildDataManager().getGuilds()
+                                .stream()
+                                .map(guild -> guild.getGuildData().getGuildUniqueId())
+                                .collect(Collectors.toList())
+                                .contains(guildUniqueId)) {
+                            guildUniqueId = UUID.randomUUID().toString();
+                        }
 
                         if (playerGuild != null && playerGuild.isDeleted()) {
                             playerGuild.getGuildData().setName(joinedArgs);
@@ -55,18 +60,16 @@ public class CreateArg extends YvernalArg {
                             playerGuild.setDeleted(false);
                             playerGuild.setNew(true);
                         } else {
-                            final Guild guild = new Guild(new GuildData(guildUniqueId, playerAccount.getKingdomName(), joinedArgs,
+                            playerGuild = new Guild(new GuildData(guildUniqueId, playerAccount.getKingdom(), joinedArgs,
                                     "", playerAccount.getPower(), null, player.getUniqueId(),
-                                    Collections.singletonList(player.getUniqueId())), false, true);
+                                    Collections.singletonList(player.getUniqueId()), Collections.emptyList(), Collections.emptyList()), false, true);
 
-                            dataManager.getGuildDataManager().getGuilds().add(guild);
-                            dataManager.getKingdomDataManager().getKingdomByNumber(playerAccount.getKingdomName())
-                                    .getKingdomData().getGuildsIn().add(guild);
+                            dataManager.getGuildDataManager().getGuilds().add(playerGuild);
+                            playerAccount.getKingdom().getKingdomData().getGuildsIn().add(playerGuild);
                         }
 
-                        playerAccount.setGuildName(joinedArgs);
+                        playerAccount.setGuild(playerGuild);
                         playerAccount.setGuildRank(GuildRank.MASTER);
-                        playerAccount.setGuildUniqueId(guildUniqueId);
 
                         player.sendMessage(messagesManager.getString("successfully-created-guild")
                                 .replace("%guilde%", joinedArgs));

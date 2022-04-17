@@ -1,6 +1,7 @@
 package fr.yvernal.yvernalkingdom.data.kingdoms.guilds.invitedplayers;
 
 import fr.yvernal.yvernalkingdom.data.DataManager;
+import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.invitedplayers.InvitedPlayer;
 
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public class InvitedPlayerDataManager {
 
     public InvitedPlayerDataManager(DataManager dataManager) {
         this.dataManager = dataManager;
-        this.invitedPlayers = getInvitedPlayersFromDatabase();
+        this.invitedPlayers = new ArrayList<>();
     }
 
     public List<InvitedPlayer> getInvitedPlayersFromDatabase() {
@@ -26,9 +27,9 @@ public class InvitedPlayerDataManager {
             try {
                 while (resultSet.next()) {
                     final UUID uniqueId = UUID.fromString(resultSet.getString("uniqueId"));
-                    final UUID guildUniqueId = UUID.fromString(resultSet.getString("guildUniqueId"));
+                    final Guild guild = dataManager.getGuildDataManager().getGuildByUniqueId(UUID.fromString(resultSet.getString("guildUniqueId")));
 
-                    invitedPlayers.add(new InvitedPlayer(new InvitedPlayerData(uniqueId, guildUniqueId), true, false));
+                    invitedPlayers.add(new InvitedPlayer(new InvitedPlayerData(uniqueId, guild), true, false));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -43,15 +44,15 @@ public class InvitedPlayerDataManager {
                 "WHERE uniqueId=? AND " +
                 "guildUniqueId=?",
                 invitedPlayer.getInvitedPlayerData().getUniqueId().toString(),
-                invitedPlayer.getInvitedPlayerData().getGuildUniqueId().toString());
+                invitedPlayer.getInvitedPlayerData().getGuild().getGuildData().getGuildUniqueId());
     }
 
     private void createInviteToDatabase(InvitedPlayer invitedPlayer) {
         dataManager.getDatabaseManager().update("INSERT INTO invitedPlayers (guildUniqueId, uniqueId) VALUES (" +
                 "?, " +
                 "?)",
-                invitedPlayer.getInvitedPlayerData().getGuildUniqueId().toString(),
-                invitedPlayer.getInvitedPlayerData().getUniqueId().toString());
+                invitedPlayer.getInvitedPlayerData().getGuild().getGuildData().getGuildUniqueId(),
+                invitedPlayer.getInvitedPlayerData().getUniqueId());
     }
 
     public void updateInvitedPlayerToDatabase(InvitedPlayer invitedPlayer) {
@@ -66,7 +67,7 @@ public class InvitedPlayerDataManager {
             dataManager.getDatabaseManager().update("UPDATE invitedPlayers SET " +
                     "guildUniqueId=? WHERE " +
                     "uniqueId=?",
-                    invitedPlayer.getInvitedPlayerData().getGuildUniqueId().toString(),
+                    invitedPlayer.getInvitedPlayerData().getGuild().getGuildData().getGuildUniqueId(),
                     invitedPlayer.getInvitedPlayerData().getUniqueId().toString());
         }
     }
@@ -82,13 +83,5 @@ public class InvitedPlayerDataManager {
                 .filter(invitedPlayer -> invitedPlayer.getInvitedPlayerData().getUniqueId().equals(playerUniqueId))
                 .findFirst()
                 .orElse(null);
-    }
-
-    public List<InvitedPlayer> getInvitedPlayersByGuild(UUID guildUniqueId) {
-        return getInvitedPlayers()
-                .stream()
-                .filter(Objects::nonNull)
-                .filter(invitedPlayer -> invitedPlayer.getInvitedPlayerData().getGuildUniqueId().equals(guildUniqueId))
-                .collect(Collectors.toList());
     }
 }

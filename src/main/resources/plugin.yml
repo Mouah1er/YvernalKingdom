@@ -2,7 +2,7 @@ name: YvernalKingdom
 main: fr.yvernal.yvernalkingdom.Main
 version: 0.0.1
 authors: [ Twah2em, Nishibaka ]
-depend: [ ProtocolLib ]
+depend: [ GroupManager ]
 commands:
   guild:
     aliases:

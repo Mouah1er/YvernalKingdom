@@ -1,8 +1,13 @@
 package fr.yvernal.yvernalkingdom.data.kingdoms.guilds;
 
 import fr.yvernal.yvernalkingdom.data.DataManager;
+import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.claims.ClaimData;
+import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.invitedplayers.InvitedPlayerData;
+import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
+import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
+import fr.yvernal.yvernalkingdom.kingdoms.guilds.invitedplayers.InvitedPlayer;
 import fr.yvernal.yvernalkingdom.utils.LocationUtils;
 import org.bukkit.Location;
 
@@ -22,7 +27,7 @@ public class GuildDataManager {
 
     public GuildDataManager(DataManager dataManager) {
         this.dataManager = dataManager;
-        this.guilds = getAllGuildsFromDatabase();
+        this.guilds = new ArrayList<>();
     }
 
     public List<Guild> getAllGuildsFromDatabase() {
@@ -31,24 +36,9 @@ public class GuildDataManager {
         dataManager.getDatabaseManager().query("SELECT * FROM guilds", resultSet -> {
             try {
                 while (resultSet.next()) {
-                    Location home;
+                    final Guild guild = getGuildFromDatabase(resultSet.getString("guildUniqueId"));
 
-                    if (resultSet.getString("home").equals("no-home")) {
-                        home = null;
-                    } else {
-                        home = LocationUtils.stringToLocation(resultSet.getString("home"));
-                    }
-
-                    final String guildUniqueId = resultSet.getString("guildUniqueId");
-                    final String kingdomName = resultSet.getString("kingdomName");
-                    final String guildName = resultSet.getString("guildName");
-                    final String description = resultSet.getString("description");
-                    final int power = resultSet.getInt("power");
-                    final UUID ownerUniqueId = UUID.fromString(resultSet.getString("ownerUniqueId"));
-                    final List<UUID> membersUniqueId = getMembersUniqueId(guildUniqueId);
-
-                    guilds.add(new Guild(new GuildData(guildUniqueId, kingdomName, guildName, description, power, home, ownerUniqueId, membersUniqueId),
-                            false, false));
+                    guilds.add(guild);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -58,33 +48,77 @@ public class GuildDataManager {
         return guilds;
     }
 
+    private List<Claim> getClaims(Guild guild) {
+        final List<Claim> claims = new ArrayList<>();
+
+        dataManager.getDatabaseManager().query("SELECT * FROM claims WHERE guildUniqueId=?", resultSet -> {
+            try {
+                while (resultSet.next()) {
+                    final int x = resultSet.getInt("x");
+                    final int z = resultSet.getInt("z");
+
+                    claims.add(new Claim(new ClaimData(guild, x, z), false, false));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }, guild.getGuildData().getGuildUniqueId());
+
+        return claims;
+    }
+
+    private List<InvitedPlayer> getInvitedPlayers(Guild guild) {
+        final List<InvitedPlayer> invitedPlayers = new ArrayList<>();
+
+        dataManager.getDatabaseManager().query("SELECT * FROM invitedPlayers WHERE guildUniqueId=?", resultSet -> {
+            try {
+                while (resultSet.next()) {
+                    final UUID uniqueId = UUID.fromString(resultSet.getString("uniqueId"));
+
+                    invitedPlayers.add(new InvitedPlayer(new InvitedPlayerData(uniqueId, guild), true, false));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }, guild.getGuildData().getGuildUniqueId());
+
+        return invitedPlayers;
+    }
+
     public Guild getGuildFromDatabase(String guildUniqueId) {
-        final AtomicReference<Guild> guild = new AtomicReference<>();
+        final AtomicReference<Guild> atomicGuild = new AtomicReference<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM guilds WHERE guildUniqueId=?", resultSet -> {
             try {
                 if (resultSet.next()) {
                     final String guildName = resultSet.getString("guildName");
-                    final String kingdomName = resultSet.getString("kingdomName");
+                    final Kingdom kingdom = Kingdoms.getByNumber(resultSet.getString("kingdomName"));
                     final String description = resultSet.getString("description");
                     final int power = resultSet.getInt("power");
+                    final Location home = resultSet.getString("home").equals("no-home") ? null :
+                            LocationUtils.stringToLocation(resultSet.getString("home"));
                     final UUID ownerUniqueId = UUID.fromString(resultSet.getString("ownerUniqueId"));
                     final List<UUID> membersUniqueId = getMembersUniqueId(guildUniqueId);
-                    if (!resultSet.getString("home").equals("no-home")) {
-                        final Location home = LocationUtils.stringToLocation(resultSet.getString("home"));
-                        guild.set(new Guild(new GuildData(guildUniqueId, kingdomName, guildName, description, power, home, ownerUniqueId, membersUniqueId),
-                                false, false));
-                    } else {
-                        guild.set(new Guild(new GuildData(guildUniqueId, kingdomName, guildName, description, power, null, ownerUniqueId,
-                                membersUniqueId), false, false));
-                    }
+                    final List<Claim> claims = new ArrayList<>();
+                    final List<InvitedPlayer> invitedPlayers = new ArrayList<>();
+
+                    final Guild guild = new Guild(new GuildData(guildUniqueId, kingdom, guildName, description, power, home, ownerUniqueId, membersUniqueId,
+                            claims, invitedPlayers), false, false);
+
+                    claims.addAll(getClaims(guild));
+                    guild.getGuildData().getClaims().addAll(claims);
+
+                    invitedPlayers.addAll(getInvitedPlayers(guild));
+                    guild.getGuildData().getInvitedPlayers().addAll(invitedPlayers);
+
+                    atomicGuild.set(guild);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }, guildUniqueId);
 
-        return guild.get();
+        return atomicGuild.get();
     }
 
     private void createGuild(Guild guild) {
@@ -106,7 +140,7 @@ public class GuildDataManager {
                 guild.getGuildData().getPower(),
                 home,
                 guild.getGuildData().getOwnerUniqueId(),
-                guild.getGuildData().getKingdomName());
+                guild.getGuildData().getKingdom().getKingdomProperties().getNumber());
     }
 
 
@@ -138,7 +172,7 @@ public class GuildDataManager {
                     guild.getGuildData().getDescription(),
                     home,
                     guild.getGuildData().getOwnerUniqueId(),
-                    guild.getGuildData().getKingdomName(),
+                    guild.getGuildData().getKingdom().getKingdomProperties().getNumber(),
                     guild.getGuildData().getPower(),
                     guild.getGuildData().getGuildUniqueId());
         }
@@ -168,14 +202,6 @@ public class GuildDataManager {
         return getGuilds().stream()
                 .filter(Objects::nonNull)
                 .filter(guild -> guild.getGuildData().getName().equals(guildName))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public Guild getGuildByPlayer(UUID uuid) {
-        return getGuilds().stream()
-                .filter(Objects::nonNull)
-                .filter(guild -> guild.getGuildData().getMembersUniqueId().contains(uuid))
                 .findFirst()
                 .orElse(null);
     }

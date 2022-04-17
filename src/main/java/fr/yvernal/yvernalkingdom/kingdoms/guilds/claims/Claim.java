@@ -30,7 +30,7 @@ public class Claim {
     public boolean claim(Guild guild, Player player, MessagesManager messagesManager) {
         if (!this.isUnClaim()) {
             player.sendMessage(messagesManager.getString("already-claim-by-guild-error")
-                    .replace("%guilde%", this.getClaimData().getGuildName()));
+                    .replace("%guilde%", this.getClaimData().getGuild().getGuildData().getName()));
 
             return false;
         } else {

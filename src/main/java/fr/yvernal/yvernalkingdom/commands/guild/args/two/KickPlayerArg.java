@@ -12,8 +12,8 @@ public class KickPlayerArg extends YvernalArg {
 
     @Override
     public void execute(Player player, String[] args) {
-        final Guild playerGuild = dataManager.getGuildDataManager().getGuildByPlayer(player.getUniqueId());
         final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
+        final Guild playerGuild = playerAccount.getGuild();
 
         if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
             if (playerAccount.getGuildRank().getPower() < 2) {
@@ -27,7 +27,7 @@ public class KickPlayerArg extends YvernalArg {
                 } else {
                     final PlayerAccount targetPlayerAccount = dataManager.getPlayerAccountManager()
                             .getPlayerAccount(targetPlayer.getUniqueId());
-                    final Guild targetPlayerGuild = dataManager.getGuildDataManager().getGuildByPlayer(targetPlayer.getUniqueId());
+                    final Guild targetPlayerGuild = targetPlayerAccount.getGuild();
 
                     if (playerIsInGuildWithMessage(player, targetPlayerGuild, targetPlayerAccount)) {
                         if (!playerGuild.getGuildData().getGuildUniqueId().equals(targetPlayerGuild.getGuildData().getGuildUniqueId())) {

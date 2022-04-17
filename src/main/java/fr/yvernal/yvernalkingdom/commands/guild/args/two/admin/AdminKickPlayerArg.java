@@ -20,7 +20,7 @@ public class AdminKickPlayerArg extends YvernalArg {
             } else {
                 final PlayerAccount targetPlayerAccount = dataManager.getPlayerAccountManager()
                         .getPlayerAccount(targetPlayer.getUniqueId());
-                final Guild targetPlayerGuild = dataManager.getGuildDataManager().getGuildByPlayer(targetPlayer.getUniqueId());
+                final Guild targetPlayerGuild = targetPlayerAccount.getGuild();
 
                 if (playerIsInGuildWithMessage(player, targetPlayerGuild, targetPlayerAccount)) {
                     targetPlayerGuild.kickPlayer(targetPlayerAccount, targetPlayer, messagesManager);

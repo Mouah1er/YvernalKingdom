@@ -19,7 +19,7 @@ public class EntityDamageByEntityListener extends YvernalListener<EntityDamageBy
             final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(entity.getUniqueId());
             final PlayerAccount damagerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(damager.getUniqueId());
 
-            if (playerAccount.getKingdomName().equals(damagerAccount.getKingdomName())) {
+            if (playerAccount.getKingdom().getKingdomProperties().getNumber().equals(damagerAccount.getKingdom().getKingdomProperties().getNumber())) {
                 event.setCancelled(true);
                 damager.sendMessage(messagesManager.getString("player-cant-attack-kingdom-member")
                         .replace("%player%", entity.getName()));

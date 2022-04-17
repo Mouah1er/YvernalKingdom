@@ -2,6 +2,7 @@ package fr.yvernal.yvernalkingdom.kingdoms;
 
 import fr.yvernal.yvernalkingdom.config.kingdoms.KingdomProperties;
 import fr.yvernal.yvernalkingdom.data.kingdoms.KingdomData;
+import fr.yvernal.yvernalkingdom.utils.nametag.NameTagTeam;
 
 public class Kingdom {
     private final KingdomProperties kingdomProperties;

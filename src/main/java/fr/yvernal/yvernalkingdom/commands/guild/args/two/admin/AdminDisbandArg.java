@@ -8,7 +8,6 @@ public class AdminDisbandArg extends YvernalArg {
 
     @Override
     public void execute(Player player, String[] args) {
-        System.out.println("test");
         final Guild guild = dataManager.getGuildDataManager().getGuildByName(args[1]);
 
         if (guild == null || guild.isDeleted()) {

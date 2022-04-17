@@ -25,13 +25,14 @@ public class EntityExplodeListener extends YvernalListener<EntityExplodeEvent> {
             if (Main.getInstance().getSpawnedCreepersByPlayer().containsKey(entity.getUniqueId())) {
                 final PlayerAccount playerAccount = Main.getInstance().getSpawnedCreepersByPlayer().get(entity.getUniqueId());
 
-                final Kingdom playerKingdom = dataManager.getKingdomDataManager().getKingdomByNumber(playerAccount.getKingdomName());
+                final Kingdom playerKingdom = dataManager.getKingdomDataManager().getKingdomByNumber(playerAccount.getKingdom().getKingdomProperties()
+                        .getNumber());
                 final Kingdom kingdomAt = dataManager.getKingdomDataManager().getKingdomByLocation(event.getLocation());
 
-                final Guild playerGuild = dataManager.getGuildDataManager().getGuildByPlayer(playerAccount.getUniqueId());
+                final Guild playerGuild = playerAccount.getGuild();
                 final Claim claimAt = dataManager.getClaimManager().getClaimAt(event.getLocation().getChunk().getX(),
                         event.getLocation().getChunk().getZ());
-                final List<Claim> guildClaims = dataManager.getClaimManager().getGuildClaims(playerGuild);
+                final List<Claim> guildClaims = playerGuild.getGuildData().getClaims();
 
                 if (playerKingdom.getKingdomProperties().getNumber().equals(kingdomAt.getKingdomProperties().getNumber()) &&
                         !guildClaims.contains(claimAt)) {

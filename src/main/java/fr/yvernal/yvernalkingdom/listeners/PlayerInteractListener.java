@@ -50,7 +50,7 @@ public class PlayerInteractListener extends YvernalListener<PlayerInteractEvent>
                         event.getClickedBlock().getChunk().getZ());
 
                 if (claim != null && !claim.isUnClaim()) {
-                    if (!claim.getClaimData().getGuildUniqueId().equals(playerAccount.getGuildUniqueId())) {
+                    if (!claim.getClaimData().getGuild().getGuildData().getGuildUniqueId().equals(playerAccount.getGuild().getGuildData().getGuildUniqueId())) {
                         event.setCancelled(true);
                         player.sendMessage(messagesManager.getString("player-cant-interact-in-claim"));
                     }

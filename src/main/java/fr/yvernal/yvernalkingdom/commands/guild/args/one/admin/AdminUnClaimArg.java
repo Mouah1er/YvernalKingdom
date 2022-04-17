@@ -17,7 +17,7 @@ public class AdminUnClaimArg extends YvernalArg {
         if (claimAt == null || claimAt.isUnClaim()) {
             player.sendMessage(messagesManager.getString("not-claimed"));
         } else {
-            final Guild guild = dataManager.getGuildDataManager().getGuildByName(claimAt.getClaimData().getGuildName());
+            final Guild guild = claimAt.getClaimData().getGuild();
 
             guild.sendMessageToMembers(messagesManager.getString("successfully-unclaimed")
                     .replace("%player%", player.getName())

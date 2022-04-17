@@ -5,6 +5,7 @@ import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.claims.ClaimData;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
+import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 
 public class AdminClaimArg extends YvernalArg {
@@ -17,35 +18,35 @@ public class AdminClaimArg extends YvernalArg {
             player.sendMessage(messagesManager.getString("guild-not-found")
                     .replace("%guilde%", args[1]));
         } else {
-            final Kingdom kingdom = dataManager.getKingdomDataManager().getKingdomByNumber(guild.getGuildData().getKingdomName());
+            final Kingdom kingdom = guild.getGuildData().getKingdom();
     
             if (!kingdom.getKingdomProperties().getTotalTerritoryCuboid().isIn(player)) {
                 player.sendMessage(messagesManager.getString("player-try-claim-outside-kingdom"));
             } else {
-                final Claim claim = dataManager.getClaimManager().getClaimAt(player.getLocation().getChunk().getX(),
-                        player.getLocation().getChunk().getZ());
+                final Chunk playerChunk = player.getLocation().getChunk();
+                final Claim claim = dataManager.getClaimManager().getClaimAt(playerChunk.getX(),
+                        playerChunk.getZ());
 
                 if (claim == null) {
-                    dataManager.getClaimManager().getClaims().add(new Claim(new ClaimData(guild.getGuildData().getGuildUniqueId(),
-                            guild.getGuildData().getName(), player.getLocation().getChunk().getX(), player.getLocation().getChunk().getZ()),
+                    dataManager.getClaimManager().getClaims().add(new Claim(new ClaimData(guild, playerChunk.getX(), playerChunk.getZ()),
                             false, true));
 
                     guild.sendMessageToMembers(messagesManager.getString("successfully-claimed-chunk")
                             .replace("%player%", player.getName())
-                            .replace("%x%", String.valueOf(player.getLocation().getChunk().getX()))
-                            .replace("%z%", String.valueOf(player.getLocation().getChunk().getZ())));
+                            .replace("%x%", String.valueOf(playerChunk.getX()))
+                            .replace("%z%", String.valueOf(playerChunk.getZ())));
                     player.sendMessage(messagesManager.getString("successfully-claimed-chunk")
                             .replace("%player%", player.getName())
-                            .replace("%x%", String.valueOf(player.getLocation().getChunk().getX()))
-                            .replace("%z%", String.valueOf(player.getLocation().getChunk().getZ())));
+                            .replace("%x%", String.valueOf(playerChunk.getX()))
+                            .replace("%z%", String.valueOf(playerChunk.getZ())));
                 } else {
                     final boolean isSuccessfullyClaimed = claim.claim(guild, player, messagesManager);
 
                     if (isSuccessfullyClaimed) {
                         player.sendMessage(messagesManager.getString("successfully-claimed-chunk")
                                 .replace("%player%", player.getName())
-                                .replace("%x%", String.valueOf(player.getLocation().getChunk().getX()))
-                                .replace("%z%", String.valueOf(player.getLocation().getChunk().getZ())));
+                                .replace("%x%", String.valueOf(playerChunk.getX()))
+                                .replace("%z%", String.valueOf(playerChunk.getZ())));
                     }
                 }
             }

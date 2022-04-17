@@ -1,29 +1,23 @@
 package fr.yvernal.yvernalkingdom.data.kingdoms.guilds.invitedplayers;
 
+import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
+
 import java.util.UUID;
 
 public class InvitedPlayerData {
     private final UUID uniqueId;
-    private final UUID guildUniqueId;
+    private final Guild guild;
 
-    public InvitedPlayerData(UUID uniqueId, UUID guildUniqueId) {
+    public InvitedPlayerData(UUID uniqueId, Guild guild) {
         this.uniqueId  = uniqueId;
-        this.guildUniqueId = guildUniqueId;
+        this.guild = guild;
     }
 
     public UUID getUniqueId() {
         return uniqueId;
     }
 
-    public UUID getGuildUniqueId() {
-        return guildUniqueId;
-    }
-
-    @Override
-    public String toString() {
-        return "InvitedPlayerData{" +
-                "uniqueId=" + uniqueId +
-                ", guildUniqueId=" + guildUniqueId +
-                '}';
+    public Guild getGuild() {
+        return guild;
     }
 }

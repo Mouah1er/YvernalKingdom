@@ -189,8 +189,8 @@ public class GuildCommand extends YvernalCommand {
             } else {
                 Guild guild = null;
                 if (sender instanceof Player) {
-                    guild = Main.getInstance().getDataManager().getGuildDataManager()
-                            .getGuildByPlayer(((Player) sender).getUniqueId());
+                    guild = Main.getInstance().getDataManager().getPlayerAccountManager()
+                            .getPlayerAccount(((Player) sender).getUniqueId()).getGuild();
                 }
 
                 if (args[0].equalsIgnoreCase("show")) {

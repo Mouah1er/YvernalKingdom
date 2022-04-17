@@ -16,8 +16,8 @@ public class RenameArg extends YvernalArg {
             player.sendMessage(messagesManager.getStringList("guild-command-help")
                     .toArray(new String[0]));
         } else {
-            final Guild playerGuild = dataManager.getGuildDataManager().getGuildByPlayer(player.getUniqueId());
             final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
+            final Guild playerGuild = playerAccount.getGuild();
 
             if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
                 final String joinedArgs = joinArgs(args);
@@ -25,11 +25,7 @@ public class RenameArg extends YvernalArg {
                 if (joinedArgs.equalsIgnoreCase("no-guild")) {
                     player.sendMessage(messagesManager.getString("could-not-create-guild"));
                 } else {
-                    final Kingdom kingdomByUniqueId = dataManager.getKingdomDataManager().getKingdomByUniqueId(player.getUniqueId());
-                    final List<Guild> guildsIn = kingdomByUniqueId
-                            .getKingdomData()
-                            .getGuildsIn();
-                    for (Guild guild : guildsIn) {
+                    for (Guild guild : dataManager.getGuildDataManager().getGuilds()) {
                         if (guild.getGuildData().getName().equals(joinedArgs) && !guild.isDeleted()) {
                             player.sendMessage(messagesManager.getString("guild-name-already-exists"));
 

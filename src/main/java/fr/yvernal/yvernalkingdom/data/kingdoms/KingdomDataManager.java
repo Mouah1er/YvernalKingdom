@@ -27,14 +27,14 @@ public class KingdomDataManager {
         return new KingdomData(getGuildsIn(kingdom), getWaitingPlayers(kingdom), getPlayersIn(kingdom));
     }
 
-    public void makePlayerJoin(UUID uuid, String kingdomName) {
-        dataManager.getPlayerAccountManager().getPlayerAccount(uuid).setKingdomName(kingdomName);
-        getKingdomByNumber(kingdomName).getKingdomData().getPlayersIn().add(uuid);
+    public void makePlayerJoin(UUID uuid, Kingdom kingdom) {
+        dataManager.getPlayerAccountManager().getPlayerAccount(uuid).setKingdom(kingdom);
+        kingdom.getKingdomData().getPlayersIn().add(uuid);
     }
 
-    public void makePlayerJoinWaitingList(UUID uuid, String kingdomName) {
-        dataManager.getPlayerAccountManager().getPlayerAccount(uuid).setWaitingKingdomName(kingdomName);
-        getKingdomByNumber(kingdomName).getKingdomData().getWaitingPlayers().add(uuid);
+    public void makePlayerJoinWaitingList(UUID uuid, Kingdom kingdom) {
+        dataManager.getPlayerAccountManager().getPlayerAccount(uuid).setWaitingKingdom(kingdom);
+        kingdom.getKingdomData().getWaitingPlayers().add(uuid);
     }
 
     private List<Guild> getGuildsIn(String kingdomName) {

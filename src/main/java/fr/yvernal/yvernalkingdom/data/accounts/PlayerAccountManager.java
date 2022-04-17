@@ -1,6 +1,9 @@
 package fr.yvernal.yvernalkingdom.data.accounts;
 
 import fr.yvernal.yvernalkingdom.data.DataManager;
+import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
+import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
+import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.GuildRank;
 
 import java.sql.SQLException;
@@ -18,7 +21,7 @@ public class PlayerAccountManager {
 
     public PlayerAccountManager(DataManager dataManager) {
         this.dataManager = dataManager;
-        this.accounts = getAllPlayerAccountsFromDatabase();
+        this.accounts = new ArrayList<>();
     }
 
     public List<PlayerAccount> getAllPlayerAccountsFromDatabase() {
@@ -30,16 +33,21 @@ public class PlayerAccountManager {
                     final UUID uniqueId = UUID.fromString(resultSet.getString("uniqueId"));
                     final int power = resultSet.getInt("power");
                     final double valis = resultSet.getDouble("valis");
-                    final String guildName = resultSet.getString("guildName");
-                    final String guildUniqueId = resultSet.getString("guildUniqueId");
+                    Guild guild = null;
+
+                    try {
+                        guild = dataManager.getGuildDataManager().getGuildByUniqueId(UUID.fromString(resultSet.getString("guildUniqueId")));
+                    } catch (IllegalArgumentException ignored) {
+                    }
+
                     final GuildRank guildRank = GuildRank.getByName(resultSet.getString("guildRank"));
-                    final String waitingKingdomName = resultSet.getString("waitingKingdomName");
-                    final String kingdomName = resultSet.getString("kingdomName");
+                    final Kingdom waitingKingdom = Kingdoms.getByNumber(resultSet.getString("waitingKingdomName"));
+                    final Kingdom kingdom = Kingdoms.getByNumber(resultSet.getString("kingdomName"));
                     final long kills = resultSet.getLong("kills");
                     final long deaths = resultSet.getLong("deaths");
 
-                    playerAccounts.add(new PlayerAccount(uniqueId, power, valis, guildName, guildUniqueId, guildRank, waitingKingdomName,
-                            kingdomName, kills, deaths, false));
+                    playerAccounts.add(new PlayerAccount(uniqueId, power, valis, guild, guildRank, waitingKingdom,
+                            kingdom, kills, deaths, false));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -51,10 +59,9 @@ public class PlayerAccountManager {
 
     public void createPlayerAccount(PlayerAccount playerAccount) {
         dataManager.getDatabaseManager().update(
-                "INSERT INTO accounts (uniqueId, power, valis, guildName, guildUniqueId, guildRank, waitingKingdomName, kingdomName," +
+                "INSERT INTO accounts (uniqueId, power, valis, guildUniqueId, guildRank, waitingKingdomName, kingdomName," +
                         "kills, deaths)" +
                         " VALUES (" +
-                        "?, " +
                         "?, " +
                         "?, " +
                         "?, " +
@@ -67,11 +74,10 @@ public class PlayerAccountManager {
                 playerAccount.getUniqueId(),
                 playerAccount.getPower(),
                 playerAccount.getValis(),
-                playerAccount.getGuildName(),
-                playerAccount.getGuildUniqueId(),
+                playerAccount.getGuild() != null ? playerAccount.getGuild().getGuildData().getGuildUniqueId() : "no-guild",
                 playerAccount.getGuildRank().getName(),
-                playerAccount.getWaitingKingdomName(),
-                playerAccount.getKingdomName(),
+                playerAccount.getWaitingKingdom() != null ? playerAccount.getWaitingKingdom().getKingdomProperties().getNumber() : "no-waiting-kingdom",
+                playerAccount.getKingdom() != null ? playerAccount.getKingdom().getKingdomProperties().getNumber() : "no-kingdom",
                 playerAccount.getKills(),
                 playerAccount.getDeaths());
 
@@ -84,7 +90,6 @@ public class PlayerAccountManager {
             dataManager.getDatabaseManager().update("UPDATE accounts SET " +
                             "power=?, " +
                             "valis=?, " +
-                            "guildName=?, " +
                             "guildUniqueId=?, " +
                             "guildRank=?, " +
                             "waitingKingdomName=?, " +
@@ -94,11 +99,10 @@ public class PlayerAccountManager {
                             "WHERE uniqueId=?",
                     playerAccount.getPower(),
                     playerAccount.getValis(),
-                    playerAccount.getGuildName(),
-                    playerAccount.getGuildUniqueId(),
+                    playerAccount.getGuild() != null ? playerAccount.getGuild().getGuildData().getGuildUniqueId() : "no-guild",
                     playerAccount.getGuildRank().getName(),
-                    playerAccount.getWaitingKingdomName(),
-                    playerAccount.getKingdomName(),
+                    playerAccount.getWaitingKingdom() != null ? playerAccount.getWaitingKingdom().getKingdomProperties().getNumber() : "no-waiting-kingdom",
+                    playerAccount.getKingdom() != null ? playerAccount.getKingdom().getKingdomProperties().getNumber() : "no-kingdom",
                     playerAccount.getKills(),
                     playerAccount.getDeaths(),
                     playerAccount.getUniqueId());

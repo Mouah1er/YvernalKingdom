@@ -44,7 +44,6 @@ public class DatabaseManager {
                 "uniqueId VARCHAR(37), " +
                 "power INT, " +
                 "valis DOUBLE, " +
-                "guildName VARCHAR(255), " +
                 "guildUniqueId VARCHAR(37), " +
                 "guildRank VARCHAR(255), " +
                 "waitingKingdomName VARCHAR(255), " +
@@ -67,7 +66,6 @@ public class DatabaseManager {
         update("CREATE TABLE IF NOT EXISTS claims(" +
                 "x BIGINT, " +
                 "z BIGINT, " +
-                "guildName VARCHAR(16), " +
                 "guildUniqueId VARCHAR(37))");
 
         update("CREATE TABLE IF NOT EXISTS invitedPlayers(" +

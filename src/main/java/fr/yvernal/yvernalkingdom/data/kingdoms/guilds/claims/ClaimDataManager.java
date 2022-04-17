@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ClaimDataManager {
@@ -17,7 +18,7 @@ public class ClaimDataManager {
 
     public ClaimDataManager(DataManager dataManager) {
         this.dataManager = dataManager;
-        this.claims = getClaimsFromDatabase();
+        this.claims = new ArrayList<>();
     }
 
     public List<Claim> getClaimsFromDatabase() {
@@ -26,8 +27,11 @@ public class ClaimDataManager {
         dataManager.getDatabaseManager().query("SELECT * FROM claims", resultSet -> {
             try {
                 while (resultSet.next()) {
-                    claims.add(new Claim(new ClaimData(resultSet.getString("guildUniqueId"), resultSet.getString("guildName"),
-                            resultSet.getInt("x"), resultSet.getInt("z")),
+                    final Guild guild = dataManager.getGuildDataManager().getGuildByUniqueId(UUID.fromString(resultSet.getString("guildUniqueId")));
+                    final int x = resultSet.getInt("x");
+                    final int z = resultSet.getInt("z");
+
+                    claims.add(new Claim(new ClaimData(guild, x, z),
                             false, false));
                 }
             } catch (SQLException e) {
@@ -39,15 +43,13 @@ public class ClaimDataManager {
     }
 
     public void addClaim(Guild guild, Chunk chunk) {
-        dataManager.getDatabaseManager().update("INSERT INTO claims (x, z, guildName, guildUniqueId) VALUES(" +
-                        "?, " +
+        dataManager.getDatabaseManager().update("INSERT INTO claims (x, z, guildUniqueId) VALUES(" +
                         "?, " +
                         "?, " +
                         "?" +
                         ")",
                 chunk.getX(),
                 chunk.getZ(),
-                guild.getGuildData().getName(),
                 guild.getGuildData().getGuildUniqueId());
     }
 
@@ -68,12 +70,10 @@ public class ClaimDataManager {
             }
         } else {
             dataManager.getDatabaseManager().update("UPDATE claims SET " +
-                            "guildName=?, " +
                             "guildUniqueId=? " +
                             "WHERE x=?" +
                             "AND z=?",
-                    claim.getClaimData().getGuildName(),
-                    claim.getClaimData().getGuildUniqueId(),
+                    claim.getClaimData().getGuild().getGuildData().getGuildUniqueId(),
                     claim.getClaimData().getX(),
                     claim.getClaimData().getZ());
 
@@ -82,13 +82,6 @@ public class ClaimDataManager {
 
     public List<Claim> getClaims() {
         return claims;
-    }
-
-    public List<Claim> getGuildClaims(Guild guild) {
-        return getClaims().stream()
-                .filter(Objects::nonNull)
-                .filter(claim -> claim.getClaimData().getGuildName().equals(guild.getGuildData().getName()))
-                .collect(Collectors.toList());
     }
 
     public Claim getClaimAt(int x, int z) {

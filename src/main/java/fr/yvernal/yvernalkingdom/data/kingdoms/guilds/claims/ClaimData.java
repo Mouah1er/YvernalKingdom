@@ -1,28 +1,24 @@
 package fr.yvernal.yvernalkingdom.data.kingdoms.guilds.claims;
 
+import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
+
 public class ClaimData {
-    private final String guildUniqueId;
-    private String guildName;
+    private Guild guild;
     private final int x;
     private final int z;
 
-    public ClaimData(String guildUniqueId, String guildName, int x, int z) {
-        this.guildUniqueId = guildUniqueId;
-        this.guildName = guildName;
+    public ClaimData(Guild guild, int x, int z) {
+        this.guild = guild;
         this.x = x;
         this.z = z;
     }
 
-    public String getGuildUniqueId() {
-        return guildUniqueId;
+    public Guild getGuild() {
+        return guild;
     }
 
-    public String getGuildName() {
-        return guildName;
-    }
-
-    public void setGuildName(String guildName) {
-        this.guildName = guildName;
+    public void setGuild(Guild guild) {
+        this.guild = guild;
     }
 
     public int getX() {

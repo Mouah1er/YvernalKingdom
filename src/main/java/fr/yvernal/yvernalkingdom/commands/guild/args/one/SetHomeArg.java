@@ -15,13 +15,13 @@ public class SetHomeArg extends YvernalArg {
 
     @Override
     public void execute(Player player, String[] args) {
-        final Guild playerGuild = dataManager.getGuildDataManager().getGuildByPlayer(player.getUniqueId());
         final PlayerAccount playerAccount = dataManager.getPlayerAccountManager().getPlayerAccount(player.getUniqueId());
+        final Guild playerGuild = playerAccount.getGuild();
 
         if (playerIsInGuildWithMessage(player, playerGuild, playerAccount)) {
             if (guildRankIsMasterWithMessage(player, playerAccount)) {
                 final Location playerLocation = player.getLocation();
-                final List<Chunk> claims = dataManager.getClaimManager().getGuildClaims(playerGuild)
+                final List<Chunk> claims = playerGuild.getGuildData().getClaims()
                         .stream()
                         .map(Claim::toChunk)
                         .collect(Collectors.toList());
