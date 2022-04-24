@@ -1,8 +1,8 @@
 package fr.yvernal.yvernalkingdom.config.kingdoms;
 
 import fr.yvernal.yvernalkingdom.Main;
-import fr.yvernal.yvernalkingdom.utils.Cuboid;
-import fr.yvernal.yvernalkingdom.utils.LocationUtils;
+import fr.yvernal.yvernalkingdom.utils.locations.Cuboid;
+import fr.yvernal.yvernalkingdom.utils.locations.LocationUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,8 +24,8 @@ public class KingdomPropertiesManager {
                 getLocation(kingdomPropertiesPath + "cristal-location"),
                 getCuboid(kingdomPropertiesPath + "cristal-cuboid"),
                 getCuboid(kingdomPropertiesPath + "safe-zone-cuboid"),
-                getCuboid(kingdomPropertiesPath + "total-territory-cuboid"));
-
+                getCuboid(kingdomPropertiesPath + "total-territory-cuboid"),
+                getLocation(kingdomPropertiesPath + "spawn-location"));
     }
 
     public ChatColor getColor(String path) {

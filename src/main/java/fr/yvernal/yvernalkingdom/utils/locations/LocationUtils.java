@@ -1,8 +1,11 @@
-package fr.yvernal.yvernalkingdom.utils;
+package fr.yvernal.yvernalkingdom.utils.locations;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocationUtils {
 
@@ -52,5 +55,12 @@ public class LocationUtils {
         final double zMax = Double.parseDouble(locations[6]);
 
         return new Cuboid(world, xMin, yMin, zMin, xMax, yMax, zMax);
+    }
+
+    public static List<Location> cube(Cuboid cuboid) {
+        return new ArrayList<>(cuboid.iterator().getLocations()) {{
+            addAll(cuboid.iterator().getLocations());
+            addAll(cuboid.iterator().getLocations());
+        }};
     }
 }

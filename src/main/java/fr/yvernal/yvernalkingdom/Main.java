@@ -5,11 +5,14 @@ import fr.yvernal.yvernalkingdom.config.ConfigManager;
 import fr.yvernal.yvernalkingdom.data.DataManager;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccountManager;
+import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.listeners.YvernalListener;
+import fr.yvernal.yvernalkingdom.utils.CrystalUtils;
 import fr.yvernal.yvernalkingdom.utils.GroupManagerHook;
 import fr.yvernal.yvernalkingdom.utils.nametag.NameTagManager;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -34,11 +37,18 @@ public class Main extends JavaPlugin {
         this.configManager = new ConfigManager();
         this.dataManager = new DataManager(getDataFolder().getAbsolutePath() + File.separator + "database.db");
 
+        Bukkit.getWorld(configManager.getGameConfigManager().getString("world-name")).getEntities()
+                .forEach(Entity::remove);
+
         for (Kingdoms value : Kingdoms.values()) {
-            dataManager.getKingdomDataManager().getKingdoms().add(value.getKingdom());
+            final Kingdom kingdom = new Kingdom(null, null, null);
+            value.getConsumer().accept(kingdom);
+            value.setKingdom(kingdom);
         }
 
         dataManager.init();
+
+        CrystalUtils.spawnCrystals();
 
         this.messageWaiter = new HashMap<>();
         this.spawnedCreepersByPlayer = new HashMap<>();
@@ -47,26 +57,29 @@ public class Main extends JavaPlugin {
 
         YvernalListener.registerListeners();
         YvernalCommand.registerCommands();
+
+        CrystalUtils.startRebuildCrystalBukkitRunnable();
     }
 
     @Override
     public void onDisable() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             final PlayerAccountManager playerAccountManager = Main.getInstance().getDataManager().getPlayerAccountManager();
-
-            playerAccountManager.updatePlayerAccountToDatabase(playerAccountManager.getPlayerAccount(player.getUniqueId()));
+            playerAccountManager.updateToDatabase(playerAccountManager.getPlayerAccount(player.getUniqueId()));
             playerAccountManager.getAccounts().remove(playerAccountManager.getPlayerAccount(player.getUniqueId()));
 
             player.kickPlayer("§aLe serveur redémarre !");
         });
 
         getDataManager().getGuildDataManager().getGuilds().forEach(guild -> {
-            getDataManager().getGuildDataManager().updateGuildToDatabase(guild);
+            getDataManager().getGuildDataManager().updateToDatabase(guild);
             guild.getGuildData().getClaims()
-                    .forEach(claim -> getDataManager().getClaimManager().updateClaimToDatabase(guild, claim));
+                    .forEach(claim -> getDataManager().getClaimManager().updateToDatabase(claim));
             guild.getGuildData().getInvitedPlayers()
-                    .forEach(invitedPlayer -> getDataManager().getInvitedPlayerDataManager().updateInvitedPlayerToDatabase(invitedPlayer));
+                    .forEach(invitedPlayer -> getDataManager().getInvitedPlayerDataManager().updateToDatabase(invitedPlayer));
         });
+
+        getDataManager().getCrystalDataManager().getCrystals().forEach(crystal -> getDataManager().getCrystalDataManager().updateToDatabase(crystal));
 
         getNameTagManager().onDisable();
     }

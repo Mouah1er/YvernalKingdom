@@ -135,8 +135,10 @@ public class GuildCommand extends YvernalCommand {
                     }
                 }
             } else {
-                player.sendMessage(Main.getInstance().getConfigManager().getMessagesManager().getString("permission-message"));
+                player.sendMessage(messagesManager.getString("permission-message"));
             }
+        } else {
+            sender.sendMessage(messagesManager.getString("must-be-player"));
         }
         return false;
     }

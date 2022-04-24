@@ -1,7 +1,10 @@
 package fr.yvernal.yvernalkingdom.listeners;
 
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
+import fr.yvernal.yvernalkingdom.events.CrystalDamageByPlayerEvent;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,7 +34,6 @@ public class EntityDamageByEntityListener extends YvernalListener<EntityDamageBy
                 if (kingdomAt != null && damagerKingdom != null && playerKingdom != null) {
                     if (kingdomAt.getKingdomProperties().getTotalTerritoryCuboid().isIn(entity) ||
                             kingdomAt.getKingdomProperties().getTotalTerritoryCuboid().isIn(damager)) {
-                        // TODO A REVOIR CES CONDITIONS JE SUIS PAS SÛR
                         if (kingdomAt.getKingdomData().getPlayersIn().contains(damager.getUniqueId()) &&
                                 !kingdomAt.getKingdomData().getPlayersIn().contains(entity.getUniqueId())) {
                             if (!playerAccount.getPlayerWithWhomInBattle().contains(damager.getUniqueId()) &&
@@ -54,6 +56,17 @@ public class EntityDamageByEntityListener extends YvernalListener<EntityDamageBy
                     }
                 }
             }
+        }
+
+        if (entity instanceof EnderCrystal && damager instanceof Player) {
+            final Kingdom kingdomAt = dataManager.getKingdomDataManager().getKingdomByLocation(entity.getLocation());
+
+            final CrystalDamageByPlayerEvent crystalDamageByPlayerEvent = new CrystalDamageByPlayerEvent((Player) damager, kingdomAt.getCrystal(),
+                    event.getFinalDamage());
+
+            Bukkit.getPluginManager().callEvent(crystalDamageByPlayerEvent);
+
+            event.setCancelled(crystalDamageByPlayerEvent.isCancelled());
         }
     }
 }

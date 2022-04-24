@@ -4,7 +4,7 @@ import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.config.messages.MessagesManager;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
-import fr.yvernal.yvernalkingdom.utils.GuildLocation;
+import fr.yvernal.yvernalkingdom.utils.locations.GuildLocation;
 import me.rayzr522.jsonmessage.JSONMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;

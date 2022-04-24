@@ -1,8 +1,8 @@
 package fr.yvernal.yvernalkingdom.listeners;
 
-import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccountManager;
+import me.confuser.barapi.BarAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,5 +18,6 @@ public class PlayerQuitListener extends YvernalListener<PlayerQuitEvent> {
         final PlayerAccount playerAccount = playerAccountManager.getPlayerAccount(player.getUniqueId());
 
         Bukkit.getScheduler().cancelTask(playerAccount.getPowerRunnable().getTaskId());
+        BarAPI.removeBar(player);
     }
 }

@@ -1,6 +1,7 @@
 package fr.yvernal.yvernalkingdom.data.kingdoms.guilds.invitedplayers;
 
 import fr.yvernal.yvernalkingdom.data.DataManager;
+import fr.yvernal.yvernalkingdom.data.DataManagerTemplate;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.invitedplayers.InvitedPlayer;
 
@@ -9,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class InvitedPlayerDataManager {
+public class InvitedPlayerDataManager implements DataManagerTemplate<InvitedPlayer> {
     private final DataManager dataManager;
     private final List<InvitedPlayer> invitedPlayers;
 
@@ -20,16 +22,14 @@ public class InvitedPlayerDataManager {
         this.invitedPlayers = new ArrayList<>();
     }
 
-    public List<InvitedPlayer> getInvitedPlayersFromDatabase() {
+    @Override
+    public List<InvitedPlayer> getAllFromDatabase() {
         final List<InvitedPlayer> invitedPlayers = new ArrayList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM invitedPlayers", resultSet -> {
             try {
                 while (resultSet.next()) {
-                    final UUID uniqueId = UUID.fromString(resultSet.getString("uniqueId"));
-                    final Guild guild = dataManager.getGuildDataManager().getGuildByUniqueId(UUID.fromString(resultSet.getString("guildUniqueId")));
-
-                    invitedPlayers.add(new InvitedPlayer(new InvitedPlayerData(uniqueId, guild), true, false));
+                    invitedPlayers.add(getFromDatabase(resultSet.getString("uniqueId")));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -39,7 +39,26 @@ public class InvitedPlayerDataManager {
         return invitedPlayers;
     }
 
-    private void deleteInviteFromDatabase(InvitedPlayer invitedPlayer) {
+    public InvitedPlayer getFromDatabase(String uniqueId) {
+        final AtomicReference<InvitedPlayer> invitedPlayer = new AtomicReference<>();
+
+        dataManager.getDatabaseManager().query("SELECT * FROM invitedPlayers WHERE uniqueId=?", resultSet -> {
+            try {
+                if (resultSet.next()) {
+                    final Guild guild = dataManager.getGuildDataManager().getGuildByUniqueId(UUID.fromString(resultSet.getString("guildUniqueId")));
+
+                    invitedPlayer.set(new InvitedPlayer(new InvitedPlayerData(UUID.fromString(uniqueId), guild), true, false));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }, uniqueId);
+
+        return invitedPlayer.get();
+    }
+
+    @Override
+    public void deleteFromDatabase(InvitedPlayer invitedPlayer) {
         dataManager.getDatabaseManager().update("DELETE FROM invitedPlayers " +
                 "WHERE uniqueId=? AND " +
                 "guildUniqueId=?",
@@ -47,7 +66,8 @@ public class InvitedPlayerDataManager {
                 invitedPlayer.getInvitedPlayerData().getGuild().getGuildData().getGuildUniqueId());
     }
 
-    private void createInviteToDatabase(InvitedPlayer invitedPlayer) {
+    @Override
+    public void addToDatabase(InvitedPlayer invitedPlayer) {
         dataManager.getDatabaseManager().update("INSERT INTO invitedPlayers (guildUniqueId, uniqueId) VALUES (" +
                 "?, " +
                 "?)",
@@ -55,13 +75,14 @@ public class InvitedPlayerDataManager {
                 invitedPlayer.getInvitedPlayerData().getUniqueId());
     }
 
-    public void updateInvitedPlayerToDatabase(InvitedPlayer invitedPlayer) {
+    @Override
+    public void updateToDatabase(InvitedPlayer invitedPlayer) {
         if (!invitedPlayer.isStillInvited() || invitedPlayer.isNew()) {
             if (!invitedPlayer.isStillInvited()) {
-                deleteInviteFromDatabase(invitedPlayer);
+                deleteFromDatabase(invitedPlayer);
             }
             if (invitedPlayer.isNew()) {
-                createInviteToDatabase(invitedPlayer);
+                addToDatabase(invitedPlayer);
             }
         } else {
             dataManager.getDatabaseManager().update("UPDATE invitedPlayers SET " +

@@ -1,6 +1,8 @@
 package fr.yvernal.yvernalkingdom.commands;
 
 import fr.yvernal.yvernalkingdom.Main;
+import fr.yvernal.yvernalkingdom.config.messages.MessagesManager;
+import fr.yvernal.yvernalkingdom.data.DataManager;
 import org.bukkit.command.*;
 import org.reflections.Reflections;
 
@@ -10,6 +12,9 @@ import java.util.Locale;
 import java.util.Set;
 
 public abstract class YvernalCommand implements CommandExecutor, TabCompleter {
+    protected final DataManager dataManager = Main.getInstance().getDataManager();
+    protected final MessagesManager messagesManager = Main.getInstance().getConfigManager().getMessagesManager();
+
     @Override
     public abstract boolean onCommand(CommandSender sender, Command cmd, String label, String[] args);
 

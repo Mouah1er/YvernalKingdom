@@ -1,7 +1,7 @@
 package fr.yvernal.yvernalkingdom.data.accounts;
 
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
-import fr.yvernal.yvernalkingdom.kingdoms.Relation;
+import fr.yvernal.yvernalkingdom.kingdoms.Relations;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.GuildRank;
 import fr.yvernal.yvernalkingdom.tasks.PowerAdditionsBukkitRunnable;
@@ -148,14 +148,14 @@ public class PlayerAccount {
         return playerWithWhomInBattle;
     }
 
-    public Relation getRelationWith(PlayerAccount playerAccount) {
+    public Relations getRelationWith(PlayerAccount playerAccount) {
         if (playerAccount.getKingdom() == null || kingdom == null) {
-            return Relation.NEUTRAL;
+            return Relations.NEUTRAL;
         } else if (playerAccount.getUniqueId().equals(this.uniqueId) ||
                 playerAccount.getKingdom().getKingdomProperties().getNumber().equals(this.kingdom.getKingdomProperties().getNumber())) {
-            return Relation.ALLY;
+            return Relations.ALLY;
         } else {
-            return Relation.ENEMY;
+            return Relations.ENEMY;
         }
     }
 

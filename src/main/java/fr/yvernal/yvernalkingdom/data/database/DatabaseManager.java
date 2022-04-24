@@ -72,6 +72,15 @@ public class DatabaseManager {
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "guildUniqueId VARCHAR(37), " +
                 "uniqueId VARCHAR(37))");
+
+        update("CREATE TABLE IF NOT EXISTS crystals(" +
+                "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "kingdomNumber VARCHAR(255), " +
+                "health DOUBLE, " +
+                "exp DOUBLE, " +
+                "level INT, " +
+                "isDestroyed BIT, " +
+                "destructionDate VARCHAR(255))");
     }
 
     @SafeVarargs

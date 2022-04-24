@@ -2,7 +2,7 @@ package fr.yvernal.yvernalkingdom.utils.nametag;
 
 import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
-import fr.yvernal.yvernalkingdom.kingdoms.Relation;
+import fr.yvernal.yvernalkingdom.kingdoms.Relations;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
@@ -11,10 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.persistence.EntityExistsException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -35,8 +32,12 @@ public class NameTagManager {
     }
 
     public void onDisable() {
-        this.nameTagTeams.forEach(team -> this.removeTeamByName(team.getName()));
-        nameTagTeams.clear();
+        this.removeAllTeams();
+    }
+
+    private void removeAllTeams() {
+        this.nameTagTeams.forEach(NameTagTeam::destroy);
+        this.nameTagTeams.clear();
     }
 
     public NameTagTeam createNewTeam(String prefix) {
@@ -87,11 +88,14 @@ public class NameTagManager {
      * @param parameter By default, we start by checking the name.
      */
     public void removeTeamByName(String parameter) {
-        for (NameTagTeam nameTagTeam : this.nameTagTeams)
-            if (nameTagTeam.getName().equals(parameter)) {
-                this.nameTagTeams.remove(nameTagTeam);
-                nameTagTeam.destroy();
+        nameTagTeams.removeIf(team -> {
+            if (team.getName().equals(parameter)) {
+                team.destroy();
+                return true;
             }
+
+            return false;
+        });
     }
 
     public void showPlayerNameTag(Player player) {
@@ -119,51 +123,35 @@ public class NameTagManager {
                     NameTagTeam targetPlayerTeam = this.getTeamByName(targetPlayerTeamName);
 
                     if (playerTeam == null) {
-                        playerTeam = createNewTeam(playerTeamName, Relation.ALLY.getPrefix(), "", false);
+                        playerTeam = createNewTeam(playerTeamName, Relations.ALLY.getPrefix(), "", false);
                     }
 
                     if (targetPlayerTeam == null) {
-                        targetPlayerTeam = createNewTeam(targetPlayerTeamName, Relation.ALLY.getPrefix(), "", false);
+                        targetPlayerTeam = createNewTeam(targetPlayerTeamName, Relations.ALLY.getPrefix(), "", false);
                     }
 
-                    final Relation relationWith = targetPlayerAccount.getRelationWith(playerAccount);
+                    final Relations relationWith = targetPlayerAccount.getRelationWith(playerAccount);
 
                     switch (relationWith) {
                         case ALLY:
-                            playerTeam.setPrefix(Relation.ALLY.getPrefix());
-                            targetPlayerTeam.setPrefix(Relation.ALLY.getPrefix());
+                            playerTeam.setPrefix(Relations.ALLY.getPrefix());
+                            targetPlayerTeam.setPrefix(Relations.ALLY.getPrefix());
 
                             break;
                         case NEUTRAL:
-                            playerTeam.setPrefix(Relation.NEUTRAL.getPrefix());
-                            targetPlayerTeam.setPrefix(Relation.NEUTRAL.getPrefix());
+                            playerTeam.setPrefix(Relations.NEUTRAL.getPrefix());
+                            targetPlayerTeam.setPrefix(Relations.NEUTRAL.getPrefix());
 
                             break;
                         case ENEMY:
-                            playerTeam.setPrefix(Relation.ENEMY.getPrefix());
-                            targetPlayerTeam.setPrefix(Relation.ENEMY.getPrefix());
+                            playerTeam.setPrefix(Relations.ENEMY.getPrefix());
+                            targetPlayerTeam.setPrefix(Relations.ENEMY.getPrefix());
                         default:
                             break;
                     }
 
-                    /*if (playerTeam.isTeamMate(player.getUniqueId())) {
-                        playerTeam.removePlayer(player);
-                    }
-
-                    if (playerTeam.isReceiver(targetPlayer.getUniqueId())) {
-                        playerTeam.removeReceiver(targetPlayer.getUniqueId());
-                    }*/
-
                     playerTeam.addPlayer(player);
                     playerTeam.addReceiver(targetPlayer);
-
-                    /*if (targetPlayerTeam.isTeamMate(targetPlayer.getUniqueId())) {
-                        targetPlayerTeam.removePlayer(targetPlayer);
-                    }
-
-                    if (targetPlayerTeam.isReceiver(player.getUniqueId())) {
-                        targetPlayerTeam.removeReceiver(player.getUniqueId());
-                    }*/
 
                     targetPlayerTeam.addPlayer(targetPlayer);
                     targetPlayerTeam.addReceiver(player);

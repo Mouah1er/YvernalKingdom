@@ -14,11 +14,13 @@ public class Claim {
     private final ClaimData claimData;
     private boolean isUnClaim;
     private boolean isNew;
+    private boolean isActivated;
 
-    public Claim(ClaimData claimData, boolean isUnClaim, boolean isNew) {
+    public Claim(ClaimData claimData, boolean isUnClaim, boolean isNew, boolean isActivated) {
         this.claimData = claimData;
         this.isUnClaim = isUnClaim;
         this.isNew = isNew;
+        this.isActivated = isActivated;
     }
 
     public Chunk toChunk() {
@@ -34,18 +36,25 @@ public class Claim {
 
             return false;
         } else {
-            this.setUnClaim(false);
+            if (!this.isActivated()) {
+                player.sendMessage(messagesManager.getString("claim-not-activated-error")
+                        .replace("%kingdom%", this.getClaimData().getGuild().getGuildData().getKingdom().getKingdomProperties().getName()));
 
-            guild.getGuildData().getMembersUniqueId()
-                    .stream()
-                    .map(Bukkit::getPlayer)
-                    .filter(Objects::nonNull)
-                    .forEach(player1 -> player1.sendMessage(messagesManager.getString("successfully-claimed-chunk")
-                            .replace("%player%", player.getName())
-                            .replace("%x%", String.valueOf(player.getLocation().getChunk().getX()))
-                            .replace("%z%", String.valueOf(player.getLocation().getChunk().getZ()))));
+                return false;
+            } else {
+                this.setUnClaim(false);
 
-            return true;
+                guild.getGuildData().getMembersUniqueId()
+                        .stream()
+                        .map(Bukkit::getPlayer)
+                        .filter(Objects::nonNull)
+                        .forEach(player1 -> player1.sendMessage(messagesManager.getString("successfully-claimed-chunk")
+                                .replace("%player%", player.getName())
+                                .replace("%x%", String.valueOf(player.getLocation().getChunk().getX()))
+                                .replace("%z%", String.valueOf(player.getLocation().getChunk().getZ()))));
+
+                return true;
+            }
         }
     }
 
@@ -68,6 +77,14 @@ public class Claim {
 
     public void setNew(boolean aNew) {
         isNew = aNew;
+    }
+
+    public boolean isActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(boolean activated) {
+        isActivated = activated;
     }
 
     @Override

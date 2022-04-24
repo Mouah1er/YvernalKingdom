@@ -45,7 +45,7 @@ public class KingdomDataManager {
                 while (resultSet.next()) {
                     final String guildUniqueId = resultSet.getString("guildUniqueId");
 
-                    guilds.add(dataManager.getGuildDataManager().getGuildFromDatabase(guildUniqueId));
+                    guilds.add(dataManager.getGuildDataManager().getFromDatabase(guildUniqueId));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

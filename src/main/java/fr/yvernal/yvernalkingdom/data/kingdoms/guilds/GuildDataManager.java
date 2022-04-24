@@ -1,6 +1,7 @@
 package fr.yvernal.yvernalkingdom.data.kingdoms.guilds;
 
 import fr.yvernal.yvernalkingdom.data.DataManager;
+import fr.yvernal.yvernalkingdom.data.DataManagerTemplate;
 import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.claims.ClaimData;
 import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.invitedplayers.InvitedPlayerData;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
@@ -8,7 +9,7 @@ import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.invitedplayers.InvitedPlayer;
-import fr.yvernal.yvernalkingdom.utils.LocationUtils;
+import fr.yvernal.yvernalkingdom.utils.locations.LocationUtils;
 import org.bukkit.Location;
 
 import java.sql.SQLException;
@@ -21,7 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Permet d'accéder à toutes les informations relatives à une guild dans la base de données
  */
-public class GuildDataManager {
+public class GuildDataManager implements DataManagerTemplate<Guild> {
     private final DataManager dataManager;
     private final List<Guild> guilds;
 
@@ -30,13 +31,14 @@ public class GuildDataManager {
         this.guilds = new ArrayList<>();
     }
 
-    public List<Guild> getAllGuildsFromDatabase() {
+    @Override
+    public List<Guild> getAllFromDatabase() {
         final List<Guild> guilds = new ArrayList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM guilds", resultSet -> {
             try {
                 while (resultSet.next()) {
-                    final Guild guild = getGuildFromDatabase(resultSet.getString("guildUniqueId"));
+                    final Guild guild = getFromDatabase(resultSet.getString("guildUniqueId"));
 
                     guilds.add(guild);
                 }
@@ -57,7 +59,7 @@ public class GuildDataManager {
                     final int x = resultSet.getInt("x");
                     final int z = resultSet.getInt("z");
 
-                    claims.add(new Claim(new ClaimData(guild, x, z), false, false));
+                    claims.add(new Claim(new ClaimData(guild, x, z), false, false, true));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -85,7 +87,8 @@ public class GuildDataManager {
         return invitedPlayers;
     }
 
-    public Guild getGuildFromDatabase(String guildUniqueId) {
+    @Override
+    public Guild getFromDatabase(String guildUniqueId) {
         final AtomicReference<Guild> atomicGuild = new AtomicReference<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM guilds WHERE guildUniqueId=?", resultSet -> {
@@ -121,7 +124,7 @@ public class GuildDataManager {
         return atomicGuild.get();
     }
 
-    private void createGuild(Guild guild) {
+    public void addToDatabase(Guild guild) {
         final String home = guild.getGuildData().getHome() == null ? "no-home" : LocationUtils.locationToString(guild.getGuildData().getHome());
 
         dataManager.getDatabaseManager().update("INSERT INTO guilds (guildUniqueId, guildName, description, power, home, ownerUniqueId, kingdomName) " +
@@ -144,18 +147,20 @@ public class GuildDataManager {
     }
 
 
-    private void deleteGuildFromDatabase(Guild guild) {
+    @Override
+    public void deleteFromDatabase(Guild guild) {
         dataManager.getDatabaseManager().update("DELETE FROM guilds " +
                 "WHERE guildUniqueId=?", guild.getGuildData().getGuildUniqueId());
     }
 
-    public void updateGuildToDatabase(Guild guild) {
+    @Override
+    public void updateToDatabase(Guild guild) {
         if (guild.isDeleted() || guild.isNew()) {
             if (guild.isDeleted()) {
-                deleteGuildFromDatabase(guild);
+                deleteFromDatabase(guild);
             }
             if (guild.isNew()) {
-                createGuild(guild);
+                addToDatabase(guild);
             }
         } else {
             final String home = guild.getGuildData().getHome() == null ? "no-home" : LocationUtils.locationToString(guild.getGuildData().getHome());

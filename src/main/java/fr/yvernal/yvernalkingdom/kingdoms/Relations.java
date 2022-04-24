@@ -1,6 +1,6 @@
 package fr.yvernal.yvernalkingdom.kingdoms;
 
-public enum Relation {
+public enum Relations {
     ALLY("§a"),
     NEUTRAL("§e"),
     ENEMY("§c"),
@@ -9,7 +9,7 @@ public enum Relation {
 
     private final String prefix;
 
-    Relation(String prefix) {
+    Relations(String prefix) {
         this.prefix = prefix;
     }
 

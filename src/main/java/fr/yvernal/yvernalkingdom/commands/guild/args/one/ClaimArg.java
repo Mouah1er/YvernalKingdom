@@ -35,7 +35,7 @@ public class ClaimArg extends YvernalArg {
 
                         if (claim == null) {
                             dataManager.getClaimManager().getClaims().add(new Claim(new ClaimData(playerGuild, playerChunk.getX(), playerChunk.getZ()),
-                                    false, true));
+                                    false, true, true));
 
                             playerGuild.sendMessageToMembers(messagesManager.getString("successfully-claimed-chunk")
                                     .replace("%player%", player.getName())

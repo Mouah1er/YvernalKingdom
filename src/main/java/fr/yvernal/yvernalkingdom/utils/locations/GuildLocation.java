@@ -1,4 +1,4 @@
-package fr.yvernal.yvernalkingdom.utils;
+package fr.yvernal.yvernalkingdom.utils.locations;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;

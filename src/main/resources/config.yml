@@ -3,38 +3,42 @@ kingdoms:
   kingdom_1:
     name: "Melromarc"
     color: "GREEN"
-    cristal-location: "world, 3, 70, 3, 0, 0" # x, y, z, yaw, pitch
-    cristal-cuboid: "world, -10, 0, -10, -20, 256, -20" # xMin, yMin, zMin, xMax, yMax, zMax
+    cristal-location: "world, 13, 70, 13, 0, 0" # x, y, z, yaw, pitch, il faut respecter ce pattern sinon niveau code ça va bug
+    cristal-cuboid: "world, 10, 0, 10, 20, 256, 20" # xMin, yMin, zMin, xMax, yMax, zMax, il faut respecter ce pattern sinon niveau code ça va bug
     safe-zone-cuboid: "world, 496, 0, 496, 751, 256, 751"
     total-territory-cuboid: "world, 1, 0, 1, 10000, 256, 10000"
+    spawn-location: "world, 5, 70, 5, 0, 0"
   kingdom_2:
     name: "Elkia"
     color: "LIGHT_PURPLE"
-    cristal-location: "world, -3, 70, 3"
+    cristal-location: "world, -13, 70, 13"
     cristal-cuboid: "world, -10, 0, 10, -20, 256, 20"
     safe-zone-cuboid: "world, -496, 0, 496, -751, 256, 751"
     total-territory-cuboid: "world, -1, 0, 1, -9999, 256, 10000"
+    spawn-location: "world, -5, 70, 5, 0, 0"
   kingdom_3:
     name: "Orario"
     color: "AQUA"
-    cristal-location: "world, 3, 70, -3"
+    cristal-location: "world, 13, 70, -13"
     cristal-cuboid: "world, 10, 0, -10, 20, 256, -20"
     safe-zone-cuboid: "world, 496, 0, -496, 751, 256, -751"
     total-territory-cuboid: "world, 1, 0, -1, 10000, 256, -9999"
+    spawn-location: "world, 5, 70, -5, 0, 0"
   kingdom_4:
     name: "Lugnica"
     color: "YELLOW"
-    cristal-location: "world, -3, 70, -3"
+    cristal-location: "world, -13, 70, -13"
     cristal-cuboid: "world, -10, 0, -10, -20, 256, -20"
     safe-zone-cuboid: "world, -496, 0, -496, -751, 256, -751"
     total-territory-cuboid: "world, -1, 0, -1, -9999, 265, -9999"
+    spawn-location: "world, -5, 70, -5, 0, 0"
 
 game:
   world-name: "world"
   launch-date: "12/03/2022 10h55"
-  base-cristal-health: 1000
-  cristal-level-up-health-gain: 20
-  ressources-cristal-gain:
+  base-crystal-health: 1000 # hp
+  crystal-level-up-health-gain: 20
+  resources-cristal-gain:
     diamond: 5
     emerald: 6
     gold-ingot: 2.5
@@ -43,9 +47,9 @@ game:
     redstone: 0.02
     lapis-lazulli: 0.025
     life-gem: 5 # c'est en niveaux
-  cristal-regen-after-death-time: 3600 # c'est en secondes
-  cristal-regen-health: 30 # c'est en hp, pas en coeurs
-  cristal-regen-time: 60 # c'est en secondes
+  crystal-regen-after-death-time: 3600 # c'est en secondes
+  crystal-regen-health: 30 # c'est en hp, pas en coeurs
+  crystal-regen-time: 60 # c'est en secondes
   kingdom-chat-format: "%{guild_rank_prefix}% %{guild}% %{player_grade}% %{name}% &7:&f %{message}%"
   global-chat-format: "%{guild_rank_prefix}%%{guild}% %{player_grade}% %{name}% &7: %{kingdom_color}%%{message}%"
   golem-damage: 20 # c'est en hp
@@ -54,3 +58,4 @@ game:
   max-cristal-level: 150
   kingdom-max-players: 50
   time-to-teleport-to-guild-home: 5 # c'est en secondes
+  spawn-location: "world, 15000, 70, 15000, 0, 0" # c'est le spawn pour les joueurs qui n'ont pas de royaume. Lorsqu'il feront /spawn ça va les tp là

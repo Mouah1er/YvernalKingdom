@@ -3,8 +3,7 @@ package fr.yvernal.yvernalkingdom.listeners;
 import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.chat.ChatFormat;
 import fr.yvernal.yvernalkingdom.chat.ChatMode;
-import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
-import fr.yvernal.yvernalkingdom.utils.GroupManagerHook;
+import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +25,19 @@ public class AsyncPlayerChatListener extends YvernalListener<AsyncPlayerChatEven
         } else {
             event.setCancelled(true);
 
-            Bukkit.broadcastMessage(ChatFormat.format(player, event.getMessage(), ChatMode.GLOBAL));
+            if (event.getMessage().startsWith("@")) {
+                Bukkit.broadcastMessage(ChatFormat.format(player, event.getMessage(), ChatMode.GLOBAL));
+            } else {
+                final Kingdom kingdom = Main.getInstance().getDataManager().getKingdomDataManager().getKingdomByUniqueId(player.getUniqueId());
+
+                if (kingdom != null) {
+                    kingdom.getKingdomData().getPlayersIn().stream()
+                            .map(Bukkit::getPlayer)
+                            .forEach(targetPlayer -> targetPlayer.sendMessage(ChatFormat.format(player, event.getMessage(), ChatMode.KINGDOM)));
+                } else {
+                    player.sendMessage(messagesManager.getString("discord-link"));
+                }
+            }
         }
     }
 }

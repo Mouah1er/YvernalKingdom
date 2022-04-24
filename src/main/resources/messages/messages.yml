@@ -1,3 +1,4 @@
+must-be-player: "§cVous devez être un joueur pour utiliser cette commande !"
 permission-message: "§cVous n'avez pas la permission pour faire ceci !"
 
 join-kingdom-message: "§aVous avez rejoint le royaume %kingdom% !"
@@ -144,3 +145,22 @@ player-cant-attack-kingdom-member: "§cVous ne pouvez pas attaquer %player% car 
 player-has-moved-to-new-kingdom: "§cAttention ! Vous êtes entré dans le Royaume ennemi %kingdom% !"
 player-cant-attack-because-not-in-battle: "§cVous ne pouvez pas attaquer %player% car vous n'êtes pas en combat avec lui !"
 player-in-battle: "§cVous êtes entré en combat avec %player% !"
+
+discord-link: "Le lien discord du serveur: discord.com" # à modifier avec le vrai lien
+
+crystal-level: "§7Niv : §a%level%"
+crystal-kingdom-name: "§cCristal de %kingdom%"
+crystal-health: "§e%current_health% §c%heart_icon% §7/ %max_health% %heart_icon%" # %heart_icon% sera remplacé par un cœur, c'est juste que jsp pk mais ça déconne quand tu mets un cœur directement dans le fichier
+
+player-cant-damage-crystal: "§cVous ne pouvez pas attaquer votre propre cristal !"
+crystal-already-destroyed: "§cLe cristal du Royaume %kingdom% est déjà détruit !"
+crystal-attacked-by-player: "§cVotre cristal a été attaqué par %player% du Royaume %kingdom% !"
+player-attacked-crystal: "§aLe joueur %player% a attaqué le cristal du Royaume %kingdom% !"
+player-cant-attack-crystal-at-this-time: "§cVous pouvez attaquer le cristal qu'entre 18h30 et 19h30 !"
+player-destroyed-crystal: "§a§lLe joueur %player% a détruit le cristal du Royaume %kingdom% ! Il sera reconstruit dans 48h ! (%date%)"
+player-destroyed-crystal-title: "§a§lLe joueur %player%"
+player-destroyed-crystal-subtitle: "a détruit le cristal du Royaume %kingdom% !"
+crystal-revived-success: "§aLe cristal du Royaume %kingdom% a été ressuscité !"
+
+claim-not-activated-error: "§cLe délai d'une heure après la destruction du cristal du Royaume %kingdom% n'étant pas passé, vous ne pouvez pas surclaim ce chunk !"
+reactivated-claim-success: "§aLes claims du Royaume %kingdom% ont été réactivés !"

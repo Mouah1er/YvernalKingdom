@@ -1,6 +1,6 @@
 package fr.yvernal.yvernalkingdom.config.kingdoms;
 
-import fr.yvernal.yvernalkingdom.utils.Cuboid;
+import fr.yvernal.yvernalkingdom.utils.locations.Cuboid;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
@@ -11,20 +11,22 @@ public class KingdomProperties {
     private final String number;
     private final String name;
     private final ChatColor color;
-    private final Location cristalLocation;
-    private final Cuboid cristalCuboid;
+    private final Location crystalLocation;
+    private final Cuboid crystalCuboid;
     private final Cuboid safeZoneCuboid;
     private final Cuboid totalTerritoryCuboid;
+    private final Location spawnLocation;
 
-    public KingdomProperties(String number, String name, ChatColor color, Location cristalLocation, Cuboid cristalCuboid, Cuboid safeZoneCuboid,
-                             Cuboid totalTerritoryCuboid) {
+    public KingdomProperties(String number, String name, ChatColor color, Location crystalLocation, Cuboid crystalCuboid, Cuboid safeZoneCuboid,
+                             Cuboid totalTerritoryCuboid, Location spawnLocation) {
         this.number = number;
         this.name = name;
         this.color = color;
-        this.cristalLocation = cristalLocation;
-        this.cristalCuboid = cristalCuboid;
+        this.crystalLocation = crystalLocation;
+        this.crystalCuboid = crystalCuboid;
         this.safeZoneCuboid = safeZoneCuboid;
         this.totalTerritoryCuboid = totalTerritoryCuboid;
+        this.spawnLocation = spawnLocation;
     }
 
     public String getNumber() {
@@ -39,12 +41,12 @@ public class KingdomProperties {
         return color;
     }
 
-    public Location getCristalLocation() {
-        return cristalLocation;
+    public Location getCrystalLocation() {
+        return crystalLocation;
     }
 
-    public Cuboid getCristalCuboid() {
-        return cristalCuboid;
+    public Cuboid getCrystalCuboid() {
+        return crystalCuboid;
     }
 
     public Cuboid getSafeZoneCuboid() {
@@ -53,5 +55,23 @@ public class KingdomProperties {
 
     public Cuboid getTotalTerritoryCuboid() {
         return totalTerritoryCuboid;
+    }
+
+    public Location getSpawnLocation() {
+        return spawnLocation;
+    }
+
+    @Override
+    public String toString() {
+        return "KingdomProperties{" +
+                "number='" + number + '\'' +
+                ", name='" + name + '\'' +
+                ", color=" + color +
+                ", crystalLocation=" + crystalLocation +
+                ", crystalCuboid=" + crystalCuboid +
+                ", safeZoneCuboid=" + safeZoneCuboid +
+                ", totalTerritoryCuboid=" + totalTerritoryCuboid +
+                ", spawnLocation=" + spawnLocation +
+                '}';
     }
 }

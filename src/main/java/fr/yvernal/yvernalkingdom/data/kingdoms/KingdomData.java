@@ -30,4 +30,13 @@ public class KingdomData {
     public List<UUID> getPlayersIn() {
         return playersIn;
     }
+
+    @Override
+    public String toString() {
+        return "KingdomData{" +
+                "guildsIn=" + guildsIn +
+                ", waitingPlayers=" + waitingPlayers +
+                ", playersIn=" + playersIn +
+                '}';
+    }
 }

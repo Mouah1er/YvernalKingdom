@@ -1,18 +1,18 @@
 package fr.yvernal.yvernalkingdom.data.kingdoms.guilds.claims;
 
 import fr.yvernal.yvernalkingdom.data.DataManager;
+import fr.yvernal.yvernalkingdom.data.DataManagerTemplate;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
-import org.bukkit.Chunk;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class ClaimDataManager {
+public class ClaimDataManager implements DataManagerTemplate<Claim> {
     private final DataManager dataManager;
     private final List<Claim> claims;
 
@@ -21,18 +21,14 @@ public class ClaimDataManager {
         this.claims = new ArrayList<>();
     }
 
-    public List<Claim> getClaimsFromDatabase() {
+    @Override
+    public List<Claim> getAllFromDatabase() {
         final List<Claim> claims = new ArrayList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM claims", resultSet -> {
             try {
                 while (resultSet.next()) {
-                    final Guild guild = dataManager.getGuildDataManager().getGuildByUniqueId(UUID.fromString(resultSet.getString("guildUniqueId")));
-                    final int x = resultSet.getInt("x");
-                    final int z = resultSet.getInt("z");
-
-                    claims.add(new Claim(new ClaimData(guild, x, z),
-                            false, false));
+                    claims.add(getFromDatabase(resultSet.getString("guildUniqueId")));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -42,31 +38,57 @@ public class ClaimDataManager {
         return claims;
     }
 
-    public void addClaim(Guild guild, Chunk chunk) {
+    @Override
+    public Claim getFromDatabase(String uniqueId) {
+        final AtomicReference<Claim> claim = new AtomicReference<>();
+
+        dataManager.getDatabaseManager().query("SELECT * FROM claims WHERE guildUniqueId=?", resultSet -> {
+            try {
+                if (resultSet.next()) {
+                    final Guild guild = dataManager.getGuildDataManager().getGuildByUniqueId(UUID.fromString(uniqueId));
+                    final int x = resultSet.getInt("x");
+                    final int z = resultSet.getInt("z");
+
+                    claim.set(new Claim(new ClaimData(guild, x, z), false, false, true));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }, uniqueId);
+
+        return claim.get();
+    }
+
+    @Override
+    public void addToDatabase(Claim claim) {
         dataManager.getDatabaseManager().update("INSERT INTO claims (x, z, guildUniqueId) VALUES(" +
                         "?, " +
                         "?, " +
                         "?" +
                         ")",
-                chunk.getX(),
-                chunk.getZ(),
-                guild.getGuildData().getGuildUniqueId());
+                claim.toChunk().getX(),
+                claim.toChunk().getZ(),
+                claim.getClaimData().getGuild().getGuildData().getGuildUniqueId());
     }
 
-    public void unClaim(Guild guild, Claim claim) {
+    @Override
+    public void deleteFromDatabase(Claim claim) {
         dataManager.getDatabaseManager().update("DELETE FROM claims " +
                 "WHERE x=" + claim.getClaimData().getX() + " " +
                 "AND z=" + claim.getClaimData().getZ() + " " +
-                "AND guildUniqueId='" + guild.getGuildData().getGuildUniqueId() + "'");
+                "AND guildUniqueId='" + claim.getClaimData().getGuild().getGuildData().getGuildUniqueId() + "'");
     }
 
-    public void updateClaimToDatabase(Guild guild, Claim claim) {
+    @Override
+    public void updateToDatabase(Claim claim) {
+        final Guild guild = claim.getClaimData().getGuild();
+
         if (claim.isUnClaim() || claim.isNew()) {
             if (claim.isUnClaim()) {
-                unClaim(guild, claim);
+                deleteFromDatabase(claim);
             }
             if (claim.isNew()) {
-                addClaim(guild, claim.toChunk());
+                addToDatabase(claim);
             }
         } else {
             dataManager.getDatabaseManager().update("UPDATE claims SET " +
@@ -76,7 +98,6 @@ public class ClaimDataManager {
                     claim.getClaimData().getGuild().getGuildData().getGuildUniqueId(),
                     claim.getClaimData().getX(),
                     claim.getClaimData().getZ());
-
         }
     }
 
