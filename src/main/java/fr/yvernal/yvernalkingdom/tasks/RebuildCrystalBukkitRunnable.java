@@ -16,7 +16,7 @@ import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 
-public class EverySecondBukkitTask extends BukkitRunnable {
+public class RebuildCrystalBukkitRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
@@ -24,15 +24,17 @@ public class EverySecondBukkitTask extends BukkitRunnable {
     }
 
     private void rebuildCrystal() {
-        Main.getInstance().getDataManager().getCrystalDataManager().getCrystals().forEach(crystal -> {
+        final Main main = Main.getInstance();
+        final MessagesManager messagesManager = main.getConfigManager().getMessagesManager();
+
+        final LocalDateTime now = LocalDateTime.now();
+
+        main.getDataManager().getCrystalDataManager().getCrystals().forEach(crystal -> {
             if (crystal.getCrystalData().getDestructionDate() != null) {
                 final LocalDateTime destructionDate = LocalDateTime.ofInstant(crystal.getCrystalData().getDestructionDate().toInstant(),
                         ZoneId.of("Europe/Paris"));
-                final LocalDateTime now = LocalDateTime.now();
 
                 final Kingdom kingdom = crystal.getCrystalData().getKingdom();
-
-                final MessagesManager messagesManager = Main.getInstance().getConfigManager().getMessagesManager();
 
                 if (now.isEqual(destructionDate.plusHours(1))) {
                     kingdom.getKingdomData().getGuildsIn().forEach(guild -> guild.getGuildData().getClaims().forEach(claim -> claim.setActivated(true)));
@@ -41,7 +43,7 @@ public class EverySecondBukkitTask extends BukkitRunnable {
                             .replace("%kingdom%", kingdom.getKingdomProperties().getName())));
                 }
 
-                if (now.isEqual(destructionDate.plusDays(2))) {
+                if (now.isEqual(destructionDate.plusSeconds(main.getConfigManager().getGameConfigManager().get("crystal-regen-after-death-time", long.class)))) {
                     crystal.getCrystalData().setDestroyed(false);
                     crystal.getCrystalData().setDestructionDate(null);
                     crystal.getCrystalData().setHealth(crystal.getCrystalData().getMaxHealth());

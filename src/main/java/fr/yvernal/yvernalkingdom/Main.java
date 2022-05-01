@@ -1,5 +1,6 @@
 package fr.yvernal.yvernalkingdom;
 
+import fr.twah2em.nametag.TeamManager;
 import fr.yvernal.yvernalkingdom.commands.YvernalCommand;
 import fr.yvernal.yvernalkingdom.config.ConfigManager;
 import fr.yvernal.yvernalkingdom.data.DataManager;
@@ -8,11 +9,10 @@ import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccountManager;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.listeners.YvernalListener;
+import fr.yvernal.yvernalkingdom.teams.YvernalTeamManager;
 import fr.yvernal.yvernalkingdom.utils.CrystalUtils;
 import fr.yvernal.yvernalkingdom.utils.GroupManagerHook;
-import fr.yvernal.yvernalkingdom.utils.nametag.NameTagManager;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -24,9 +24,9 @@ public class Main extends JavaPlugin {
     private ConfigManager configManager;
     private DataManager dataManager;
     private HashMap<UUID, CompletableFuture<String>> messageWaiter;
-    private HashMap<UUID, PlayerAccount> spawnedCreepersByPlayer;
+    private HashMap<UUID, PlayerAccount> spawnedDangerousEntitiesByPlayer;
     private GroupManagerHook groupManagerHook;
-    private NameTagManager nameTagManager;
+    private YvernalTeamManager teamManager;
 
     @Override
     public void onEnable() {
@@ -38,7 +38,11 @@ public class Main extends JavaPlugin {
         this.dataManager = new DataManager(getDataFolder().getAbsolutePath() + File.separator + "database.db");
 
         Bukkit.getWorld(configManager.getGameConfigManager().getString("world-name")).getEntities()
-                .forEach(Entity::remove);
+                .forEach(entity -> {
+                    if (!entity.getLocation().getChunk().isLoaded()) entity.getLocation().getChunk().load();
+
+                    entity.remove();
+                });
 
         for (Kingdoms value : Kingdoms.values()) {
             final Kingdom kingdom = new Kingdom(null, null, null);
@@ -51,14 +55,14 @@ public class Main extends JavaPlugin {
         CrystalUtils.spawnCrystals();
 
         this.messageWaiter = new HashMap<>();
-        this.spawnedCreepersByPlayer = new HashMap<>();
+        this.spawnedDangerousEntitiesByPlayer = new HashMap<>();
         this.groupManagerHook = new GroupManagerHook(this);
-        this.nameTagManager = new NameTagManager(this);
+        this.teamManager = new YvernalTeamManager();
 
         YvernalListener.registerListeners();
         YvernalCommand.registerCommands();
 
-        CrystalUtils.startRebuildCrystalBukkitRunnable();
+        CrystalUtils.startCrystalRunnables();
     }
 
     @Override
@@ -80,8 +84,6 @@ public class Main extends JavaPlugin {
         });
 
         getDataManager().getCrystalDataManager().getCrystals().forEach(crystal -> getDataManager().getCrystalDataManager().updateToDatabase(crystal));
-
-        getNameTagManager().onDisable();
     }
 
     public static Main getInstance() {
@@ -100,15 +102,15 @@ public class Main extends JavaPlugin {
         return messageWaiter;
     }
 
-    public HashMap<UUID, PlayerAccount> getSpawnedCreepersByPlayer() {
-        return spawnedCreepersByPlayer;
+    public HashMap<UUID, PlayerAccount> getSpawnedDangerousEntitiesByPlayer() {
+        return spawnedDangerousEntitiesByPlayer;
     }
 
     public GroupManagerHook getGroupManagerHook() {
         return groupManagerHook;
     }
 
-    public NameTagManager getNameTagManager() {
-        return nameTagManager;
+    public YvernalTeamManager getTeamManager() {
+        return teamManager;
     }
 }

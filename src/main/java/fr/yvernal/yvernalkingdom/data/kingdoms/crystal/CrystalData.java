@@ -23,7 +23,7 @@ public class CrystalData {
         this.level = level;
         this.isDestroyed = isDestroyed;
         this.destructionDate = destructionDate;
-        this.maxHealth = Float.parseFloat(Main.getInstance().getConfigManager().getGameConfigManager().getString("base-crystal-health")) +
+        this.maxHealth = Main.getInstance().getConfigManager().getGameConfigManager().get("base-crystal-health", double.class) +
                 (level == 1 ? 0 : 10 * level);
     }
 

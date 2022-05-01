@@ -4,14 +4,13 @@ import fr.yvernal.yvernalkingdom.data.DataManager;
 import fr.yvernal.yvernalkingdom.data.DataManagerTemplate;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.invitedplayers.InvitedPlayer;
+import fr.yvernal.yvernalkingdom.utils.list.GlueList;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 public class InvitedPlayerDataManager implements DataManagerTemplate<InvitedPlayer> {
     private final DataManager dataManager;
@@ -19,12 +18,12 @@ public class InvitedPlayerDataManager implements DataManagerTemplate<InvitedPlay
 
     public InvitedPlayerDataManager(DataManager dataManager) {
         this.dataManager = dataManager;
-        this.invitedPlayers = new ArrayList<>();
+        this.invitedPlayers = new GlueList<>();
     }
 
     @Override
     public List<InvitedPlayer> getAllFromDatabase() {
-        final List<InvitedPlayer> invitedPlayers = new ArrayList<>();
+        final List<InvitedPlayer> invitedPlayers = new GlueList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM invitedPlayers", resultSet -> {
             try {

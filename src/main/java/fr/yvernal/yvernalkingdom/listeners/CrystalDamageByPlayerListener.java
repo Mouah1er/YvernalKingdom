@@ -1,11 +1,12 @@
 package fr.yvernal.yvernalkingdom.listeners;
 
+import fr.twah2em.bossbars.BossBar;
+import fr.twah2em.bossbars.BossBarManagerKt;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.events.CrystalDamageByPlayerEvent;
 import fr.yvernal.yvernalkingdom.events.CrystalKilledByPlayerEvent;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.crystal.Crystal;
-import me.confuser.barapi.BarAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -69,15 +70,22 @@ public class CrystalDamageByPlayerListener extends YvernalListener<CrystalDamage
                         .map(Bukkit::getPlayer)
                         .filter(Objects::nonNull)
                         .forEach(player1 -> {
-                            final String name = messagesManager.getString("crystal-health")
-                                    .replace("%current_health%", String.valueOf(crystal.getCrystalData().getHealth()))
+                            final String message = messagesManager.getString("crystal-health")
+                                    .replace("%current_health%", String.valueOf((crystal.getCrystalData().getHealth() < 0) ? 0 :
+                                            crystal.getCrystalData().getHealth()))
                                     .replace("%max_health%", String.valueOf(crystal.getCrystalData().getMaxHealth()))
                                     .replace("%heart_icon%", "❤");
-                            final float health = ((float) ((crystal.getCrystalData().getHealth() / crystal.getCrystalData().getMaxHealth()) * 100) < 0 ? 0 :
-                                    (float) ((crystal.getCrystalData().getHealth() / crystal.getCrystalData().getMaxHealth()) * 100));
+                            final float progress = ((float) ((crystal.getCrystalData().getHealth() / crystal.getCrystalData().getMaxHealth())) < 0 ? 0 :
+                                    (float) ((crystal.getCrystalData().getHealth() / crystal.getCrystalData().getMaxHealth())));
 
-                            BarAPI.setMessage(player1, name);
-                            BarAPI.setHealth(player1, health);
+                            BossBar bossBar = BossBarManagerKt.bossBar(player1);
+
+                            if (bossBar == null) {
+                                bossBar = BossBarManagerKt.createBar(player1, message, progress);
+                            }
+
+                            bossBar.setMessage(message);
+                            bossBar.setProgress(progress);
                         });
 
                 if (crystal.getCrystalData().getHealth() <= 0) {

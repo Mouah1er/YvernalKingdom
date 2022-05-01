@@ -9,11 +9,11 @@ import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.invitedplayers.InvitedPlayer;
+import fr.yvernal.yvernalkingdom.utils.list.GlueList;
 import fr.yvernal.yvernalkingdom.utils.locations.LocationUtils;
 import org.bukkit.Location;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -28,12 +28,12 @@ public class GuildDataManager implements DataManagerTemplate<Guild> {
 
     public GuildDataManager(DataManager dataManager) {
         this.dataManager = dataManager;
-        this.guilds = new ArrayList<>();
+        this.guilds = new GlueList<>();
     }
 
     @Override
     public List<Guild> getAllFromDatabase() {
-        final List<Guild> guilds = new ArrayList<>();
+        final List<Guild> guilds = new GlueList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM guilds", resultSet -> {
             try {
@@ -51,7 +51,7 @@ public class GuildDataManager implements DataManagerTemplate<Guild> {
     }
 
     private List<Claim> getClaims(Guild guild) {
-        final List<Claim> claims = new ArrayList<>();
+        final List<Claim> claims = new GlueList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM claims WHERE guildUniqueId=?", resultSet -> {
             try {
@@ -70,7 +70,7 @@ public class GuildDataManager implements DataManagerTemplate<Guild> {
     }
 
     private List<InvitedPlayer> getInvitedPlayers(Guild guild) {
-        final List<InvitedPlayer> invitedPlayers = new ArrayList<>();
+        final List<InvitedPlayer> invitedPlayers = new GlueList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM invitedPlayers WHERE guildUniqueId=?", resultSet -> {
             try {
@@ -102,8 +102,8 @@ public class GuildDataManager implements DataManagerTemplate<Guild> {
                             LocationUtils.stringToLocation(resultSet.getString("home"));
                     final UUID ownerUniqueId = UUID.fromString(resultSet.getString("ownerUniqueId"));
                     final List<UUID> membersUniqueId = getMembersUniqueId(guildUniqueId);
-                    final List<Claim> claims = new ArrayList<>();
-                    final List<InvitedPlayer> invitedPlayers = new ArrayList<>();
+                    final List<Claim> claims = new GlueList<>();
+                    final List<InvitedPlayer> invitedPlayers = new GlueList<>();
 
                     final Guild guild = new Guild(new GuildData(guildUniqueId, kingdom, guildName, description, power, home, ownerUniqueId, membersUniqueId,
                             claims, invitedPlayers), false, false);
@@ -184,7 +184,7 @@ public class GuildDataManager implements DataManagerTemplate<Guild> {
     }
 
     private List<UUID> getMembersUniqueId(String guildUniqueId) {
-        final List<UUID> uuids = new ArrayList<>();
+        final List<UUID> uuids = new GlueList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM accounts WHERE guildUniqueId=?", resultSet -> {
             try {

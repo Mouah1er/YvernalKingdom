@@ -2,12 +2,14 @@ package fr.yvernal.yvernalkingdom.listeners;
 
 import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
+import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
+import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -29,30 +31,62 @@ public class PlayerInteractListener extends YvernalListener<PlayerInteractEvent>
 
                 if ((itemType == Material.MONSTER_EGG && event.getItem().getDurability() == 50) ||
                         (blockType == Material.TNT && itemType == Material.FLINT_AND_STEEL) ||
+                        (itemType == Material.TNT) ||
                         (itemType == Material.EXPLOSIVE_MINECART && blockType.name().contains("RAIL"))) {
                     event.setCancelled(true);
 
-                    Entity entitytoSpawn;
+                    final Kingdom kingdomAt = dataManager.getKingdomDataManager().getKingdomByLocation(event.getClickedBlock().getLocation());
+                    final Location spawn = event.getClickedBlock().getLocation()
+                            .clone()
+                            .add(0, 2, 0);
+
+                    Entity entityToSpawn = null;
                     if (itemType == Material.MONSTER_EGG) {
-                        entitytoSpawn = player.getWorld().spawnEntity(event.getClickedBlock().getLocation(), EntityType.CREEPER);
+                        if (!kingdomAt.getKingdomProperties().getSpawnCuboid().isIn(event.getClickedBlock().getLocation())) {
+                            entityToSpawn = player.getWorld().spawnEntity(spawn, EntityType.CREEPER);
+                        }
                     } else if (itemType == Material.EXPLOSIVE_MINECART) {
-                        entitytoSpawn = player.getWorld().spawnEntity(event.getClickedBlock().getLocation(), EntityType.MINECART_TNT);
+                        if (!kingdomAt.getKingdomProperties().getSpawnCuboid().isIn(event.getClickedBlock().getLocation())) {
+                            entityToSpawn = player.getWorld().spawnEntity(spawn, EntityType.MINECART_TNT);
+                        }
+                    } else if (itemType == Material.FLINT_AND_STEEL) {
+                        if (!kingdomAt.getKingdomProperties().getSpawnCuboid().isIn(event.getClickedBlock().getLocation())) {
+                            event.getClickedBlock().setType(Material.AIR);
+                            entityToSpawn = player.getWorld().spawnEntity(spawn, EntityType.PRIMED_TNT);
+                        }
                     } else {
-                        event.getClickedBlock().setType(Material.AIR);
-                        entitytoSpawn = player.getWorld().spawnEntity(event.getClickedBlock().getLocation(), EntityType.PRIMED_TNT);
+                        if (!kingdomAt.getKingdomProperties().getSpawnCuboid().isIn(event.getClickedBlock().getLocation())) {
+                            event.setCancelled(false);
+                        }
                     }
 
-                    if (entitytoSpawn != null)
-                        Main.getInstance().getSpawnedCreepersByPlayer().put(entitytoSpawn.getUniqueId(), playerAccount);
+                    if (kingdomAt.getKingdomProperties().getSpawnCuboid().isIn(event.getClickedBlock().getLocation())) {
+                        entityToSpawn = null;
+                    }
+
+                    if (entityToSpawn != null)
+                        Main.getInstance().getSpawnedDangerousEntitiesByPlayer().put(entityToSpawn.getUniqueId(), playerAccount);
                 }
             } else {
                 final Claim claim = dataManager.getClaimManager().getClaimAt(event.getClickedBlock().getChunk().getX(),
                         event.getClickedBlock().getChunk().getZ());
 
-                if (claim != null && !claim.isUnClaim()) {
-                    if (!claim.getClaimData().getGuild().getGuildData().getGuildUniqueId().equals(playerAccount.getGuild().getGuildData().getGuildUniqueId())) {
-                        event.setCancelled(true);
-                        player.sendMessage(messagesManager.getString("player-cant-interact-in-claim"));
+                if (claim != null) {
+                    if (claim.isActivated()) {
+                        if (!claim.isUnClaim()) {
+                            final Guild playerGuild = playerAccount.getGuild();
+                            //if (event.getClickedBlock().getState() != null) {
+                            if (playerGuild != null) {
+                                if (!claim.getClaimData().getGuild().getGuildData().getGuildUniqueId().equals(playerGuild.getGuildData().getGuildUniqueId())) {
+                                    event.setCancelled(true);
+                                    //player.sendMessage(messagesManager.getString("player-cant-interact-in-claim"));
+                                }
+                            } else {
+                                event.setCancelled(true);
+                                //player.sendMessage(messagesManager.getString("player-cant-interact-in-claim"));
+                            }
+                            //}
+                        }
                     }
                 }
             }

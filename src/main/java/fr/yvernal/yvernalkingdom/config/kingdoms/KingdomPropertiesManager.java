@@ -25,7 +25,8 @@ public class KingdomPropertiesManager {
                 getCuboid(kingdomPropertiesPath + "cristal-cuboid"),
                 getCuboid(kingdomPropertiesPath + "safe-zone-cuboid"),
                 getCuboid(kingdomPropertiesPath + "total-territory-cuboid"),
-                getLocation(kingdomPropertiesPath + "spawn-location"));
+                getLocation(kingdomPropertiesPath + "spawn-location"),
+                getCuboid(kingdomPropertiesPath + "spawn-cuboid"));
     }
 
     public ChatColor getColor(String path) {

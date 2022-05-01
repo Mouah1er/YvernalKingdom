@@ -1,33 +1,35 @@
 package fr.yvernal.yvernalkingdom.config.items;
 
+import fr.yvernal.yvernalkingdom.utils.list.GlueList;
+
 import java.util.List;
 
 public class ShowGuildItems {
     private final String inventoryName;
 
     private final String enchantmentTableName;
-    private final List<String> enchantmentTableLore;
+    private final GlueList<String> enchantmentTableLore;
 
     private final String firstBookName;
-    private final List<String> firstBookLore;
+    private final GlueList<String> firstBookLore;
     private final String secondBookName;
-    private final List<String> secondBookLore;
+    private final GlueList<String> secondBookLore;
     private final String thirdBookName;
-    private final List<String> thirdBookLore;
+    private final GlueList<String> thirdBookLore;
     private final String fourthBookName;
-    private final List<String> fourthBookLore;
+    private final GlueList<String> fourthBookLore;
 
     private final String ownerItemName;
-    private final List<String> ownerItemLore;
+    private final GlueList<String> ownerItemLore;
     private final String playerItemName;
-    private final List<String> playerItemLore;
+    private final GlueList<String> playerItemLore;
     private final String paperItemName;
-    private final List<String> paperItemLore;
+    private final GlueList<String> paperItemLore;
 
-    public ShowGuildItems(String inventoryName, String enchantmentTableName, List<String> enchantmentTableLore, String firstBookName,
-                          List<String> firstBookLore, String secondBookName, List<String> secondBookLore, String thirdBookName,
-                          List<String> thirdBookLore, String fourthBookName, List<String> fourthBookLore, String ownerItemName, List<String> ownerItemLore, String playerItemName,
-                          List<String> playerItemLore, String paperItemName, List<String> paperItemLore) {
+    public ShowGuildItems(String inventoryName, String enchantmentTableName, GlueList<String> enchantmentTableLore, String firstBookName,
+                          GlueList<String> firstBookLore, String secondBookName, GlueList<String> secondBookLore, String thirdBookName,
+                          GlueList<String> thirdBookLore, String fourthBookName, GlueList<String> fourthBookLore, String ownerItemName, GlueList<String> ownerItemLore,
+                          String playerItemName, GlueList<String> playerItemLore, String paperItemName, GlueList<String> paperItemLore) {
         this.inventoryName = inventoryName;
         this.enchantmentTableName = enchantmentTableName;
         this.enchantmentTableLore = enchantmentTableLore;
@@ -55,7 +57,7 @@ public class ShowGuildItems {
         return enchantmentTableName;
     }
 
-    public List<String> getEnchantmentTableLore() {
+    public GlueList<String> getEnchantmentTableLore() {
         return enchantmentTableLore;
     }
 
@@ -63,7 +65,7 @@ public class ShowGuildItems {
         return firstBookName;
     }
 
-    public List<String> getFirstBookLore() {
+    public GlueList<String> getFirstBookLore() {
         return firstBookLore;
     }
 
@@ -71,7 +73,7 @@ public class ShowGuildItems {
         return secondBookName;
     }
 
-    public List<String> getSecondBookLore() {
+    public GlueList<String> getSecondBookLore() {
         return secondBookLore;
     }
 
@@ -79,7 +81,7 @@ public class ShowGuildItems {
         return thirdBookName;
     }
 
-    public List<String> getThirdBookLore() {
+    public GlueList<String> getThirdBookLore() {
         return thirdBookLore;
     }
 
@@ -87,7 +89,7 @@ public class ShowGuildItems {
         return fourthBookName;
     }
 
-    public List<String> getFourthBookLore() {
+    public GlueList<String> getFourthBookLore() {
         return fourthBookLore;
     }
 
@@ -95,7 +97,7 @@ public class ShowGuildItems {
         return ownerItemName;
     }
 
-    public List<String> getOwnerItemLore() {
+    public GlueList<String> getOwnerItemLore() {
         return ownerItemLore;
     }
 
@@ -103,7 +105,7 @@ public class ShowGuildItems {
         return playerItemName;
     }
 
-    public List<String> getPlayerItemLore() {
+    public GlueList<String> getPlayerItemLore() {
         return playerItemLore;
     }
 
@@ -111,7 +113,7 @@ public class ShowGuildItems {
         return paperItemName;
     }
 
-    public List<String> getPaperItemLore() {
+    public GlueList<String> getPaperItemLore() {
         return paperItemLore;
     }
 }

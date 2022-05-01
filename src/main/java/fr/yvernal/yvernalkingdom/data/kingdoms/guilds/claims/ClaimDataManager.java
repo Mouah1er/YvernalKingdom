@@ -4,9 +4,9 @@ import fr.yvernal.yvernalkingdom.data.DataManager;
 import fr.yvernal.yvernalkingdom.data.DataManagerTemplate;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
+import fr.yvernal.yvernalkingdom.utils.list.GlueList;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -18,12 +18,12 @@ public class ClaimDataManager implements DataManagerTemplate<Claim> {
 
     public ClaimDataManager(DataManager dataManager) {
         this.dataManager = dataManager;
-        this.claims = new ArrayList<>();
+        this.claims = new GlueList<>();
     }
 
     @Override
     public List<Claim> getAllFromDatabase() {
-        final List<Claim> claims = new ArrayList<>();
+        final List<Claim> claims = new GlueList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM claims", resultSet -> {
             try {
@@ -81,8 +81,7 @@ public class ClaimDataManager implements DataManagerTemplate<Claim> {
 
     @Override
     public void updateToDatabase(Claim claim) {
-        final Guild guild = claim.getClaimData().getGuild();
-
+        System.out.println(claim);
         if (claim.isUnClaim() || claim.isNew()) {
             if (claim.isUnClaim()) {
                 deleteFromDatabase(claim);

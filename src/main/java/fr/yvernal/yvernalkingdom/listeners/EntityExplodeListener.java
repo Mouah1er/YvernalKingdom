@@ -22,21 +22,31 @@ public class EntityExplodeListener extends YvernalListener<EntityExplodeEvent> {
         if (entityType == EntityType.CREEPER || entityType == EntityType.PRIMED_TNT || entityType == EntityType.MINECART_TNT) {
             final Entity entity = event.getEntity();
 
-            if (Main.getInstance().getSpawnedCreepersByPlayer().containsKey(entity.getUniqueId())) {
-                final PlayerAccount playerAccount = Main.getInstance().getSpawnedCreepersByPlayer().get(entity.getUniqueId());
+            if (Main.getInstance().getSpawnedDangerousEntitiesByPlayer().containsKey(entity.getUniqueId())) {
+                final PlayerAccount playerAccount = Main.getInstance().getSpawnedDangerousEntitiesByPlayer().get(entity.getUniqueId());
 
                 final Kingdom playerKingdom = dataManager.getKingdomDataManager().getKingdomByNumber(playerAccount.getKingdom().getKingdomProperties()
                         .getNumber());
                 final Kingdom kingdomAt = dataManager.getKingdomDataManager().getKingdomByLocation(event.getLocation());
-
                 final Guild playerGuild = playerAccount.getGuild();
-                final Claim claimAt = dataManager.getClaimManager().getClaimAt(event.getLocation().getChunk().getX(),
-                        event.getLocation().getChunk().getZ());
-                final List<Claim> guildClaims = playerGuild.getGuildData().getClaims();
 
-                if (playerKingdom.getKingdomProperties().getNumber().equals(kingdomAt.getKingdomProperties().getNumber()) &&
-                        !guildClaims.contains(claimAt)) {
+                if (kingdomAt.getKingdomProperties().getSpawnCuboid().isIn(entity.getLocation())) {
                     event.setCancelled(true);
+                }
+
+                if (playerGuild != null) {
+                    final Claim claimAt = dataManager.getClaimManager().getClaimAt(event.getLocation().getChunk().getX(),
+                            event.getLocation().getChunk().getZ());
+                    final List<Claim> guildClaims = playerGuild.getGuildData().getClaims();
+
+                    if (playerKingdom.getKingdomProperties().getNumber().equals(kingdomAt.getKingdomProperties().getNumber()) &&
+                            !guildClaims.contains(claimAt)) {
+                        event.setCancelled(true);
+                    }
+                } else {
+                    if (playerKingdom.getKingdomProperties().getNumber().equals(kingdomAt.getKingdomProperties().getNumber())) {
+                        event.setCancelled(true);
+                    }
                 }
             }
         }

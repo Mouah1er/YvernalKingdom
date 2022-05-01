@@ -25,15 +25,15 @@ public class AsyncPlayerChatListener extends YvernalListener<AsyncPlayerChatEven
         } else {
             event.setCancelled(true);
 
-            if (event.getMessage().startsWith("@")) {
-                Bukkit.broadcastMessage(ChatFormat.format(player, event.getMessage(), ChatMode.GLOBAL));
+            if (event.getMessage().startsWith(Main.getInstance().getConfigManager().getGameConfigManager().getString("global-chat-prefix"))) {
+                Bukkit.getOnlinePlayers().forEach(player1 -> player1.sendMessage(ChatFormat.format(player, player1, event.getMessage(), ChatMode.GLOBAL)));
             } else {
                 final Kingdom kingdom = Main.getInstance().getDataManager().getKingdomDataManager().getKingdomByUniqueId(player.getUniqueId());
 
                 if (kingdom != null) {
                     kingdom.getKingdomData().getPlayersIn().stream()
                             .map(Bukkit::getPlayer)
-                            .forEach(targetPlayer -> targetPlayer.sendMessage(ChatFormat.format(player, event.getMessage(), ChatMode.KINGDOM)));
+                            .forEach(targetPlayer -> targetPlayer.sendMessage(ChatFormat.format(player, targetPlayer, event.getMessage(), ChatMode.KINGDOM)));
                 } else {
                     player.sendMessage(messagesManager.getString("discord-link"));
                 }

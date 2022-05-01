@@ -2,6 +2,7 @@ package fr.yvernal.yvernalkingdom.config.items;
 
 import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.utils.ConfigUtils;
+import fr.yvernal.yvernalkingdom.utils.list.GlueList;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -45,23 +46,23 @@ public class ItemsConfigManager {
         final String inventoryName = showGuildItemsConfig.getString("inventory_name");
 
         final String enchantmentTableName = showGuildItemsConfig.getString("enchantment_table_name");
-        final List<String> enchantmentTableLore = showGuildItemsConfig.getStringList("enchantment_table_lore");
+        final GlueList<String> enchantmentTableLore = new GlueList<>(showGuildItemsConfig.getStringList("enchantment_table_lore"));
 
         final String firstBookName = showGuildItemsConfig.getString("first_book_name");
-        final List<String> firstBookLore = showGuildItemsConfig.getStringList("first_book_lore");
+        final GlueList<String> firstBookLore = new GlueList<>(showGuildItemsConfig.getStringList("first_book_lore"));
         final String secondBookName = showGuildItemsConfig.getString("second_book_name");
-        final List<String> secondBookLore = showGuildItemsConfig.getStringList("second_book_lore");
+        final GlueList<String> secondBookLore = new GlueList<>(showGuildItemsConfig.getStringList("second_book_lore"));
         final String thirdBookName = showGuildItemsConfig.getString("third_book_name");
-        final List<String> thirdBookLore = showGuildItemsConfig.getStringList("third_book_lore");
+        final GlueList<String> thirdBookLore = new GlueList<>(showGuildItemsConfig.getStringList("third_book_lore"));
         final String fourthBookName = showGuildItemsConfig.getString("fourth_book_name");
-        final List<String> fourthBookLore = showGuildItemsConfig.getStringList("fourth_book_lore");
+        final GlueList<String> fourthBookLore = new GlueList<>(showGuildItemsConfig.getStringList("fourth_book_lore"));
 
         final String ownerItemName = showGuildItemsConfig.getString("owner_item_name");
-        final List<String> ownerItemLore = showGuildItemsConfig.getStringList("owner_item_lore");
+        final GlueList<String> ownerItemLore = new GlueList<>(showGuildItemsConfig.getStringList("owner_item_lore"));
         final String playerItemName = showGuildItemsConfig.getString("player_item_name");
-        final List<String> playerItemLore = showGuildItemsConfig.getStringList("player_item_lore");
+        final GlueList<String> playerItemLore = new GlueList<>(showGuildItemsConfig.getStringList("player_item_lore"));
         final String paperItemName = showGuildItemsConfig.getString("paper_item_name");
-        final List<String> paperItemLore = showGuildItemsConfig.getStringList("paper_item_lore");
+        final GlueList<String> paperItemLore = new GlueList<>(showGuildItemsConfig.getStringList("paper_item_lore"));
 
         return new ShowGuildItems(inventoryName, enchantmentTableName, enchantmentTableLore, firstBookName, firstBookLore, secondBookName,
                 secondBookLore, thirdBookName, thirdBookLore, fourthBookName, fourthBookLore, ownerItemName, ownerItemLore,

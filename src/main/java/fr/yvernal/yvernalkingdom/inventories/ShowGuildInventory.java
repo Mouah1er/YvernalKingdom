@@ -7,10 +7,8 @@ import fr.yvernal.yvernalkingdom.config.messages.MessagesManager;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccountManager;
 import fr.yvernal.yvernalkingdom.inventories.template.InventoryCreator;
-import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.utils.ItemBuilder;
-import fr.yvernal.yvernalkingdom.utils.ListUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -21,7 +19,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -46,7 +43,7 @@ public class ShowGuildInventory extends InventoryCreator {
         setItem(4, new ItemBuilder(Material.ENCHANTMENT_TABLE)
                 .name(showGuildItems.getEnchantmentTableName()
                         .replace("%guilde%", guild.getGuildData().getName()))
-                .lore(ListUtils.modifyList(showGuildItems.getEnchantmentTableLore(), list -> list.replaceAll(s -> {
+                .lore(showGuildItems.getEnchantmentTableLore().modify(list -> list.replaceAll(s -> {
                     if (s.contains("%kingdom%")) {
                         return s.replace("%kingdom%", guild.getGuildData().getKingdom().getKingdomProperties().getName());
                     }
@@ -62,7 +59,7 @@ public class ShowGuildInventory extends InventoryCreator {
 
         setItem(9, new ItemBuilder(Material.BOOK)
                 .name(showGuildItems.getFirstBookName())
-                .lore(ListUtils.modifyList(showGuildItems.getFirstBookLore(), list -> list.replaceAll(s -> {
+                .lore(showGuildItems.getFirstBookLore().modify(list -> list.replaceAll(s -> {
                     if (s.contains("%power%")) {
                         return s.replace("%power%", String.valueOf(guild.getGuildData().getPower()));
                     }
@@ -117,7 +114,7 @@ public class ShowGuildInventory extends InventoryCreator {
                 .name(showGuildItems.getOwnerItemName()
                         .replace("%player%", ownerOfflinePlayer.getName()))
                 .owner(ownerOfflinePlayer)
-                .lore(ListUtils.modifyList(showGuildItems.getOwnerItemLore(), list -> list.replaceAll(s -> {
+                .lore(showGuildItems.getOwnerItemLore().modify(list -> list.replaceAll(s -> {
                     if (s.contains("%ratio%")) {
                         final DecimalFormat decimalFormat = new DecimalFormat("#.##");
                         return s.replace("%ratio%",
@@ -177,7 +174,7 @@ public class ShowGuildInventory extends InventoryCreator {
 
             setItem(slot + 18, new ItemBuilder(Material.PAPER)
                     .name(showGuildItems.getPaperItemName())
-                    .lore(ListUtils.modifyList(showGuildItems.getPaperItemLore(), list -> list.replaceAll(s -> {
+                    .lore(showGuildItems.getPaperItemLore().modify(list -> list.replaceAll(s -> {
                         if (s.contains("%ratio%")) {
                             final DecimalFormat decimalFormat = new DecimalFormat("#.##");
                             return s.replace("%ratio%",

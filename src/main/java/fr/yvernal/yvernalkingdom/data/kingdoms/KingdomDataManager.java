@@ -3,10 +3,10 @@ package fr.yvernal.yvernalkingdom.data.kingdoms;
 import fr.yvernal.yvernalkingdom.data.DataManager;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
+import fr.yvernal.yvernalkingdom.utils.list.GlueList;
 import org.bukkit.Location;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -20,7 +20,7 @@ public class KingdomDataManager {
 
     public KingdomDataManager(DataManager dataManager) {
         this.dataManager = dataManager;
-        this.kingdoms = new ArrayList<>();
+        this.kingdoms = new GlueList<>();
     }
 
     public KingdomData getKingdomDataFromDatabase(String kingdom) {
@@ -38,7 +38,7 @@ public class KingdomDataManager {
     }
 
     private List<Guild> getGuildsIn(String kingdomName) {
-        final List<Guild> guilds = new ArrayList<>();
+        final List<Guild> guilds = new GlueList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM guilds WHERE kingdomName=?", resultSet -> {
             try {
@@ -56,7 +56,7 @@ public class KingdomDataManager {
     }
 
     private List<UUID> getWaitingPlayers(String kingdomName) {
-        final List<UUID> uuids = new ArrayList<>();
+        final List<UUID> uuids = new GlueList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM accounts " +
                 "WHERE kingdomName=? AND waitingKingdomName=?", resultSet -> {
@@ -73,7 +73,7 @@ public class KingdomDataManager {
     }
 
     private List<UUID> getPlayersIn(String kingdomName) {
-        final List<UUID> uuids = new ArrayList<>();
+        final List<UUID> uuids = new GlueList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM accounts WHERE kingdomName=? AND " +
                 "waitingKingdomName=?", resultSet -> {

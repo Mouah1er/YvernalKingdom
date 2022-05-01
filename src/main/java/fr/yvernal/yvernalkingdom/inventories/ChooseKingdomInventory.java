@@ -66,25 +66,27 @@ public class ChooseKingdomInventory extends InventoryCreator {
                 .lore(chooseKingdomItems.getWaitingLineFalseLore())
                 .build();
 
-        if (Kingdoms.KINGDOM_1.getKingdom().getKingdomData().getPlayersIn().size() >= 50) {
+        final int kingdomMaxPlayers = Main.getInstance().getConfigManager().getGameConfigManager().get("kingdom-max-players", int.class);
+
+        if (Kingdoms.KINGDOM_1.getKingdom().getKingdomData().getPlayersIn().size() >= kingdomMaxPlayers) {
             setItem(37, waitingLineTrueItemStack);
         } else {
             setItem(37, waitingLineFalseItemStack);
         }
 
-        if (Kingdoms.KINGDOM_2.getKingdom().getKingdomData().getPlayersIn().size() >= 50) {
+        if (Kingdoms.KINGDOM_2.getKingdom().getKingdomData().getPlayersIn().size() >= kingdomMaxPlayers) {
             setItem(39, waitingLineTrueItemStack);
         } else {
             setItem(39, waitingLineFalseItemStack);
         }
 
-        if (Kingdoms.KINGDOM_3.getKingdom().getKingdomData().getPlayersIn().size() >= 50) {
+        if (Kingdoms.KINGDOM_3.getKingdom().getKingdomData().getPlayersIn().size() >= kingdomMaxPlayers) {
             setItem(41, waitingLineTrueItemStack);
         } else {
             setItem(41, waitingLineFalseItemStack);
         }
 
-        if (Kingdoms.KINGDOM_4.getKingdom().getKingdomData().getPlayersIn().size() >= 50) {
+        if (Kingdoms.KINGDOM_4.getKingdom().getKingdomData().getPlayersIn().size() >= kingdomMaxPlayers) {
             setItem(43, waitingLineTrueItemStack);
         } else {
             setItem(43, waitingLineFalseItemStack);
@@ -124,7 +126,7 @@ public class ChooseKingdomInventory extends InventoryCreator {
                         Kingdoms.getByNumber(kingdomName));
                 player.sendMessage(Main.getInstance().getConfigManager().getMessagesManager().getString("join-kingdom-message")
                         .replace("%kingdom%", displayName));
-                Main.getInstance().getNameTagManager().showPlayerNameTag(player);
+                Main.getInstance().getTeamManager().showPlayerNameTag(player);
             }
 
             player.closeInventory();

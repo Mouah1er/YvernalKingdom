@@ -3,9 +3,9 @@ package fr.yvernal.yvernalkingdom.data.kingdoms.guilds;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.invitedplayers.InvitedPlayer;
+import fr.yvernal.yvernalkingdom.utils.list.GlueList;
 import org.bukkit.Location;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,8 +34,8 @@ public class GuildData {
         this.home = home;
         this.ownerUniqueId = ownerUniqueId;
         // au cas où la list est immutable on crée une nouvelle ArrayList
-        this.membersUniqueId = new ArrayList<>(membersUniqueId);
-        this.claims = new ArrayList<>(claims);
+        this.membersUniqueId = new GlueList<>(membersUniqueId);
+        this.claims = new GlueList<>(claims);
         this.invitedPlayers = invitedPlayers;
     }
 

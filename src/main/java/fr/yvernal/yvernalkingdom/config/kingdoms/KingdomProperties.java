@@ -16,9 +16,10 @@ public class KingdomProperties {
     private final Cuboid safeZoneCuboid;
     private final Cuboid totalTerritoryCuboid;
     private final Location spawnLocation;
+    private final Cuboid spawnCuboid;
 
     public KingdomProperties(String number, String name, ChatColor color, Location crystalLocation, Cuboid crystalCuboid, Cuboid safeZoneCuboid,
-                             Cuboid totalTerritoryCuboid, Location spawnLocation) {
+                             Cuboid totalTerritoryCuboid, Location spawnLocation, Cuboid spawnCuboid) {
         this.number = number;
         this.name = name;
         this.color = color;
@@ -27,6 +28,7 @@ public class KingdomProperties {
         this.safeZoneCuboid = safeZoneCuboid;
         this.totalTerritoryCuboid = totalTerritoryCuboid;
         this.spawnLocation = spawnLocation;
+        this.spawnCuboid = spawnCuboid;
     }
 
     public String getNumber() {
@@ -61,6 +63,10 @@ public class KingdomProperties {
         return spawnLocation;
     }
 
+    public Cuboid getSpawnCuboid() {
+        return spawnCuboid;
+    }
+
     @Override
     public String toString() {
         return "KingdomProperties{" +
@@ -72,6 +78,7 @@ public class KingdomProperties {
                 ", safeZoneCuboid=" + safeZoneCuboid +
                 ", totalTerritoryCuboid=" + totalTerritoryCuboid +
                 ", spawnLocation=" + spawnLocation +
+                ", spawnCuboid=" + spawnCuboid +
                 '}';
     }
 }

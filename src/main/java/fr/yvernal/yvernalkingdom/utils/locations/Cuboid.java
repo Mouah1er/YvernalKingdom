@@ -1,12 +1,11 @@
 package fr.yvernal.yvernalkingdom.utils.locations;
 
+import fr.yvernal.yvernalkingdom.utils.list.GlueList;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -78,7 +77,7 @@ public class Cuboid {
             this.sizeY = Math.abs(yMax - yMin) + 1;
             this.sizeZ = Math.abs(zMax - yMin) + 1;
             this.x = this.y = this.z = 0;
-            this.blocks3 = new ArrayList<>();
+            this.blocks3 = new GlueList<>();
         }
 
         public Cuboid getCuboid() {

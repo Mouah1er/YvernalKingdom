@@ -26,8 +26,8 @@ public class HomeArg extends YvernalArg {
                     @Override
                     public void run() {
                         if (playerAccount.isWaitingToTeleportToHome()) {
-                            final int timeToTeleport = Integer.parseInt(Main.getInstance().getConfigManager().getGameConfigManager()
-                                    .getString("time-to-teleport-to-guild-home"));
+                            final int timeToTeleport = Main.getInstance().getConfigManager().getGameConfigManager()
+                                    .get("time-to-teleport-to-guild-home", int.class);
 
                             player.sendMessage(messagesManager.getString("teleporting-to-home")
                                     .replace("%time%", String.valueOf(timeToTeleport - timer)));

@@ -3,7 +3,6 @@ package fr.yvernal.yvernalkingdom.listeners;
 import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.config.messages.MessagesManager;
 import fr.yvernal.yvernalkingdom.data.DataManager;
-import fr.yvernal.yvernalkingdom.utils.nametag.NameTagManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;

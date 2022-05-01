@@ -7,11 +7,9 @@ import fr.yvernal.yvernalkingdom.data.DataManager;
 import fr.yvernal.yvernalkingdom.data.DataManagerTemplate;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.crystal.Crystal;
+import fr.yvernal.yvernalkingdom.utils.list.GlueList;
 
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -22,13 +20,13 @@ public class CrystalDataManager implements DataManagerTemplate<Crystal> {
 
     public CrystalDataManager(DataManager dataManager) {
         this.dataManager = dataManager;
-        this.crystals = new ArrayList<>();
+        this.crystals = new GlueList<>();
     }
 
     @Override
 
     public List<Crystal> getAllFromDatabase() {
-        final List<Crystal> crystals = new ArrayList<>();
+        final List<Crystal> crystals = new GlueList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM crystals", resultSet -> {
             try {
@@ -65,7 +63,7 @@ public class CrystalDataManager implements DataManagerTemplate<Crystal> {
                                     .add(0, 3.5, 0))));
                 } else {
                     final GameConfigManager gameConfigManager = Main.getInstance().getConfigManager().getGameConfigManager();
-                    final Crystal crystal1 = new Crystal(new CrystalData(kingdom, Float.parseFloat(gameConfigManager.getString("base-crystal-health")),
+                    final Crystal crystal1 = new Crystal(new CrystalData(kingdom, gameConfigManager.get("base-crystal-health", float.class),
                             0, 1, false, null),
                             HologramsAPI.createHologram(Main.getInstance(), kingdom.getKingdomProperties().getCrystalLocation()
                                     .clone()

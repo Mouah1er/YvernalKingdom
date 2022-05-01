@@ -6,9 +6,9 @@ import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.GuildRank;
+import fr.yvernal.yvernalkingdom.utils.list.GlueList;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -23,12 +23,12 @@ public class PlayerAccountManager implements DataManagerTemplate<PlayerAccount> 
 
     public PlayerAccountManager(DataManager dataManager) {
         this.dataManager = dataManager;
-        this.accounts = new ArrayList<>();
+        this.accounts = new GlueList<>();
     }
 
     @Override
     public List<PlayerAccount> getAllFromDatabase() {
-        final List<PlayerAccount> playerAccounts = new ArrayList<>();
+        final List<PlayerAccount> playerAccounts = new GlueList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM accounts", resultSet -> {
             try {

@@ -1,12 +1,12 @@
 package fr.yvernal.yvernalkingdom.data.accounts;
 
+import fr.twah2em.nametag.Relation;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
-import fr.yvernal.yvernalkingdom.kingdoms.Relations;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.GuildRank;
 import fr.yvernal.yvernalkingdom.tasks.PowerAdditionsBukkitRunnable;
+import fr.yvernal.yvernalkingdom.utils.list.GlueList;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,7 +28,7 @@ public class PlayerAccount {
     private boolean isWaitingToTeleportToHome;
     private boolean isNew;
     private boolean isInAdminMode;
-    private final List<UUID> playerWithWhomInBattle = new ArrayList<>();
+    private final List<UUID> playerWithWhomInBattle = new GlueList<>();
 
     public PlayerAccount(UUID uniqueId, int power, double valis, Guild guild, GuildRank guildRank,
                          Kingdom waitingKingdom, Kingdom kingdom, long kills, long deaths, boolean isNew) {
@@ -148,14 +148,14 @@ public class PlayerAccount {
         return playerWithWhomInBattle;
     }
 
-    public Relations getRelationWith(PlayerAccount playerAccount) {
+    public Relation getRelationWith(PlayerAccount playerAccount) {
         if (playerAccount.getKingdom() == null || kingdom == null) {
-            return Relations.NEUTRAL;
+            return Relation.NEUTRAL;
         } else if (playerAccount.getUniqueId().equals(this.uniqueId) ||
                 playerAccount.getKingdom().getKingdomProperties().getNumber().equals(this.kingdom.getKingdomProperties().getNumber())) {
-            return Relations.ALLY;
+            return Relation.ALLY;
         } else {
-            return Relations.ENEMY;
+            return Relation.ENEMY;
         }
     }
 

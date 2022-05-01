@@ -27,15 +27,17 @@ public class ClaimArg extends YvernalArg {
                 } else {
                     if (playerAccount.getPower() == 0) {
                         final int hour = playerAccount.getPowerRunnable().getTimer() / 3600;
-                        final int minuts = (playerAccount.getPowerRunnable().getTimer() % 3600) / 60;
+                        final int minutes = (playerAccount.getPowerRunnable().getTimer() % 3600) / 60;
                         player.sendMessage(messagesManager.getString("no-power-to-claim")
-                                .replace("%time%", hour + "h" + minuts + "min"));
+                                .replace("%time%", hour + "h" + minutes + "min"));
                     } else {
                         final Claim claim = dataManager.getClaimManager().getClaimAt(playerChunk.getX(), playerChunk.getZ());
 
                         if (claim == null) {
-                            dataManager.getClaimManager().getClaims().add(new Claim(new ClaimData(playerGuild, playerChunk.getX(), playerChunk.getZ()),
-                                    false, true, true));
+                            final Claim newClaim = new Claim(new ClaimData(playerGuild, playerChunk.getX(), playerChunk.getZ()),
+                                    false, true, true);
+                            dataManager.getClaimManager().getClaims().add(newClaim);
+                            playerGuild.getGuildData().getClaims().add(newClaim);
 
                             playerGuild.sendMessageToMembers(messagesManager.getString("successfully-claimed-chunk")
                                     .replace("%player%", player.getName())

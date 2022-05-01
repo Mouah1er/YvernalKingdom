@@ -4,6 +4,7 @@ import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.config.messages.MessagesManager;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
+import fr.yvernal.yvernalkingdom.utils.list.GlueList;
 import fr.yvernal.yvernalkingdom.utils.locations.GuildLocation;
 import me.rayzr522.jsonmessage.JSONMessage;
 import org.bukkit.ChatColor;
@@ -38,7 +39,7 @@ public class AsciiMap {
     }
 
     public List<JSONMessage> getMap() {
-        final List<JSONMessage> lines = new ArrayList<>();
+        final List<JSONMessage> lines = new GlueList<>();
         final List<String> asciiCompass = AsciiCompass.getAsciiCompass(angle);
         final MessagesManager messagesManager = Main.getInstance().getConfigManager().getMessagesManager();
 

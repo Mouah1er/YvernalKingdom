@@ -3,7 +3,8 @@ package fr.yvernal.yvernalkingdom.utils;
 import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.kingdoms.crystal.Crystal;
 import fr.yvernal.yvernalkingdom.kingdoms.crystal.CrystalHologram;
-import fr.yvernal.yvernalkingdom.tasks.EverySecondBukkitTask;
+import fr.yvernal.yvernalkingdom.tasks.CrystalRegenBukkitRunnable;
+import fr.yvernal.yvernalkingdom.tasks.RebuildCrystalBukkitRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -23,8 +24,10 @@ public class CrystalUtils {
         });
     }
 
-    public static void startRebuildCrystalBukkitRunnable() {
-        new EverySecondBukkitTask().runTaskTimer(Main.getInstance(), 0, 20);
+    public static void startCrystalRunnables() {
+        new RebuildCrystalBukkitRunnable().runTaskTimerAsynchronously(Main.getInstance(), 0, 20);
+        new CrystalRegenBukkitRunnable().runTaskTimerAsynchronously(Main.getInstance(), 0,
+                Main.getInstance().getConfigManager().getGameConfigManager().get("crystal-regen-time", long.class) * 20);
     }
 
     private static void startUpdateCrystalHologramTask(Crystal crystal) {

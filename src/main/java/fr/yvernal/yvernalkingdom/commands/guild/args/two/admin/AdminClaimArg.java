@@ -28,8 +28,10 @@ public class AdminClaimArg extends YvernalArg {
                         playerChunk.getZ());
 
                 if (claim == null) {
-                    dataManager.getClaimManager().getClaims().add(new Claim(new ClaimData(guild, playerChunk.getX(), playerChunk.getZ()),
-                            false, true, true));
+                    final Claim newClaim = new Claim(new ClaimData(guild, playerChunk.getX(), playerChunk.getZ()),
+                            false, true, true);
+                    dataManager.getClaimManager().getClaims().add(newClaim);
+                    guild.getGuildData().getClaims().add(newClaim);
 
                     guild.sendMessageToMembers(messagesManager.getString("successfully-claimed-chunk")
                             .replace("%player%", player.getName())
