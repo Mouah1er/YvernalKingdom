@@ -31,7 +31,6 @@ public class PlayerInteractListener extends YvernalListener<PlayerInteractEvent>
 
                 if ((itemType == Material.MONSTER_EGG && event.getItem().getDurability() == 50) ||
                         (blockType == Material.TNT && itemType == Material.FLINT_AND_STEEL) ||
-                        (itemType == Material.TNT) ||
                         (itemType == Material.EXPLOSIVE_MINECART && blockType.name().contains("RAIL"))) {
                     event.setCancelled(true);
 
@@ -47,21 +46,13 @@ public class PlayerInteractListener extends YvernalListener<PlayerInteractEvent>
                         }
                     } else if (itemType == Material.EXPLOSIVE_MINECART) {
                         if (!kingdomAt.getKingdomProperties().getSpawnCuboid().isIn(event.getClickedBlock().getLocation())) {
-                            entityToSpawn = player.getWorld().spawnEntity(spawn, EntityType.MINECART_TNT);
-                        }
-                    } else if (itemType == Material.FLINT_AND_STEEL) {
-                        if (!kingdomAt.getKingdomProperties().getSpawnCuboid().isIn(event.getClickedBlock().getLocation())) {
-                            event.getClickedBlock().setType(Material.AIR);
-                            entityToSpawn = player.getWorld().spawnEntity(spawn, EntityType.PRIMED_TNT);
+                            entityToSpawn = player.getWorld().spawnEntity(event.getClickedBlock().getLocation(), EntityType.MINECART_TNT);
                         }
                     } else {
                         if (!kingdomAt.getKingdomProperties().getSpawnCuboid().isIn(event.getClickedBlock().getLocation())) {
-                            event.setCancelled(false);
+                            event.getClickedBlock().setType(Material.AIR);
+                            entityToSpawn = player.getWorld().spawnEntity(event.getClickedBlock().getLocation(), EntityType.PRIMED_TNT);
                         }
-                    }
-
-                    if (kingdomAt.getKingdomProperties().getSpawnCuboid().isIn(event.getClickedBlock().getLocation())) {
-                        entityToSpawn = null;
                     }
 
                     if (entityToSpawn != null)
