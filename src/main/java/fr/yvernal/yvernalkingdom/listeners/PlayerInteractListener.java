@@ -1,14 +1,9 @@
 package fr.yvernal.yvernalkingdom.listeners;
 
-import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
-import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.claims.Claim;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -29,7 +24,7 @@ public class PlayerInteractListener extends YvernalListener<PlayerInteractEvent>
                 final Material itemType = event.getItem().getType();
                 final Material blockType = event.getClickedBlock().getType();
 
-                if ((itemType == Material.MONSTER_EGG && event.getItem().getDurability() == 50) ||
+                /*if ((itemType == Material.MONSTER_EGG && event.getItem().getDurability() == 50) ||
                         (blockType == Material.TNT && itemType == Material.FLINT_AND_STEEL) ||
                         (itemType == Material.EXPLOSIVE_MINECART && blockType.name().contains("RAIL"))) {
                     event.setCancelled(true);
@@ -57,7 +52,7 @@ public class PlayerInteractListener extends YvernalListener<PlayerInteractEvent>
 
                     if (entityToSpawn != null)
                         Main.getInstance().getSpawnedDangerousEntitiesByPlayer().put(entityToSpawn.getUniqueId(), playerAccount);
-                }
+                }*/
             } else {
                 final Claim claim = dataManager.getClaimManager().getClaimAt(event.getClickedBlock().getChunk().getX(),
                         event.getClickedBlock().getChunk().getZ());

@@ -7,9 +7,10 @@ import fr.yvernal.yvernalkingdom.data.DataManager;
 import fr.yvernal.yvernalkingdom.data.DataManagerTemplate;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.crystal.Crystal;
-import fr.yvernal.yvernalkingdom.utils.list.GlueList;
+import fr.yvernal.yvernalkingdom.utils.list.YvernalArrayList;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -20,13 +21,13 @@ public class CrystalDataManager implements DataManagerTemplate<Crystal> {
 
     public CrystalDataManager(DataManager dataManager) {
         this.dataManager = dataManager;
-        this.crystals = new GlueList<>();
+        this.crystals = new YvernalArrayList<>();
     }
 
     @Override
 
     public List<Crystal> getAllFromDatabase() {
-        final List<Crystal> crystals = new GlueList<>();
+        final List<Crystal> crystals = new YvernalArrayList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM crystals", resultSet -> {
             try {

@@ -19,7 +19,7 @@ public class AdminClaimArg extends YvernalArg {
                     .replace("%guilde%", args[1]));
         } else {
             final Kingdom kingdom = guild.getGuildData().getKingdom();
-    
+
             if (!kingdom.getKingdomProperties().getTotalTerritoryCuboid().isIn(player)) {
                 player.sendMessage(messagesManager.getString("player-try-claim-outside-kingdom"));
             } else {

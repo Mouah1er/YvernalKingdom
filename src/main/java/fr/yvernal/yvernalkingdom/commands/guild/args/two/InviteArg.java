@@ -1,6 +1,5 @@
 package fr.yvernal.yvernalkingdom.commands.guild.args.two;
 
-import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.commands.YvernalArg;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.invitedplayers.InvitedPlayerData;
@@ -13,8 +12,6 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 public class InviteArg extends YvernalArg {
 

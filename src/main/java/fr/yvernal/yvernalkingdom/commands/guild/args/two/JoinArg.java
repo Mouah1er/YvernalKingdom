@@ -2,14 +2,10 @@ package fr.yvernal.yvernalkingdom.commands.guild.args.two;
 
 import fr.yvernal.yvernalkingdom.commands.YvernalArg;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
-import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.GuildRank;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.invitedplayers.InvitedPlayer;
 import org.bukkit.entity.Player;
-
-import java.util.Locale;
-import java.util.UUID;
 
 public class JoinArg extends YvernalArg {
 

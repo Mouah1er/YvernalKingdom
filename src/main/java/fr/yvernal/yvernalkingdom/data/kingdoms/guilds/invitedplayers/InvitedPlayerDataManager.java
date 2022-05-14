@@ -4,9 +4,10 @@ import fr.yvernal.yvernalkingdom.data.DataManager;
 import fr.yvernal.yvernalkingdom.data.DataManagerTemplate;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.invitedplayers.InvitedPlayer;
-import fr.yvernal.yvernalkingdom.utils.list.GlueList;
+import fr.yvernal.yvernalkingdom.utils.list.YvernalArrayList;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -18,12 +19,12 @@ public class InvitedPlayerDataManager implements DataManagerTemplate<InvitedPlay
 
     public InvitedPlayerDataManager(DataManager dataManager) {
         this.dataManager = dataManager;
-        this.invitedPlayers = new GlueList<>();
+        this.invitedPlayers = new YvernalArrayList<>();
     }
 
     @Override
     public List<InvitedPlayer> getAllFromDatabase() {
-        final List<InvitedPlayer> invitedPlayers = new GlueList<>();
+        final List<InvitedPlayer> invitedPlayers = new YvernalArrayList<>();
 
         dataManager.getDatabaseManager().query("SELECT * FROM invitedPlayers", resultSet -> {
             try {
@@ -59,8 +60,8 @@ public class InvitedPlayerDataManager implements DataManagerTemplate<InvitedPlay
     @Override
     public void deleteFromDatabase(InvitedPlayer invitedPlayer) {
         dataManager.getDatabaseManager().update("DELETE FROM invitedPlayers " +
-                "WHERE uniqueId=? AND " +
-                "guildUniqueId=?",
+                        "WHERE uniqueId=? AND " +
+                        "guildUniqueId=?",
                 invitedPlayer.getInvitedPlayerData().getUniqueId().toString(),
                 invitedPlayer.getInvitedPlayerData().getGuild().getGuildData().getGuildUniqueId());
     }
@@ -68,8 +69,8 @@ public class InvitedPlayerDataManager implements DataManagerTemplate<InvitedPlay
     @Override
     public void addToDatabase(InvitedPlayer invitedPlayer) {
         dataManager.getDatabaseManager().update("INSERT INTO invitedPlayers (guildUniqueId, uniqueId) VALUES (" +
-                "?, " +
-                "?)",
+                        "?, " +
+                        "?)",
                 invitedPlayer.getInvitedPlayerData().getGuild().getGuildData().getGuildUniqueId(),
                 invitedPlayer.getInvitedPlayerData().getUniqueId());
     }
@@ -85,8 +86,8 @@ public class InvitedPlayerDataManager implements DataManagerTemplate<InvitedPlay
             }
         } else {
             dataManager.getDatabaseManager().update("UPDATE invitedPlayers SET " +
-                    "guildUniqueId=? WHERE " +
-                    "uniqueId=?",
+                            "guildUniqueId=? WHERE " +
+                            "uniqueId=?",
                     invitedPlayer.getInvitedPlayerData().getGuild().getGuildData().getGuildUniqueId(),
                     invitedPlayer.getInvitedPlayerData().getUniqueId().toString());
         }

@@ -25,20 +25,20 @@ public class Kingdom {
         return kingdomProperties;
     }
 
-    public KingdomData getKingdomData() {
-        return kingdomData;
-    }
-
-    public Crystal getCrystal() {
-        return crystal;
-    }
-
     public void setKingdomProperties(KingdomProperties kingdomProperties) {
         this.kingdomProperties = kingdomProperties;
     }
 
+    public KingdomData getKingdomData() {
+        return kingdomData;
+    }
+
     public void setKingdomData(KingdomData kingdomData) {
         this.kingdomData = kingdomData;
+    }
+
+    public Crystal getCrystal() {
+        return crystal;
     }
 
     public void setCrystal(Crystal crystal) {

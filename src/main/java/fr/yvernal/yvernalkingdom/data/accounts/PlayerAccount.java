@@ -5,8 +5,9 @@ import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.GuildRank;
 import fr.yvernal.yvernalkingdom.tasks.PowerAdditionsBukkitRunnable;
-import fr.yvernal.yvernalkingdom.utils.list.GlueList;
+import fr.yvernal.yvernalkingdom.utils.list.YvernalArrayList;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
  */
 public class PlayerAccount {
     private final UUID uniqueId;
+    private final List<UUID> playerWithWhomInBattle = new YvernalArrayList<>();
     private int power;
     private double valis;
     private Guild guild;
@@ -23,12 +25,10 @@ public class PlayerAccount {
     private Kingdom kingdom;
     private long kills;
     private long deaths;
-
     private PowerAdditionsBukkitRunnable powerRunnable;
     private boolean isWaitingToTeleportToHome;
     private boolean isNew;
     private boolean isInAdminMode;
-    private final List<UUID> playerWithWhomInBattle = new GlueList<>();
 
     public PlayerAccount(UUID uniqueId, int power, double valis, Guild guild, GuildRank guildRank,
                          Kingdom waitingKingdom, Kingdom kingdom, long kills, long deaths, boolean isNew) {

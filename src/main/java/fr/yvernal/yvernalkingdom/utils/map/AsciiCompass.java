@@ -1,6 +1,7 @@
 package fr.yvernal.yvernalkingdom.utils.map;
 
-import fr.yvernal.yvernalkingdom.utils.list.GlueList;
+
+import fr.yvernal.yvernalkingdom.utils.list.YvernalArrayList;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class AsciiCompass {
     }
 
     private static List<String> getAsciiCompass(AsciiCompassDirection directionFacing) {
-        final List<String> list = new GlueList<>();
+        final List<String> list = new YvernalArrayList<>();
 
         list.add(visualizeRow(directionFacing, NW, N, NE));
         list.add(visualizeRow(directionFacing, W, NONE, E));

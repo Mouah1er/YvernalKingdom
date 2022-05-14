@@ -2,7 +2,6 @@ package fr.yvernal.yvernalkingdom.tasks;
 
 import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
-import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.GuildData;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

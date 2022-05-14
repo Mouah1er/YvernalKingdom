@@ -2,11 +2,8 @@ package fr.yvernal.yvernalkingdom.commands.guild.args.all;
 
 import fr.yvernal.yvernalkingdom.commands.YvernalArg;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
-import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 import org.bukkit.entity.Player;
-
-import java.util.List;
 
 public class RenameArg extends YvernalArg {
 

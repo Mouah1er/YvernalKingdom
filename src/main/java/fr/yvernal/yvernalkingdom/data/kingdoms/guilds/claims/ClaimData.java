@@ -3,9 +3,9 @@ package fr.yvernal.yvernalkingdom.data.kingdoms.guilds.claims;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
 
 public class ClaimData {
-    private Guild guild;
     private final int x;
     private final int z;
+    private Guild guild;
 
     public ClaimData(Guild guild, int x, int z) {
         this.guild = guild;

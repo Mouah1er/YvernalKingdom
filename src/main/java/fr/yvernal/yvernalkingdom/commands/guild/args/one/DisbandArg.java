@@ -3,7 +3,6 @@ package fr.yvernal.yvernalkingdom.commands.guild.args.one;
 import fr.yvernal.yvernalkingdom.commands.YvernalArg;
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
-import fr.yvernal.yvernalkingdom.kingdoms.guilds.GuildRank;
 import org.bukkit.entity.Player;
 
 public class DisbandArg extends YvernalArg {

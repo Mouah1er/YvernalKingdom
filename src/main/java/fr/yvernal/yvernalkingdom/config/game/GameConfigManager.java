@@ -22,9 +22,9 @@ public class GameConfigManager {
             if (clazz.isPrimitive()) {
                 final boolean objectIsNumber = o instanceof Number;
 
-                if (objectIsNumber) {
-                    clazz = (Class<? extends T>) PrimitiveAndWrapper.Companion.wrapper(clazz);
+                clazz = (Class<? extends T>) PrimitiveAndWrapper.Companion.wrapper(clazz);
 
+                if (objectIsNumber) {
                     if (clazz == Double.class) {
                         o = ((Number) o).doubleValue();
                     } else if (clazz == Float.class) {

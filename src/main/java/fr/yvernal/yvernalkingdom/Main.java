@@ -1,6 +1,5 @@
 package fr.yvernal.yvernalkingdom;
 
-import fr.twah2em.nametag.TeamManager;
 import fr.yvernal.yvernalkingdom.commands.YvernalCommand;
 import fr.yvernal.yvernalkingdom.config.ConfigManager;
 import fr.yvernal.yvernalkingdom.data.DataManager;
@@ -27,6 +26,10 @@ public class Main extends JavaPlugin {
     private HashMap<UUID, PlayerAccount> spawnedDangerousEntitiesByPlayer;
     private GroupManagerHook groupManagerHook;
     private YvernalTeamManager teamManager;
+
+    public static Main getInstance() {
+        return getPlugin(Main.class);
+    }
 
     @Override
     public void onEnable() {
@@ -84,10 +87,6 @@ public class Main extends JavaPlugin {
         });
 
         getDataManager().getCrystalDataManager().getCrystals().forEach(crystal -> getDataManager().getCrystalDataManager().updateToDatabase(crystal));
-    }
-
-    public static Main getInstance() {
-        return getPlugin(Main.class);
     }
 
     public ConfigManager getConfigManager() {

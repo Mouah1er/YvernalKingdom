@@ -18,17 +18,24 @@ public enum AsciiCompassDirection {
 
     ;
 
+    public static final ChatColor ACTIVE = ChatColor.RED;
+    public static final ChatColor INACTIVE = ChatColor.YELLOW;
     private final char asciiChar;
+    AsciiCompassDirection(final char asciiChar) {
+        this.asciiChar = asciiChar;
+    }
+
+    public static AsciiCompassDirection getByDegrees(double degrees) {
+        degrees = (degrees - 157) % 360;
+        if (degrees < 0) degrees += 360;
+
+        int ordinal = (int) Math.floor(degrees / 45);
+
+        return AsciiCompassDirection.values()[ordinal];
+    }
 
     public char getAsciiChar() {
         return this.asciiChar;
-    }
-
-    public static final ChatColor ACTIVE = ChatColor.RED;
-    public static final ChatColor INACTIVE = ChatColor.YELLOW;
-
-    AsciiCompassDirection(final char asciiChar) {
-        this.asciiChar = asciiChar;
     }
 
     public String visualize(AsciiCompassDirection directionFacing) {
@@ -44,14 +51,5 @@ public enum AsciiCompassDirection {
 
     private ChatColor getColor(boolean active) {
         return active ? ACTIVE : INACTIVE;
-    }
-
-    public static AsciiCompassDirection getByDegrees(double degrees) {
-        degrees = (degrees - 157) % 360;
-        if (degrees < 0) degrees += 360;
-
-        int ordinal = (int) Math.floor(degrees / 45);
-
-        return AsciiCompassDirection.values()[ordinal];
     }
 }

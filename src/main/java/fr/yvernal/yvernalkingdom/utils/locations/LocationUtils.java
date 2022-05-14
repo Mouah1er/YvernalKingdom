@@ -1,6 +1,7 @@
 package fr.yvernal.yvernalkingdom.utils.locations;
 
-import fr.yvernal.yvernalkingdom.utils.list.GlueList;
+
+import fr.yvernal.yvernalkingdom.utils.list.YvernalArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -58,7 +59,7 @@ public class LocationUtils {
     }
 
     public static List<Location> cube(Cuboid cuboid) {
-        return new GlueList<Location>(cuboid.iterator().getLocations()) {{
+        return new YvernalArrayList<Location>(cuboid.iterator().getLocations()) {{
             addAll(cuboid.iterator().getLocations());
             addAll(cuboid.iterator().getLocations());
         }};

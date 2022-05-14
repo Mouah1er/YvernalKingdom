@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GroupManagerHook {
-    private GroupManager groupManager;
     private final Plugin plugin;
+    private GroupManager groupManager;
 
     public GroupManagerHook(final Plugin plugin) {
         this.plugin = plugin;
@@ -25,7 +25,7 @@ public class GroupManagerHook {
         final Plugin GMplugin = pluginManager.getPlugin("GroupManager");
 
         if (GMplugin != null && GMplugin.isEnabled()) {
-            groupManager = (GroupManager)GMplugin;
+            groupManager = (GroupManager) GMplugin;
             return true;
         }
         return false;

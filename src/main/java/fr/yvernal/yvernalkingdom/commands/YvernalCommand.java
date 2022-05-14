@@ -15,12 +15,6 @@ public abstract class YvernalCommand implements CommandExecutor, TabCompleter {
     protected final DataManager dataManager = Main.getInstance().getDataManager();
     protected final MessagesManager messagesManager = Main.getInstance().getConfigManager().getMessagesManager();
 
-    @Override
-    public abstract boolean onCommand(CommandSender sender, Command cmd, String label, String[] args);
-
-    @Override
-    public abstract List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args);
-
     public static void registerCommands() {
         final Reflections reflections = new Reflections("fr.yvernal.yvernalkingdom");
 
@@ -38,4 +32,10 @@ public abstract class YvernalCommand implements CommandExecutor, TabCompleter {
             }
         });
     }
+
+    @Override
+    public abstract boolean onCommand(CommandSender sender, Command cmd, String label, String[] args);
+
+    @Override
+    public abstract List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args);
 }

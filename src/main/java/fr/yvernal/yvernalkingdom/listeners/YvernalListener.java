@@ -15,8 +15,6 @@ public abstract class YvernalListener<E extends Event> implements Listener {
     protected final DataManager dataManager = Main.getInstance().getDataManager();
     protected final MessagesManager messagesManager = Main.getInstance().getConfigManager().getMessagesManager();
 
-    public abstract void onEvent(E event);
-
     public static void registerListeners() {
         final Reflections reflections = new Reflections("fr.yvernal.yvernalkingdom");
 
@@ -30,4 +28,6 @@ public abstract class YvernalListener<E extends Event> implements Listener {
             }
         });
     }
+
+    public abstract void onEvent(E event);
 }

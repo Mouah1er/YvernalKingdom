@@ -17,12 +17,12 @@ public class InvitedPlayer {
         return invitedPlayerData;
     }
 
-    public void setStillInvited(boolean stillInvited) {
-        isStillInvited = stillInvited;
-    }
-
     public boolean isStillInvited() {
         return isStillInvited;
+    }
+
+    public void setStillInvited(boolean stillInvited) {
+        isStillInvited = stillInvited;
     }
 
     public boolean isNew() {

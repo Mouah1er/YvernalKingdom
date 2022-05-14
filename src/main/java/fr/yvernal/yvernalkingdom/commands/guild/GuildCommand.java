@@ -16,7 +16,7 @@ import fr.yvernal.yvernalkingdom.commands.guild.args.two.admin.AdminKickPlayerAr
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccount;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdoms;
 import fr.yvernal.yvernalkingdom.kingdoms.guilds.Guild;
-import fr.yvernal.yvernalkingdom.utils.list.GlueList;
+import fr.yvernal.yvernalkingdom.utils.list.YvernalArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -24,6 +24,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -145,8 +146,8 @@ public class GuildCommand extends YvernalCommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-        final List<String> completions = new GlueList<>();
-        final List<String> commands = new GlueList<>();
+        final List<String> completions = new YvernalArrayList<>();
+        final List<String> commands = new YvernalArrayList<>();
 
         if (args.length == 1) {
             commands.add("create");

@@ -46,11 +46,14 @@ public abstract class InventoryCreator implements InventoryHolder {
         }
     }
 
-    public void onOpen(InventoryOpenEvent event) {}
+    public void onOpen(InventoryOpenEvent event) {
+    }
 
-    public void onClick(InventoryClickEvent event) {}
+    public void onClick(InventoryClickEvent event) {
+    }
 
-    public void onClose(InventoryCloseEvent event) {}
+    public void onClose(InventoryCloseEvent event) {
+    }
 
     public void open(Player player) {
         player.openInventory(inventory);

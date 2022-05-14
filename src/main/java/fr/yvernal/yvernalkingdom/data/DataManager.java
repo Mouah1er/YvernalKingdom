@@ -2,9 +2,9 @@ package fr.yvernal.yvernalkingdom.data;
 
 import fr.yvernal.yvernalkingdom.data.accounts.PlayerAccountManager;
 import fr.yvernal.yvernalkingdom.data.database.DatabaseManager;
+import fr.yvernal.yvernalkingdom.data.kingdoms.KingdomDataManager;
 import fr.yvernal.yvernalkingdom.data.kingdoms.crystal.CrystalDataManager;
 import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.GuildDataManager;
-import fr.yvernal.yvernalkingdom.data.kingdoms.KingdomDataManager;
 import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.claims.ClaimDataManager;
 import fr.yvernal.yvernalkingdom.data.kingdoms.guilds.invitedplayers.InvitedPlayerDataManager;
 

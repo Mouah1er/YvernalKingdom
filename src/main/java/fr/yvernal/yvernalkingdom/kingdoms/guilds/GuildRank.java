@@ -10,9 +10,7 @@ public enum GuildRank {
     OFFICER("*Officier", "*", ChatColor.AQUA, 2),
     SENIOR_MEMBER("Membre+", "+", ChatColor.GREEN, 1),
     MEMBER("Membre-", "-", ChatColor.DARK_GREEN, 0),
-    NO_GUILD("no-guild", "§7", ChatColor.GRAY, -1)
-
-    ;
+    NO_GUILD("no-guild", "§7", ChatColor.GRAY, -1);
 
     private static final Map<String, GuildRank> BY_NAME = new HashMap<>();
 
@@ -32,6 +30,10 @@ public enum GuildRank {
         this.prefix = prefix;
         this.chatColor = chatColor;
         this.power = power;
+    }
+
+    public static GuildRank getByName(String name) {
+        return BY_NAME.get(name);
     }
 
     public String getName() {
@@ -60,9 +62,5 @@ public enum GuildRank {
 
     public GuildRank getPreviousRank() {
         return GuildRank.values()[this.ordinal() + 1];
-    }
-
-    public static GuildRank getByName(String name) {
-        return BY_NAME.get(name);
     }
 }

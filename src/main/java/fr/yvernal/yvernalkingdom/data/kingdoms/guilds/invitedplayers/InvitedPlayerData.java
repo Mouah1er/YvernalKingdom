@@ -9,7 +9,7 @@ public class InvitedPlayerData {
     private final Guild guild;
 
     public InvitedPlayerData(UUID uniqueId, Guild guild) {
-        this.uniqueId  = uniqueId;
+        this.uniqueId = uniqueId;
         this.guild = guild;
     }
 
