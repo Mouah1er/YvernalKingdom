@@ -8,6 +8,6 @@ public class EntityAddToWorldListener extends YvernalListener<EntityAddToWorldEv
     @Override
     @EventHandler
     public void onEvent(EntityAddToWorldEvent event) {
-        System.out.println("test");
+        System.out.println("SALUT");
     }
 }

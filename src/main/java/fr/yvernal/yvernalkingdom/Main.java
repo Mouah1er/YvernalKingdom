@@ -12,7 +12,12 @@ import fr.yvernal.yvernalkingdom.teams.YvernalTeamManager;
 import fr.yvernal.yvernalkingdom.utils.CrystalUtils;
 import fr.yvernal.yvernalkingdom.utils.GroupManagerHook;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.entity.Zombie;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.HashMap;
@@ -66,6 +71,15 @@ public class Main extends JavaPlugin {
         YvernalCommand.registerCommands();
 
         CrystalUtils.startCrystalRunnables();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.getWorlds().get(0).getChunkAt(new Location(Bukkit.getWorlds().get(0), 0, 75, 0)).load();
+                System.out.println(((CraftWorld) Bukkit.getWorlds().get(0)).getHandle().addEntity(((CraftWorld) Bukkit.getWorlds().get(0)).createEntity(
+                        new Location(Bukkit.getWorlds().get(0), 0, 75, 0), Zombie.class), CreatureSpawnEvent.SpawnReason.DEFAULT));
+            }
+        }.runTaskLater(this, 60);
     }
 
     @Override
