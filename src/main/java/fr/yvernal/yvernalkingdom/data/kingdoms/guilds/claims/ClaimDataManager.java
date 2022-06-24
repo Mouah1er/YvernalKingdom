@@ -82,7 +82,6 @@ public class ClaimDataManager implements DataManagerTemplate<Claim> {
 
     @Override
     public void updateToDatabase(Claim claim) {
-        System.out.println(claim);
         if (claim.isUnClaim() || claim.isNew()) {
             if (claim.isUnClaim()) {
                 deleteFromDatabase(claim);

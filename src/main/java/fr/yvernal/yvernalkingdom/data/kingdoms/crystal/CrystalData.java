@@ -2,6 +2,7 @@ package fr.yvernal.yvernalkingdom.data.kingdoms.crystal;
 
 import fr.yvernal.yvernalkingdom.Main;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
+import org.bukkit.Location;
 
 import java.util.Date;
 
@@ -77,6 +78,10 @@ public class CrystalData {
 
     public void setDestructionDate(Date destructionDate) {
         this.destructionDate = destructionDate;
+    }
+
+    public Location getLocation() {
+        return kingdom.getKingdomProperties().getCrystalLocation();
     }
 
     @Override

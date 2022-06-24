@@ -113,4 +113,17 @@ public class Cuboid {
             return blocks3;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Cuboid{" +
+                "xMin=" + xMin +
+                ", xMax=" + xMax +
+                ", yMin=" + yMin +
+                ", yMax=" + yMax +
+                ", zMin=" + zMin +
+                ", zMax=" + zMax +
+                ", world=" + world +
+                '}';
+    }
 }

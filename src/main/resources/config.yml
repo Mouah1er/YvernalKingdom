@@ -56,7 +56,7 @@ game:
   crystal-regen-health: 2 # c'est en hp, pas en coeurs
   crystal-regen-time: 45 # c'est en secondes
   kingdom-chat-format: "%{guild_rank_prefix}% %{guild}% %{player_grade}% %{kingdom_color}%%{name}% &7:&f %{message}%"
-  global-chat-format: "%{relation_color}%%{guild_rank_prefix}%%{guild}% %{player_grade}% %{kingdom_color]%%{name}% &7: %{kingdom_color}%%{message}%"
+  global-chat-format: "%{relation_color}%%{guild_rank_prefix}%%{guild}% %{player_grade}% %{kingdom_color}%%{name}% &7: %{kingdom_color}%%{message}%"
   global-chat-prefix: "@"
   golem-damage: 20 # c'est en hp
   golem-name: "Golème"

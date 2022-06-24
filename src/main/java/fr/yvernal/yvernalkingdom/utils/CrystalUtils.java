@@ -7,21 +7,31 @@ import fr.yvernal.yvernalkingdom.tasks.CrystalRegenBukkitRunnable;
 import fr.yvernal.yvernalkingdom.tasks.RebuildCrystalBukkitRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CrystalUtils {
 
     public static void spawnCrystals() {
-        Main.getInstance().getDataManager().getCrystalDataManager().getCrystals().forEach(crystal -> {
-            final Location crystalLocation = crystal.getCrystalData().getKingdom().getKingdomProperties().getCrystalLocation();
+        Main.getInstance().getDataManager().getCrystalDataManager().getCrystals()
+                .stream()
+                .map(crystal -> crystal.getCrystalData().getLocation())
+                .forEach(CrystalUtils::spawnCrystal);
+    }
 
-            if (!crystalLocation.getChunk().isLoaded()) crystalLocation.getChunk().load();
+    public static void spawnCrystal(Location crystalLocation) {
+        if (!crystalLocation.getChunk().isLoaded()) crystalLocation.getChunk().load();
 
+        final Crystal crystal = Main.getInstance().getDataManager().getCrystalDataManager().getCrystalByLocation(crystalLocation);
+
+        if (crystal != null) {
             Bukkit.getWorld(Main.getInstance().getConfigManager().getGameConfigManager().getString("world-name"))
                     .spawnEntity(crystalLocation, EntityType.ENDER_CRYSTAL);
 
             startUpdateCrystalHologramTask(crystal);
-        });
+        }
     }
 
     public static void startCrystalRunnables() {

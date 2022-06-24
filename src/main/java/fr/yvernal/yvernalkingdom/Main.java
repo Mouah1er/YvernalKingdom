@@ -14,6 +14,7 @@ import fr.yvernal.yvernalkingdom.utils.GroupManagerHook;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -49,7 +50,9 @@ public class Main extends JavaPlugin {
                 .forEach(entity -> {
                     if (!entity.getLocation().getChunk().isLoaded()) entity.getLocation().getChunk().load();
 
-                    entity.remove();
+                    if (entity instanceof EnderCrystal) {
+                        entity.remove();
+                    }
                 });
 
         for (Kingdoms value : Kingdoms.values()) {
@@ -71,15 +74,6 @@ public class Main extends JavaPlugin {
         YvernalCommand.registerCommands();
 
         CrystalUtils.startCrystalRunnables();
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Bukkit.getWorlds().get(0).getChunkAt(new Location(Bukkit.getWorlds().get(0), 0, 75, 0)).load();
-                System.out.println(((CraftWorld) Bukkit.getWorlds().get(0)).getHandle().addEntity(((CraftWorld) Bukkit.getWorlds().get(0)).createEntity(
-                        new Location(Bukkit.getWorlds().get(0), 0, 75, 0), Zombie.class), CreatureSpawnEvent.SpawnReason.DEFAULT));
-            }
-        }.runTaskLater(this, 60);
     }
 
     @Override

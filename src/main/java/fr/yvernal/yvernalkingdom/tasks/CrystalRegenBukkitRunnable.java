@@ -10,9 +10,11 @@ public class CrystalRegenBukkitRunnable extends BukkitRunnable {
         final Main main = Main.getInstance();
 
         main.getDataManager().getCrystalDataManager().getCrystals().forEach(crystal -> {
-            if (crystal.getCrystalData().getHealth() != crystal.getCrystalData().getMaxHealth()) {
+            final double crystalHealth = crystal.getCrystalData().getHealth();
+
+            if (crystalHealth < crystal.getCrystalData().getMaxHealth()) {
                 if (!crystal.getCrystalData().isDestroyed()) {
-                    crystal.getCrystalData().setHealth(crystal.getCrystalData().getHealth() +
+                    crystal.getCrystalData().setHealth(crystalHealth +
                             main.getConfigManager().getGameConfigManager().get("crystal-regen-health", double.class));
                 }
             }

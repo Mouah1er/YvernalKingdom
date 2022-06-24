@@ -44,4 +44,13 @@ public class Kingdom {
     public void setCrystal(Crystal crystal) {
         this.crystal = crystal;
     }
+
+    @Override
+    public String toString() {
+        return "Kingdom{" +
+                "kingdomProperties=" + kingdomProperties +
+                ", kingdomData=" + kingdomData +
+                ", crystal=" + crystal +
+                '}';
+    }
 }

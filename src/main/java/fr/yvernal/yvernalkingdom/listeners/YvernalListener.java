@@ -21,7 +21,6 @@ public abstract class YvernalListener<E extends Event> implements Listener {
         final Set<Class<? extends YvernalListener>> classes = reflections.getSubTypesOf(YvernalListener.class);
 
         classes.forEach(aClass -> {
-            System.out.println(aClass.getSimpleName());
             try {
                 Bukkit.getPluginManager().registerEvents(aClass.getConstructor().newInstance(), Main.getInstance());
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

@@ -8,6 +8,7 @@ import fr.yvernal.yvernalkingdom.data.DataManagerTemplate;
 import fr.yvernal.yvernalkingdom.kingdoms.Kingdom;
 import fr.yvernal.yvernalkingdom.kingdoms.crystal.Crystal;
 import fr.yvernal.yvernalkingdom.utils.list.YvernalArrayList;
+import org.bukkit.Location;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class CrystalDataManager implements DataManagerTemplate<Crystal> {
 
                 if (resultSet.next()) {
                     final float health = resultSet.getFloat("health");
+                    System.out.println(kingdomNumber);
                     final float exp = resultSet.getFloat("exp");
                     final int level = resultSet.getInt("level");
                     final boolean isDestroyed = resultSet.getBoolean("isDestroyed");
@@ -125,5 +127,13 @@ public class CrystalDataManager implements DataManagerTemplate<Crystal> {
 
     public List<Crystal> getCrystals() {
         return crystals;
+    }
+
+    public Crystal getCrystalByLocation(Location location) {
+        return crystals
+                .stream()
+                .filter(crystal -> crystal.getCrystalData().getLocation().equals(location))
+                .findFirst()
+                .orElse(null);
     }
 }
